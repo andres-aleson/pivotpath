@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Career Roadmap | PivotPath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 40px;
+            bottom: -20px;
+            width: 2px;
+            background: #c5c6cd; /* outline-variant */
+        }
+        .step-line-last::before {
+            display: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#002f2a",
+                        "primary-fixed-dim": "#bcc7de",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "secondary": "#0058be",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d3e4fe",
+                        "surface-dim": "#cbdbf5",
+                        "tertiary": "#001815",
+                        "on-primary-fixed": "#111c2d",
+                        "surface-bright": "#f8f9ff",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-container": "#2170e4",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#d3e4fe",
+                        "primary-fixed": "#d8e3fb",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-tertiary-container": "#28a094",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary-fixed-variant": "#005049",
+                        "surface": "#f8f9ff",
+                        "on-surface-variant": "#45474c",
+                        "surface-tint": "#545f73",
+                        "inverse-primary": "#bcc7de",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#213145",
+                        "outline-variant": "#c5c6cd",
+                        "tertiary-fixed-dim": "#6bd8cb",
+                        "on-secondary-container": "#fefcff",
+                        "on-background": "#0b1c30",
+                        "primary-container": "#1e293b",
+                        "on-tertiary-fixed": "#00201d",
+                        "tertiary-fixed": "#89f5e7",
+                        "on-error": "#ffffff",
+                        "outline": "#75777d",
+                        "on-secondary-fixed": "#001a42",
+                        "surface-container-low": "#eff4ff",
+                        "primary": "#091426",
+                        "on-primary-container": "#8590a6",
+                        "background": "#f8f9ff",
+                        "surface-container": "#e5eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "sm": "12px",
+                        "container-max": "1280px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-xl-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-xl-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface dark:bg-surface-dim shadow-sm h-16 flex justify-between items-center px-gutter w-full transition-all duration-200 ease-in-out">
+<div class="flex items-center gap-base">
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim">PivotPath</span>
+</div>
+<div class="hidden md:flex items-center gap-lg font-body-md text-body-md">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Dashboard</a>
+<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary dark:border-secondary-fixed pb-1" href="#">Roadmap</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Mentors</a>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant">settings</button>
+<div class="flex items-center gap-xs cursor-pointer group">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional business portrait of a modern corporate individual in a light-filled office environment, high-key lighting, soft white and navy blue color palette, looking confident and helpful. The style is clean, sharp, and focused, emphasizing an authoritative yet empathetic persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzGeXwLf5gXLmd_6ZjpQQjRVPBqrL3rGuhIvCpqDXtHS26eUhos_sdXAFuU77O2AD585nQK9VU22BdEcixx4a-BYvqmRYEi8slvASQUieTsny7gKusuX3WVKMbxBdhNwXMKGPryZVaSl9meT1N3tMC0u1aANp9caVST3qThlZI2FS7x_i6SoqQ-xguI7zoaYw3azuqgeoqLgTXcjr78rTOhjhMAXT_vW9aw8tkvGvGgzRMXmmgJXwLOg"/>
+</div>
+<span class="font-label-md text-label-md text-primary group-hover:text-secondary transition-colors">Profile</span>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-screen p-base fixed left-0 top-0 z-40 w-64 bg-surface-container-low dark:bg-surface-container-lowest shadow-md pt-20">
+<div class="flex flex-col gap-xs mb-lg px-base">
+<h2 class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim">PivotPath</h2>
+<p class="text-label-md font-label-md text-on-surface-variant">Career Transition</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">home</span>
+<span>Home</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg font-bold font-label-md text-label-md scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">route</span>
+<span>Roadmap</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Mentors</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">stars</span>
+<span>Success Stories</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1 border-t border-outline-variant pt-base">
+<button class="w-full mb-base py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all">Start Transition</button>
+<a class="flex items-center gap-md px-md py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-md text-label-md transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-md px-md py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg font-label-md text-label-md transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-16 min-h-screen">
+<div class="max-w-container-max mx-auto px-gutter py-lg">
+<!-- Page Header -->
+<header class="mb-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<nav class="flex items-center gap-xs text-label-md text-on-surface-variant mb-base">
+<span>My Roadmap</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-secondary font-bold">Senior Product Manager</span>
+</nav>
+<h1 class="text-headline-xl font-headline-xl text-primary">Senior Product Manager</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant mt-xs">Your calculated path from Marketing Lead to Product Leadership.</p>
+</div>
+<div class="flex items-center gap-md bg-surface-container rounded-xl p-md shadow-sm border border-outline-variant/30">
+<div class="relative w-16 h-16">
+<svg class="w-16 h-16 -rotate-90">
+<circle class="text-outline-variant" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-secondary" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="175.9" stroke-dashoffset="114.3" stroke-width="6"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-bold text-label-md">35%</div>
+</div>
+<div>
+<span class="text-label-md font-label-md block">Overall Progress</span>
+<span class="text-body-md font-bold text-primary">2 of 6 Milestones Completed</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+<!-- Vertical Timeline Area -->
+<div class="lg:col-span-8 space-y-md">
+<!-- Milestone 1: Self-Assessment (Completed) -->
+<section class="relative pl-12 step-line">
+<div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center z-10 shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:shadow-md transition-all">
+<div class="flex justify-between items-start mb-base">
+<div>
+<h3 class="text-headline-md font-headline-md text-primary">Self-Assessment</h3>
+<span class="text-label-md text-on-tertiary-container bg-tertiary-fixed/30 px-base py-0.5 rounded-full">Completed June 12</span>
+</div>
+<button class="text-secondary font-label-md hover:underline">View Full Report</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-md mt-md">
+<div class="p-base bg-surface rounded-lg border border-outline-variant/20">
+<span class="text-label-md text-on-surface-variant block mb-1">Top Strength</span>
+<span class="font-bold text-primary">Strategic Thinking</span>
+</div>
+<div class="p-base bg-surface rounded-lg border border-outline-variant/20">
+<span class="text-label-md text-on-surface-variant block mb-1">Growth Mindset</span>
+<span class="font-bold text-primary">92nd Percentile</span>
+</div>
+<div class="p-base bg-surface rounded-lg border border-outline-variant/20">
+<span class="text-label-md text-on-surface-variant block mb-1">Pivot Index</span>
+<span class="font-bold text-primary text-secondary">High Compatibility</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Milestone 2: Career Fit Overview (Active Module Replacement) -->
+<section class="relative pl-12 step-line">
+<div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center z-10 shadow-sm animate-pulse">
+<span class="material-symbols-outlined">sync</span>
+</div>
+<div class="bg-surface border-2 border-secondary rounded-xl p-md shadow-md relative overflow-hidden">
+<div class="absolute top-0 right-0 p-base">
+<span class="bg-secondary text-on-secondary px-base py-1 rounded-bl-xl rounded-tr-lg text-label-sm font-bold absolute top-0 right-0">ACTIVE</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-primary mb-xs">Career Fit Overview</h3>
+<p class="text-body-md text-on-surface-variant mb-lg">A detailed look at your transition into Product Leadership.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-base">
+<h4 class="text-label-md font-bold text-primary flex items-center gap-xs uppercase tracking-wider">
+<span class="material-symbols-outlined text-secondary text-[18px]">psychology</span>
+                                    Why this role fits
+                                </h4>
+<p class="text-body-md text-on-surface-variant">
+                                    Your background as a <span class="font-bold text-primary">Marketing Lead</span> provides a unique advantage in understanding market trends, user behavior, and competitive landscapes—essential pillars for a <span class="font-bold text-primary">Senior Product Manager</span>. You already possess the core skills of stakeholder alignment and ROI-driven decision-making.
+                                </p>
+</div>
+<div class="space-y-base">
+<h4 class="text-label-md font-bold text-primary flex items-center gap-xs uppercase tracking-wider">
+<span class="material-symbols-outlined text-secondary text-[18px]">schedule</span>
+                                    Estimated Timeline
+                                </h4>
+<div class="bg-surface-container-low p-md rounded-lg border border-outline-variant/30">
+<div class="text-headline-lg font-bold text-secondary">6–9 Months</div>
+<p class="text-label-sm text-on-surface-variant mt-1">Based on your current skill gap and available commitment hours.</p>
+</div>
+</div>
+</div>
+<div class="mt-lg pt-md border-t border-outline-variant/30">
+<h4 class="text-label-md font-bold text-primary mb-md uppercase tracking-wider">Next Steps</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="flex items-center gap-md p-base bg-surface-container-lowest rounded-lg border border-outline-variant/20">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<div>
+<span class="font-bold text-primary block text-label-md">Certifications</span>
+<span class="text-label-sm text-on-surface-variant">Enroll in the PM Specialization</span>
+</div>
+</div>
+<div class="flex items-center gap-md p-base bg-surface-container-lowest rounded-lg border border-outline-variant/20">
+<span class="material-symbols-outlined text-secondary">draw</span>
+<div>
+<span class="font-bold text-primary block text-label-md">Portfolio Building</span>
+<span class="text-label-sm text-on-surface-variant">Draft your first Case Study</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-lg pt-md">
+<button class="w-full py-3 bg-secondary text-on-secondary rounded-lg font-bold hover:brightness-110 transition-all flex items-center justify-center gap-base">
+<span>Continue Roadmap</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Milestone 3: Certification Course (Next Step) -->
+<section class="relative pl-12 step-line">
+<div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center z-10 border border-outline-variant">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant border-dashed rounded-xl p-md shadow-sm opacity-90 group hover:opacity-100 hover:border-solid hover:border-secondary transition-all">
+<div class="flex flex-col md:flex-row gap-md">
+<div class="w-full md:w-48 h-32 rounded-lg bg-surface-container-high overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist Coursera course thumbnail for 'Digital Product Management' featuring a sleek laptop, abstract architectural geometry in light blues and navy, and professional typography on the screen. The lighting is soft and studio-quality, emphasizing a premium educational experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABzOPzZ6DM0EPHyXruM738ytdnhiE6xGdxRPJN0ApuZCUFJ9ifhZ8GcNULB1IQEo-WuIX50gtGPA7AkUzF1_lt7e3CLCcmlFzJmPH_z9AhnIussbK-T0fzKu3oAcjMiz1UA9gmn1ozhu97FN-heZuyYWDOhQvDZr8NxGdb7O38wxpgvfXClM6-yMSyRRique33mPR3AM9283Apg1NobzfnOAIRI56WPoo7S0v3O-BBLlBhW4dkcOjyjQ"/>
+<div class="absolute top-2 left-2 bg-white/90 px-xs py-xs rounded">
+<img class="h-4 w-auto" data-alt="A small, recognizable brand logo for a major online learning platform like Coursera or Udemy, rendered in high resolution against a clean white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlhLxzLetNnSMoJzd-Ug622zaXVc0B8NqskQMNP3ANiOKMLk5MFeFuXZJ-sMpDH77CzFH2TLgksp7M9aFCyCCgSM978NT32zYA7cb2IRn1c1sJwsYg3XSnMjdyo4o5cWqKkyYgbfh1Tj_JCps8VbT8X_WiKgYbO8LJtZcyQoCtU5ElTlbOTjew0BrnXrJUeyo5klgxE0A-_ADbphAViXuUwJ8zVYs0TheGdC7H3MNsruEHiTMsL5qWuA"/>
+</div>
+</div>
+<div class="flex-1">
+<span class="text-label-md font-bold text-secondary uppercase tracking-widest">Recommended</span>
+<h3 class="text-headline-md font-headline-md text-primary">Advanced Product Management Specialization</h3>
+<p class="text-body-md text-on-surface-variant mt-xs">Curated by industry experts to validate your technical PM skills.</p>
+<div class="flex items-center gap-md mt-md">
+<div class="flex items-center gap-xs text-label-md">
+<span class="material-symbols-outlined text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold">4.8</span>
+<span class="text-on-surface-variant">(12k reviews)</span>
+</div>
+<span class="text-label-md bg-surface-container px-base py-1 rounded">24 Hours</span>
+</div>
+</div>
+</div>
+<div class="mt-md flex justify-end">
+<button class="px-lg py-2 border border-secondary text-secondary rounded-lg font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all">Pre-register</button>
+</div>
+</div>
+</section>
+<!-- Milestone 4: Portfolio Build (Upcoming) -->
+<section class="relative pl-12 step-line step-line-last">
+<div class="absolute left-0 top-0 w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center z-10 border border-outline-variant">
+<span class="material-symbols-outlined">folder_shared</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant border-dashed rounded-xl p-md shadow-sm opacity-60">
+<h3 class="text-headline-md font-headline-md text-primary">Portfolio Build</h3>
+<p class="text-body-md text-on-surface-variant mt-xs">Showcase your transition projects. This milestone unlocks after Certification completion.</p>
+<div class="mt-lg grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="h-40 rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-base text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+<span class="text-label-md">Add Project Placeholder</span>
+</div>
+<div class="h-40 rounded-lg border-2 border-dashed border-outline-variant flex flex-col items-center justify-center gap-base text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">description</span>
+<span class="text-label-md">Draft Case Study</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Resource Library Sidebar -->
+<aside class="lg:col-span-4 space-y-lg">
+<!-- Financial Guide Promo -->
+<div class="bg-primary text-on-primary rounded-xl p-md shadow-lg overflow-hidden relative">
+<div class="absolute -right-8 -bottom-8 opacity-20 transform rotate-12">
+<span class="material-symbols-outlined text-[120px]">payments</span>
+</div>
+<h4 class="text-headline-md font-headline-md mb-base">Financial Planning</h4>
+<p class="text-label-md font-label-md opacity-90 mb-lg">Understand your runway and salary expectations for the PM role.</p>
+<ul class="space-y-base mb-lg">
+<li class="flex items-center gap-base text-label-md">
+<span class="material-symbols-outlined text-[18px]">check_small</span>
+                            PM Salary Calculator (2024)
+                        </li>
+<li class="flex items-center gap-base text-label-md">
+<span class="material-symbols-outlined text-[18px]">check_small</span>
+                            Education Tax Benefit Guide
+                        </li>
+</ul>
+<button class="w-full py-2 bg-white text-primary rounded-lg font-bold hover:bg-on-secondary-container transition-colors">Download PDF Guide</button>
+</div>
+<!-- Resource Library List -->
+<div class="bg-surface-container-low rounded-xl border border-outline-variant p-md">
+<h4 class="text-label-md font-bold text-primary uppercase tracking-wider mb-md flex items-center gap-base">
+<span class="material-symbols-outlined">library_books</span>
+                        Resource Library
+                    </h4>
+<div class="space-y-base">
+<a class="block p-base bg-surface-container-lowest rounded-lg border border-outline-variant/30 hover:border-secondary transition-colors group" href="#">
+<span class="text-label-md font-bold text-primary group-hover:text-secondary block">Career Pivot Checklist</span>
+<span class="text-label-sm text-on-surface-variant">Essential steps for late-stage transition.</span>
+</a>
+<a class="block p-base bg-surface-container-lowest rounded-lg border border-outline-variant/30 hover:border-secondary transition-colors group" href="#">
+<span class="text-label-md font-bold text-primary group-hover:text-secondary block">Success Story: Marketing to PM</span>
+<span class="text-label-sm text-on-surface-variant">How Sarah landed a Senior role at Fintech X.</span>
+</a>
+<a class="block p-base bg-surface-container-lowest rounded-lg border border-outline-variant/30 hover:border-secondary transition-colors group" href="#">
+<span class="text-label-md font-bold text-primary group-hover:text-secondary block">Resume Strategy Workshop</span>
+<span class="text-label-sm text-on-surface-variant">Video recording from July 14 session.</span>
+</a>
+</div>
+<button class="w-full mt-md py-2 text-secondary font-label-md hover:underline flex items-center justify-center gap-xs">
+                        Browse All Resources
+                        <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+<!-- Mentor Spotlight -->
+<div class="bg-surface-container rounded-xl p-md border border-outline-variant">
+<h4 class="text-label-md font-bold text-primary uppercase tracking-wider mb-md">Mentor Connection</h4>
+<div class="flex items-center gap-md mb-base">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a senior tech mentor with salt-and-pepper hair, wearing professional casual attire, smiling warmly in a workspace filled with natural light. The palette is dominated by whites, grays, and soft blues, creating an approachable yet authoritative mentor persona. Cinematic depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAR4oXgU-EGxeekqlt36lgjssGIeTckgDhvYiiDyzXac59GHcUHXA7ZDAWKvvEO0yOX3RKHIYid9grCNOJ5AHVTvpkByiQguxaxmSzn0Tkp1DjsZSNHeRdSEQ6Dqgl83xL5zh2ztvHEz8n-Y_uoOdNJjYlBqA6QYAoIC9bLzPDlKU4dj8xAwrxRhcae6OORIC29kWF61T4o6mMOZJjlg9DmTL1ygrPyER71QCXvT63SiDllCYtNdTQsnA"/>
+</div>
+<div>
+<span class="font-bold text-primary block">David Chen</span>
+<span class="text-label-sm text-on-surface-variant">Senior PM at LeadFlow</span>
+</div>
+</div>
+<p class="text-label-md text-on-surface-variant mb-md">"David specializes in marketing-to-product transitions. He has 3 slots open for August."</p>
+<button class="w-full py-2 bg-secondary-container text-on-secondary-container rounded-lg font-bold hover:brightness-105 transition-all">Book Office Hours</button>
+</div>
+<div class="bg-surface-container-low rounded-xl border border-outline-variant p-md">
+<h4 class="text-label-md font-bold text-primary uppercase tracking-wider mb-md flex items-center gap-base">
+<span class="material-symbols-outlined">payments</span>
+        Financial Assistance
+    </h4>
+<p class="text-label-sm text-on-surface-variant mb-md">Need help funding your transition? PivotPath users may be eligible for specific educational grants.</p>
+<button class="w-full py-2 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all flex items-center justify-center gap-xs">
+<span>Explore Grants &amp; Aid</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div></aside>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 md:hidden bg-surface dark:bg-surface-dim shadow-[0_-4px_6px_-1px_rgba(9,20,38,0.05)] rounded-t-xl transition-all active:scale-95">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm-mobile">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-4 py-1" href="#">
+<span class="material-symbols-outlined">route</span>
+<span class="font-label-sm text-label-sm-mobile">Roadmap</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-sm text-label-sm-mobile">Mentors</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm-mobile">Profile</span>
+</a>
+</nav>
+<script>
+    // Simple micro-interaction for progress bars on load
+    document.addEventListener('DOMContentLoaded', () => {
+        const bars = document.querySelectorAll('.h-full.bg-secondary');
+        bars.forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 300);
+        });
+    });
+</script>
+</body></html>

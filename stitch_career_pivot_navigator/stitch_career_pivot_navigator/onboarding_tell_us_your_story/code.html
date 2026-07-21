@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PivotPath Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f8f9ff",
+                        "on-primary-container": "#8590a6",
+                        "surface-variant": "#d3e4fe",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#e5eeff",
+                        "tertiary-fixed-dim": "#6bd8cb",
+                        "secondary-container": "#2170e4",
+                        "surface-container-low": "#eff4ff",
+                        "surface-dim": "#cbdbf5",
+                        "primary": "#091426",
+                        "outline": "#75777d",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "secondary": "#0058be",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#545f73",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#213145",
+                        "on-primary-fixed": "#111c2d",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#00201d",
+                        "tertiary-fixed": "#89f5e7",
+                        "primary-container": "#1e293b",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-container": "#002f2a",
+                        "primary-fixed": "#d8e3fb",
+                        "on-surface": "#0b1c30",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-secondary-container": "#fefcff",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed": "#001a42",
+                        "inverse-primary": "#bcc7de",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "on-background": "#0b1c30",
+                        "on-tertiary-fixed-variant": "#005049",
+                        "surface-container-high": "#dce9ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-container": "#28a094",
+                        "outline-variant": "#c5c6cd",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#001815",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#bcc7de",
+                        "on-surface-variant": "#45474c",
+                        "secondary-fixed-dim": "#adc6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "xl": "80px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "container-max": "1280px",
+                        "lg": "48px",
+                        "md": "24px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-xl-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-xl-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container selection:text-white">
+<!-- Header / TopNavBar -->
+<header class="sticky top-0 w-full z-50 flex justify-between items-center px-gutter py-4 bg-surface/95 backdrop-blur-sm shadow-sm">
+<div class="flex items-center gap-3">
+<img alt="PivotPath Logo" class="w-10 h-10 rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKnTvxF0kUasd7T66SnBK2w2AjLQsqW5BiQN1TwvLlEI0aH4LL6wHC-QwztQpPgP2SLyfBSQEf4yBc2EXmYGTozG2lNi1xzaxxUHKh5mQkNVZ4BPVipM-9Y9DCNxDEQEcf-3FFk8MzPH58lMeaPsqG0JZuthGS-iC2gII9aw7YV9Wd3Ubz6lq4EzIO5d-A5KfsYZoq9Xw_ik-wXvaT5P9MtAlc2nbhuYPZO4-SZeUa1mfJ0WifAkKGuA"/>
+<span class="text-headline-md font-headline-md font-bold text-primary">PivotPath</span>
+</div>
+<div class="hidden md:flex items-center gap-md">
+<span class="text-label-md font-label-md text-on-surface-variant">Step 1 of 4: Profile</span>
+<button class="text-label-md font-label-md text-on-surface-variant hover:text-secondary transition-colors">Exit Questionnaire</button>
+</div>
+</header>
+<!-- Progress Indicator Container -->
+<div class="w-full bg-surface-container-low px-gutter py-4">
+<div class="max-w-container-max mx-auto">
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-wider">Your Progress</span>
+<span class="text-label-sm font-label-sm text-secondary">25% Complete</span>
+</div>
+<div class="w-full h-2 bg-outline-variant rounded-full overflow-hidden">
+<div class="w-1/4 h-full bg-tertiary-fixed-dim transition-all duration-700 ease-out"></div>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="min-h-[calc(100vh-140px)] flex items-start justify-center pt-xl pb-xl px-gutter bg-gradient-to-b from-background to-surface-container">
+<div class="w-full max-w-2xl">
+<!-- Form Container -->
+<div class="glass-card rounded-xl p-md md:p-lg shadow-sm">
+<div class="mb-lg">
+<h1 class="text-headline-lg font-headline-lg text-primary mb-2">Build your profile</h1>
+<p class="text-body-md font-body-md text-on-surface-variant">Tell us where you are today so we can map out where you're going tomorrow. Your answers are private and help us personalize your career roadmap.</p>
+</div>
+<form class="space-y-lg" id="onboarding-form">
+<!-- Question 1: Text Input -->
+<div class="space-y-xs">
+<label class="text-label-md font-label-md text-primary" for="job-title">What is your current job title?</label>
+<input class="w-full px-4 py-3 rounded-lg border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-body-md" id="job-title" placeholder="e.g. Senior Marketing Specialist" type="text"/>
+</div>
+<!-- Question 2: Chip Selection / Tag Input -->
+<div class="space-y-xs">
+<label class="text-label-md font-label-md text-primary">What are your top 3 professional skills?</label>
+<div class="flex flex-wrap gap-2 mb-3" id="skills-container">
+<!-- Skill Chips -->
+<div class="flex items-center gap-1 bg-surface-variant text-secondary px-3 py-1 rounded-lg text-label-sm font-label-sm border border-secondary/10">
+                                Project Management <span class="material-symbols-outlined text-[16px] cursor-pointer">close</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-variant text-secondary px-3 py-1 rounded-lg text-label-sm font-label-sm border border-secondary/10">
+                                Strategic Planning <span class="material-symbols-outlined text-[16px] cursor-pointer">close</span>
+</div>
+</div>
+<div class="relative">
+<input class="w-full px-4 py-3 rounded-lg border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-body-md" placeholder="Add a skill..." type="text"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary font-label-md" type="button">Add</button>
+</div>
+</div>
+<!-- Question 3: Multi-Choice (Radio Style) -->
+<div class="space-y-xs">
+<label class="text-label-md font-label-md text-primary">What is your main financial concern regarding a career change?</label>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<label class="relative flex items-center p-4 rounded-lg border border-outline-variant bg-surface-container-lowest cursor-pointer hover:border-secondary transition-colors has-[:checked]:border-secondary has-[:checked]:bg-surface-variant/30">
+<input class="sr-only peer" name="financial-concern" type="radio"/>
+<div class="flex flex-col">
+<span class="text-body-md font-medium text-primary">Income Gap</span>
+<span class="text-label-sm text-on-surface-variant">Losing steady salary during transition</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-secondary opacity-0 peer-checked:opacity-100">check_circle</span>
+</label>
+<label class="relative flex items-center p-4 rounded-lg border border-outline-variant bg-surface-container-lowest cursor-pointer hover:border-secondary transition-colors has-[:checked]:border-secondary has-[:checked]:bg-surface-variant/30">
+<input class="sr-only peer" name="financial-concern" type="radio"/>
+<div class="flex flex-col">
+<span class="text-body-md font-medium text-primary">Training Costs</span>
+<span class="text-label-sm text-on-surface-variant">Expense of new certifications</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-secondary opacity-0 peer-checked:opacity-100">check_circle</span>
+</label>
+<label class="relative flex items-center p-4 rounded-lg border border-outline-variant bg-surface-container-lowest cursor-pointer hover:border-secondary transition-colors has-[:checked]:border-secondary has-[:checked]:bg-surface-variant/30">
+<input class="sr-only peer" name="financial-concern" type="radio"/>
+<div class="flex flex-col">
+<span class="text-body-md font-medium text-primary">Retirement Plans</span>
+<span class="text-label-sm text-on-surface-variant">Impact on long-term savings</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-secondary opacity-0 peer-checked:opacity-100">check_circle</span>
+</label>
+<label class="relative flex items-center p-4 rounded-lg border border-outline-variant bg-surface-container-lowest cursor-pointer hover:border-secondary transition-colors has-[:checked]:border-secondary has-[:checked]:bg-surface-variant/30">
+<input class="sr-only peer" name="financial-concern" type="radio"/>
+<div class="flex flex-col">
+<span class="text-body-md font-medium text-primary">Market Risk</span>
+<span class="text-label-sm text-on-surface-variant">Changing to an unstable industry</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-secondary opacity-0 peer-checked:opacity-100">check_circle</span>
+</label>
+</div>
+</div>
+<!-- Question 4: Checkbox Interests -->
+<div class="space-y-xs">
+<label class="text-label-md font-label-md text-primary">What industries interest you?</label>
+<div class="flex flex-wrap gap-2">
+<label class="group cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<span class="px-4 py-2 rounded-full border border-outline-variant text-body-md text-on-surface-variant peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all inline-block">Technology</span>
+</label>
+<label class="group cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<span class="px-4 py-2 rounded-full border border-outline-variant text-body-md text-on-surface-variant peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all inline-block">Sustainability</span>
+</label>
+<label class="group cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<span class="px-4 py-2 rounded-full border border-outline-variant text-body-md text-on-surface-variant peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all inline-block">Healthcare</span>
+</label>
+<label class="group cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<span class="px-4 py-2 rounded-full border border-outline-variant text-body-md text-on-surface-variant peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all inline-block">Creative Arts</span>
+</label>
+<label class="group cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<span class="px-4 py-2 rounded-full border border-outline-variant text-body-md text-on-surface-variant peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all inline-block">Finance</span>
+</label>
+<label class="group cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<span class="px-4 py-2 rounded-full border border-outline-variant text-body-md text-on-surface-variant peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all inline-block">Education</span>
+</label>
+</div>
+</div>
+<!-- Navigation Actions -->
+<div class="flex items-center justify-between pt-lg border-t border-outline-variant/30">
+<button class="flex items-center gap-2 px-6 py-3 rounded-lg text-primary font-label-md hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                            Back
+                        </button>
+<button class="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white font-label-md hover:opacity-90 transition-opacity shadow-md" type="submit">
+                            Continue
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Contextual Tip -->
+<div class="mt-md flex items-start gap-4 p-4 rounded-xl bg-tertiary-fixed/10 border border-tertiary-fixed-dim/20">
+<span class="material-symbols-outlined text-on-tertiary-container mt-1">lightbulb</span>
+<div>
+<p class="text-label-md font-semibold text-on-tertiary-container">Pro Tip</p>
+<p class="text-label-sm text-on-tertiary-fixed-variant">Many career switchers find success by identifying "Hidden Skills"—those daily tasks you do that are highly valuable in new industries. Don't be afraid to list them!</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-lg px-gutter flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<span class="text-headline-md font-headline-md font-bold text-primary">PivotPath</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant">© 2024 PivotPath. Empowering your next chapter.</p>
+</div>
+<div class="flex gap-md">
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Success Stories</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Financial Guide</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</footer>
+<script>
+        // Simple Interaction logic for demo purposes
+        document.getElementById('onboarding-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Animation for transition
+            this.closest('.glass-card').classList.add('opacity-0', 'translate-y-4');
+            setTimeout(() => {
+                alert('Moving to Step 2: Experience Assessment');
+                // Normally you would load next step content here
+                this.closest('.glass-card').classList.remove('opacity-0', 'translate-y-4');
+            }, 500);
+        });
+
+        // Hover effects for radio labels handled by Tailwind 'has-' selector
+    </script>
+</body></html>

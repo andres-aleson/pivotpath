@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PivotPath | Your Career Transition Mentor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f8f9ff",
+                        "on-primary-container": "#8590a6",
+                        "surface-variant": "#d3e4fe",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#e5eeff",
+                        "tertiary-fixed-dim": "#6bd8cb",
+                        "secondary-container": "#2170e4",
+                        "surface-container-low": "#eff4ff",
+                        "surface-dim": "#cbdbf5",
+                        "primary": "#091426",
+                        "outline": "#75777d",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "secondary": "#0058be",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#213145",
+                        "on-primary-fixed": "#111c2d",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#00201d",
+                        "tertiary-fixed": "#89f5e7",
+                        "primary-container": "#1e293b",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-container": "#002f2a",
+                        "primary-fixed": "#d8e3fb",
+                        "on-surface": "#0b1c30",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-secondary-container": "#fefcff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#001a42",
+                        "inverse-primary": "#bcc7de",
+                        "on-primary-fixed-variant": "#3c475a",
+                        "on-background": "#0b1c30",
+                        "on-tertiary-fixed-variant": "#005049",
+                        "surface-container-high": "#dce9ff",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-container": "#28a094",
+                        "outline-variant": "#c5c6cd",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#001815",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#bcc7de",
+                        "on-surface-variant": "#45474c",
+                        "secondary-fixed-dim": "#adc6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "xl": "80px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "container-max": "1280px",
+                        "lg": "48px",
+                        "md": "24px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-xl-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-xl-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .bento-item-large { grid-column: span 8; }
+        .bento-item-small { grid-column: span 4; }
+        @media (max-width: 768px) {
+            .bento-item-large, .bento-item-small { grid-column: span 12; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 w-full z-50 flex justify-between items-center px-gutter py-4 bg-surface/95 backdrop-blur-sm shadow-sm">
+<div class="flex items-center gap-3">
+<img alt="PivotPath Logo" class="w-10 h-10 rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKnTvxF0kUasd7T66SnBK2w2AjLQsqW5BiQN1TwvLlEI0aH4LL6wHC-QwztQpPgP2SLyfBSQEf4yBc2EXmYGTozG2lNi1xzaxxUHKh5mQkNVZ4BPVipM-9Y9DCNxDEQEcf-3FFk8MzPH58lMeaPsqG0JZuthGS-iC2gII9aw7YV9Wd3Ubz6lq4EzIO5d-A5KfsYZoq9Xw_ik-wXvaT5P9MtAlc2nbhuYPZO4-SZeUa1mfJ0WifAkKGuA"/>
+<span class="text-headline-md font-headline-md font-bold text-primary">PivotPath</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 transition-colors" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Roadmap</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Mentors</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-label-md text-label-md" href="#">Resources</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity">
+                Get Started
+            </button>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative overflow-hidden pt-24 pb-32 px-gutter">
+<div class="max-w-container-max mx-auto grid lg:grid-cols-2 items-center gap-md relative z-10">
+<div class="space-y-8">
+<div class="inline-flex items-center gap-2 px-4 py-2 bg-surface-container-high text-secondary rounded-full font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Empowering your next professional chapter</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-primary leading-tight">
+                        Your Next Chapter <br/>
+<span class="text-secondary">Starts Here.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                        We help you navigate your career transition with a personalized plan, financial guidance, and advice from mentors who have been in your shoes.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 pt-4">
+<button class="px-xl py-4 bg-primary text-on-primary rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 hover:shadow-lg transition-all transform hover:-translate-y-1">
+                            Get Started
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="px-xl py-4 border-2 border-secondary text-secondary rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors">
+                            Watch Success Stories
+                        </button>
+</div>
+<div class="flex items-center gap-6 pt-8 grayscale opacity-60">
+<span class="text-label-sm uppercase tracking-widest text-on-surface-variant">Trusted by professionals at</span>
+<!-- Placeholder Logos for Social Proof -->
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-3xl" data-icon="corporate_fare">corporate_fare</span>
+<span class="material-symbols-outlined text-3xl" data-icon="domain">domain</span>
+<span class="material-symbols-outlined text-3xl" data-icon="apartment">apartment</span>
+</div>
+</div>
+</div>
+<div class="relative hidden lg:block">
+<div class="absolute -top-12 -right-12 w-96 h-96 bg-surface-variant/30 rounded-full blur-3xl animate-pulse"></div>
+<div class="relative rounded-2xl overflow-hidden shadow-2xl border border-outline-variant/30">
+<img class="w-full aspect-[4/3] object-cover" data-alt="A cinematic, high-quality photograph of a modern, bright office environment with a professional woman sitting comfortably and smiling at her laptop screen. Soft morning sunlight streams through large windows, creating a warm and optimistic atmosphere. The office features sleek navy blue and white furniture that reflects a corporate but welcoming aesthetic, emphasizing a successful career transition theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf9GO5TUO9YOIxYf8b7vgATNWKjOidFtmfF3escGFXH6FWcEGIdC9KSgF_l8htWHPUapY1UXzo964SZ4uhAtMmJsnuOTPcR26vWGbrWTeTO5jMuq0jACl0fEqbBl2Cf_jbqhC97JGjv9UGTElctM0jEGc2riDrHX-cEY4eWkWWKavk-wLwZ47Oxmt1ewAdRskPQUbTuKXL0te8vUqpLuq226MSHqy0wm_D9PIFtDin1h5TLDM0yuQjxg"/>
+<div class="absolute bottom-6 left-6 right-6 p-6 bg-white/90 backdrop-blur-md rounded-xl border border-white/50 shadow-xl">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">Sarah's Transition</p>
+<p class="text-label-sm text-on-surface-variant">Marketing → Tech Product Lead</p>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2">
+<div class="bg-tertiary-fixed-dim h-2 rounded-full w-[100%] shadow-sm"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Core Pillars Section (Bento Grid Style) -->
+<section class="py-xl px-gutter bg-surface-container-low">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-16 space-y-4">
+<h2 class="font-headline-lg text-headline-lg text-primary">Three Pillars of Success</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto font-body-md text-body-md">Our systematic approach removes the guesswork from your career pivot, ensuring you move forward with confidence and clarity.</p>
+</div>
+<div class="bento-grid">
+<!-- Custom Roadmaps -->
+<div class="bento-item-large bg-white p-8 rounded-2xl shadow-sm border border-outline-variant/20 flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="space-y-6">
+<div class="w-14 h-14 bg-surface-container rounded-xl flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl">route</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Custom Roadmaps</h3>
+<p class="text-on-surface-variant font-body-md leading-relaxed">No two journeys are the same. We analyze your current skills and future goals to build a day-by-day roadmap tailored exclusively to your professional evolution.</p>
+</div>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-label-md">
+<span class="material-symbols-outlined text-secondary text-xl">check_circle</span>
+<span>Skills Gap Analysis</span>
+</li>
+<li class="flex items-center gap-3 text-label-md">
+<span class="material-symbols-outlined text-secondary text-xl">check_circle</span>
+<span>Weekly Milestone Tracking</span>
+</li>
+</ul>
+</div>
+<div class="mt-8 relative overflow-hidden rounded-lg h-48 bg-slate-50">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist UI dashboard mockup showing a vertical progress roadmap with elegant teal and blue accents. The interface displays clear steps such as 'Initial Assessment', 'Skill Acquisition', and 'Market Positioning' with soft shadows and refined typography on a crisp white background. This visual represents a clear and manageable career path." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvlc1sti8oQBQuJpx8_pYw4Ws6MZy9ga8cl15JAuTPFzmZ4I42K4UX1R-_6qJCFm1LGk_ZjOv-qV_i-suStpOgkoOJ0dhFQIDYjGtq46pokza0pJlLB_gervamzwLuopcaq-i1mqLFHen7KIF6Fnlj7utukqrDjAEZ1BqGZlFTjAJXE4JnSJ5AiLtruIywZKt3kujhJ-ceUzAUfLSsM1oxXYNpBRCQXwJ09tYW3UZ55UP2udrYpfJYWg"/>
+</div>
+</div>
+<!-- Financial Guidance -->
+<div class="bento-item-small bg-primary text-on-primary p-8 rounded-2xl flex flex-col justify-between shadow-xl">
+<div class="space-y-6">
+<div class="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center text-tertiary-fixed">
+<span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-white mb-2">Financial Guidance</h3>
+<p class="text-on-primary-container font-body-md leading-relaxed">Transitioning doesn't have to mean financial instability. We provide tools to calculate your runway and optimize your budget.</p>
+</div>
+</div>
+<div class="mt-8 p-4 bg-white/5 rounded-lg border border-white/10">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-label-sm text-on-primary-container uppercase">Target Runway</p>
+<p class="text-headline-md font-bold text-white">6 Months</p>
+</div>
+<span class="material-symbols-outlined text-tertiary-fixed">insights</span>
+</div>
+</div>
+</div>
+<!-- Expert Mentorship -->
+<div class="bento-item-small bg-white p-8 rounded-2xl shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+<div class="space-y-6">
+<div class="w-14 h-14 bg-surface-container-highest rounded-xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">groups</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Expert Mentorship</h3>
+<p class="text-on-surface-variant font-body-md">Connect with industry veterans who have successfully navigated the exact transition you're pursuing.</p>
+</div>
+<div class="flex -space-x-4">
+<div class="w-12 h-12 rounded-full border-4 border-white bg-slate-200">
+<img class="w-full h-full rounded-full object-cover" data-alt="A professional headshot of a diverse male mentor in his 40s, wearing business casual attire and a friendly smile, set against a blurred high-end studio background with cool blue and grey tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnASP6Lc61dDyeAEbEp5_vcuYCrqWCjZeQgaHm-FEdAbkr2MXzmETKr65NTme9FP0-RTV9QvWMGpcrieb5es-T4gOV2sHV3NiTOUFYWDpeGnic2YP_xdYP57UExacVRz5hQ31_H6kOFG4lGnJgv8sXhFfx4mvDXVFGOdBLSufbLbD9U4Xu9YkNeuxXRnUuHllpevikUq0Gvt0Ot_m80FbazI9B5VPOaSGYredpHqmyKesqtnfFwLkT8A"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-white bg-slate-200">
+<img class="w-full h-full rounded-full object-cover" data-alt="A professional headshot of a confident female tech mentor in her 30s with professional styling, clear lighting, and a soft minimalist background, reflecting authority and empathy in the tech industry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPyPPVirbqDYMPQ3uScWlHM-1JAxtKANFLVzdB_bZ047EfTB39U2XQIOKfoF8y2ICWnNj6kYiCmgOkwicfJCMXN1z2D5K6qfneg7yi501IJi06SRNQZVTBWwQhNi14r5UvUOEucrtP4GDMS2Dk6PjUDAr6lsnLByKkEglRT-hcDxcTNdhkecjUxAqmmHcOTDOSDjoSbh0dnrEekNVLGVcTBDuhZNDPbONXigl_1bEXTFE-su4RC4QVTQ"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-white bg-slate-200">
+<img class="w-full h-full rounded-full object-cover" data-alt="A professional headshot of an older male mentor with gray hair and glasses, looking knowledgeable and supportive, in a modern, light-filled office environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9Ldw0Rm32pH0un0a_KlM46a8ZoAGTHiPrLw_3F6cpDjXV_FnvH8ZLOjuzVHixwGd6WfFAbRI1WFgflUAR4JWPHoS0-zDWzuwwtfX27NcQjRsF5TI63o-CTg4ctIeGp2Ag_5bMabSNSD2Nc3-n_mFerQ6eVTn6fSdmXTfG3WIt1FpBrSvGKPiT2Y2moVcy6421vNcWiE9WxjMlWWwD0wbiOFlXGJkZqSI5uArQPcnexqf8iiLWCb0gBw"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-white bg-secondary flex items-center justify-center text-white font-bold text-xs">
+                                    +50
+                                </div>
+</div>
+</div>
+</div>
+<!-- Success CTA -->
+<div class="bento-item-large bg-gradient-to-br from-secondary to-secondary-container p-12 rounded-2xl relative overflow-hidden flex items-center shadow-lg">
+<div class="relative z-10 max-w-lg">
+<h3 class="font-headline-lg text-headline-lg text-white mb-4">Start your journey today.</h3>
+<p class="text-white/80 mb-8 font-body-md text-body-md">Join 5,000+ professionals who pivoted their careers with PivotPath. Your personalized strategy is just a click away.</p>
+<button class="bg-white text-secondary px-8 py-3 rounded-lg font-bold font-label-md text-label-md hover:bg-surface-bright transition-colors">
+                                Create My Free Account
+                            </button>
+</div>
+<div class="absolute right-0 top-0 h-full w-1/2 opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-[300px] absolute -right-20 -top-20">celebration</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Social Proof Logos -->
+<section class="py-16 border-y border-surface-container">
+<div class="max-w-container-max mx-auto px-gutter">
+<p class="text-center font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-12">PivotPath Alumni work at the world's leading companies</p>
+<div class="flex flex-wrap justify-center items-center gap-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+<!-- Brand Placeholders -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-4xl">cloud</span>
+<span class="font-bold text-2xl tracking-tighter">CLOUDWARE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-4xl">rocket_launch</span>
+<span class="font-bold text-2xl tracking-tighter">NEXTGEN</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-4xl">shield</span>
+<span class="font-bold text-2xl tracking-tighter">SECURE.IO</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-4xl">psychology</span>
+<span class="font-bold text-2xl tracking-tighter">MINDSHARE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-4xl">forest</span>
+<span class="font-bold text-2xl tracking-tighter">ECOGROWTH</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-lg px-gutter flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container">
+<div class="flex flex-col items-center md:items-start gap-4">
+<div class="flex items-center gap-3">
+<img alt="PivotPath Logo" class="w-8 h-8 rounded-md grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKnTvxF0kUasd7T66SnBK2w2AjLQsqW5BiQN1TwvLlEI0aH4LL6wHC-QwztQpPgP2SLyfBSQEf4yBc2EXmYGTozG2lNi1xzaxxUHKh5mQkNVZ4BPVipM-9Y9DCNxDEQEcf-3FFk8MzPH58lMeaPsqG0JZuthGS-iC2gII9aw7YV9Wd3Ubz6lq4EzIO5d-A5KfsYZoq9Xw_ik-wXvaT5P9MtAlc2nbhuYPZO4-SZeUa1mfJ0WifAkKGuA"/>
+<span class="text-headline-md font-headline-md font-bold text-primary">PivotPath</span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-sm text-center md:text-left">
+                © 2024 PivotPath. Empowering your next chapter. Supporting high-stakes career transitions with data-driven strategy.
+            </p>
+</div>
+<div class="flex flex-col md:flex-row gap-12 text-center md:text-left">
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md text-primary uppercase tracking-wider">Resources</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Success Stories</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Financial Guide</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Blog</a>
+</nav>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md text-primary uppercase tracking-wider">Company</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Contact Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-label-sm font-label-sm" href="#">Careers</a>
+</nav>
+</div>
+</div>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">alternate_email</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">public</span>
+</a>
+</div>
+</footer>
+<script>
+        // Micro-interactions for hover effects on bento items
+        document.querySelectorAll('.bento-item-large, .bento-item-small').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                // Potential for lightweight JS effects here
+            });
+        });
+    </script>
+</body></html>

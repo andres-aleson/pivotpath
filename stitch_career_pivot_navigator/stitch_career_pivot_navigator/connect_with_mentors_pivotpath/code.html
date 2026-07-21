@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mentors &amp; Success Stories | PivotPath</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#002f2a",
+                    "primary-fixed-dim": "#bcc7de",
+                    "on-primary-fixed-variant": "#3c475a",
+                    "secondary": "#0058be",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#d3e4fe",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary": "#001815",
+                    "on-primary-fixed": "#111c2d",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-fixed-dim": "#adc6ff",
+                    "error-container": "#ffdad6",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-secondary-fixed-variant": "#004395",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-container": "#2170e4",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed": "#d8e3fb",
+                    "secondary-fixed": "#d8e2ff",
+                    "on-tertiary-container": "#28a094",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed-variant": "#005049",
+                    "surface": "#f8f9ff",
+                    "on-surface-variant": "#45474c",
+                    "surface-tint": "#545f73",
+                    "inverse-primary": "#bcc7de",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "outline-variant": "#c5c6cd",
+                    "tertiary-fixed-dim": "#6bd8cb",
+                    "on-secondary-container": "#fefcff",
+                    "on-background": "#0b1c30",
+                    "primary-container": "#1e293b",
+                    "on-tertiary-fixed": "#00201d",
+                    "tertiary-fixed": "#89f5e7",
+                    "on-error": "#ffffff",
+                    "outline": "#75777d",
+                    "on-secondary-fixed": "#001a42",
+                    "surface-container-low": "#eff4ff",
+                    "primary": "#091426",
+                    "on-primary-container": "#8590a6",
+                    "background": "#f8f9ff",
+                    "surface-container": "#e5eeff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "sm": "12px",
+                    "container-max": "1280px",
+                    "md": "24px",
+                    "lg": "48px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "xl": "80px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-xl-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface overflow-x-hidden">
+<!-- SideNavBar (Execution from JSON) -->
+<aside class="hidden md:flex flex-col h-screen p-base fixed left-0 top-0 z-40 bg-surface-container-low shadow-md w-64 border-r border-outline-variant">
+<div class="mb-lg px-2">
+<h1 class="text-headline-md font-headline-md font-bold text-primary">PivotPath</h1>
+<p class="text-label-md font-label-md text-on-surface-variant">Career Transition</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-label-md" href="#">
+<span class="material-symbols-outlined">home</span> Home
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-label-md" href="#">
+<span class="material-symbols-outlined">route</span> Roadmap
+            </a>
+<!-- Active State Logic: Mentors -->
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold font-label-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span> Mentors
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-label-md" href="#">
+<span class="material-symbols-outlined">stars</span> Success Stories
+            </a>
+</nav>
+<div class="mt-auto pt-lg border-t border-outline-variant space-y-1">
+<button class="w-full text-left flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-label-md">
+<span class="material-symbols-outlined">help</span> Help
+            </button>
+<button class="w-full text-left flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-label-md">
+<span class="material-symbols-outlined">logout</span> Logout
+            </button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<div class="md:ml-64 min-h-screen pb-xl">
+<!-- TopNavBar (Execution from JSON) -->
+<header class="sticky top-0 z-30 bg-surface shadow-sm h-16 flex justify-between items-center px-gutter w-full">
+<div class="flex items-center gap-8">
+<span class="md:hidden text-headline-md font-bold text-primary">PivotPath</span>
+<nav class="hidden md:flex gap-6 items-center h-full">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Roadmap</a>
+<a class="text-secondary border-b-2 border-secondary pb-1 font-body-md" href="#">Mentors</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">search</span>
+<input class="pl-10 pr-4 py-1.5 rounded-full border border-outline-variant bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-secondary text-body-md" placeholder="Search mentors..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:text-secondary"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-2 text-on-surface-variant hover:text-secondary"><span class="material-symbols-outlined">settings</span></button>
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-label-sm">JD</div>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<main class="max-w-container-max mx-auto px-gutter py-lg">
+<!-- Success Story of the Month (Bento Highlight) -->
+<section class="mb-xl">
+<div class="relative rounded-xl overflow-hidden bg-primary text-white p-lg md:p-xl flex flex-col md:flex-row gap-lg items-center shadow-lg">
+<!-- Background texture/shader simulation -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-secondary-fixed via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 w-full md:w-1/2">
+<span class="inline-block px-3 py-1 bg-tertiary-container text-tertiary-fixed rounded-full text-label-sm font-label-sm mb-4">SUCCESS STORY OF THE MONTH</span>
+<h2 class="font-headline-xl text-headline-xl mb-base">From Retail to Fintech: The Journey of Marcus Thorne</h2>
+<p class="font-body-lg text-body-lg text-primary-fixed-dim mb-lg">"The biggest hurdle wasn't the technical skill—it was the mindset. PivotPath's mentorship gave me the confidence to translate my management skills into agile product delivery."</p>
+<button class="bg-secondary hover:bg-secondary-container text-white px-8 py-3 rounded-lg font-bold transition-all transform hover:scale-105">Read Case Study</button>
+</div>
+<div class="relative z-10 w-full md:w-1/2 aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-white/10 group">
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white text-6xl" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</div>
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-quality portrait of a professional man in his early 30s sitting in a modern office environment. He looks confident and approachable, wearing a stylish navy blue blazer. The lighting is soft and warm, coming from a large window. The aesthetic is clean, corporate, and optimistic, matching a light-mode modern UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChAyc_3yQOe3WEw5U8z9Xh9t2uPfc4bv0fa1OfqeSzHv46pdtfHIDl4AkaFO7mdKEayIZq8QLj3Tzmn7cazLYibfMuxtsCkft5U_QxkvDvJd6tLghm6IophWpwNNRwspR_3AN_P5PeoMdBsSmzir-wUGP4SzoC5BoFduXLPdpzhZruvRdqd2FLBPSgCbinW4bq0krsFCfkKEy2UuJO2BxAf64eloIKiBxHmFxvFiQyhwJGhJK_P8b7Zw"/>
+</div>
+</div>
+</section>
+<!-- Filter & Search Bar -->
+<section class="mb-lg flex flex-col md:flex-row gap-gutter items-center justify-between">
+<div class="w-full md:w-auto">
+<h3 class="font-headline-md text-headline-md mb-2">Find Your Guide</h3>
+<p class="text-on-surface-variant font-body-md">Connect with industry experts who have been in your shoes.</p>
+</div>
+<div class="flex flex-wrap gap-base w-full md:w-auto">
+<span class="text-label-md self-center mr-2 hidden lg:block">Filter by Industry:</span>
+<button class="px-4 py-2 rounded-full border border-secondary text-secondary bg-secondary-container/10 font-label-md">All</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant hover:border-secondary transition-colors font-label-md">Tech</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant hover:border-secondary transition-colors font-label-md">Healthcare</button>
+<button class="px-4 py-2 rounded-full border border-outline-variant hover:border-secondary transition-colors font-label-md">Finance</button>
+</div>
+</section>
+<!-- Mentor Grid (Asymmetric layout hint via card sizing) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Mentor Card 1 -->
+<div class="glass-card rounded-xl p-md flex flex-col hover:shadow-lg transition-all duration-300 group border-surface-variant border">
+<div class="flex items-start gap-md mb-md">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm border border-outline-variant">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A professional headshot of a woman named Sarah Jenkins, who appears friendly and intelligent. She has a warm smile and is set against a blurred background of a brightly lit, modern co-working space. The overall color palette features soft blues and whites to align with a corporate yet empathetic brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARUEkIayr0qWr6Bq6MyE92YPcE-C2RBugYXe-ApSl5V6wjAGGJounnR4myuGDtUTlxIORSNHYzng5cMxGCujcamSEVXZDYZ79ITQ-G1rKyLtkUVWQ285dxhxpXlHkha_Rv6Yojvmdt6SHDwjLxrGkPfCpnMNu7J3YROSthQ4pmiUROKyflE2_9J6u9fAKD5OQHy-2IHbIFxu_mYVeelEjGf8UQaf1G9fQGTRcgSnZQmeJgbT_5JuRNdQ"/>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-md text-primary group-hover:text-secondary transition-colors leading-tight">Sarah Jenkins</h4>
+<p class="text-label-md font-label-md text-on-surface-variant">Senior PM at FlowState</p>
+<div class="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 bg-tertiary-container/10 text-on-tertiary-fixed-variant rounded text-xs font-bold uppercase tracking-wider">
+                                Transitioned from: <span class="text-on-surface">Ex-Teacher</span>
+</div>
+</div>
+</div>
+<div class="mb-lg">
+<h5 class="text-label-sm font-label-sm text-secondary uppercase mb-1">How I can help</h5>
+<p class="text-body-md text-on-surface-variant line-clamp-3">"I specialize in helping educators pivot into product roles. We'll focus on mapping your stakeholder management and curriculum design skills to user stories and roadmapping."</p>
+</div>
+<div class="mt-auto flex gap-base">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg font-label-md hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span> Schedule Call
+                        </button>
+<button class="flex-1 border border-secondary text-secondary py-2 rounded-lg font-label-md hover:bg-secondary-container/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span> Message
+                        </button>
+</div>
+</div>
+<!-- Mentor Card 2 -->
+<div class="glass-card rounded-xl p-md flex flex-col hover:shadow-lg transition-all duration-300 group border-surface-variant border">
+<div class="flex items-start gap-md mb-md">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm border border-outline-variant">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A professional man in his late 40s with a clean-cut appearance, wearing a light grey sweater. He looks professional and composed, set against a background of a minimalist home office with books. The style is bright and high-key, conveying a sense of authority and empathy within a modern digital platform context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9RaoUlhoSyH2F5g_542vdKN1dhThIaDER2cJv9ibuBJ5cwqXeNiyy_elyIs-gyo-RI2eGNq3UtQqg1o45YsTY2RYAv56Hq4p-iNPyDJ15Gka54CRpeZ63SXwIovD9QnSJ2UDU7oj8wtZVVEDtVYGyo9mMMVSN6xdybwXES03iW59JqUn6JHPm3irph_YH9zibR_shyh-LTDvmZ4dybGtS6Uu9-zZqOcJUjqLXPqcu6eMibaRlg9XB3Q"/>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-md text-primary group-hover:text-secondary transition-colors leading-tight">David Chen</h4>
+<p class="text-label-md font-label-md text-on-surface-variant">Full Stack Dev at NeoBank</p>
+<div class="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 bg-tertiary-container/10 text-on-tertiary-fixed-variant rounded text-xs font-bold uppercase tracking-wider">
+                                Transitioned from: <span class="text-on-surface">Ex-Marketing</span>
+</div>
+</div>
+</div>
+<div class="mb-lg">
+<h5 class="text-label-sm font-label-sm text-secondary uppercase mb-1">How I can help</h5>
+<p class="text-body-md text-on-surface-variant line-clamp-3">"Self-taught dev who understands the grind. I can guide you through building a portfolio that actually gets noticed by recruiters, even without a CS degree."</p>
+</div>
+<div class="mt-auto flex gap-base">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg font-label-md hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span> Schedule Call
+                        </button>
+<button class="flex-1 border border-secondary text-secondary py-2 rounded-lg font-label-md hover:bg-secondary-container/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span> Message
+                        </button>
+</div>
+</div>
+<!-- Mentor Card 3 -->
+<div class="glass-card rounded-xl p-md flex flex-col hover:shadow-lg transition-all duration-300 group border-surface-variant border">
+<div class="flex items-start gap-md mb-md">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm border border-outline-variant">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A headshot of a woman with curly hair and glasses, smiling warmly. She is wearing a professional cream-colored top. The background is a blurred urban office with large windows. The image has a clean, airy feel that emphasizes a supportive and professional brand tone for a career transition website." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyc_A78ygxC5P4XtgvMoCaIYkEKTfR5uH0a_-i-w3E_RzJqLuHzqGvrckYSUc3x32wK6IUvABvlGY0d7O7vTQCsn6hQwO4GPUtVydEZGw_DUWBNMto6eM8tWivj-DaUsR4CD6Y7B7jlguBzV6MsRhrqzjrBFs1mf8smpORWJU9NemrYYiOzrifhN3xoMXWvTTm81esqq0Q_J7ZZnq_-Jdi-57PSCcJ2kDA7IQ1gWy-5thz-bw10qUBQg"/>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-md text-primary group-hover:text-secondary transition-colors leading-tight">Anita Rao</h4>
+<p class="text-label-md font-label-md text-on-surface-variant">UX Designer at HealthSync</p>
+<div class="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 bg-tertiary-container/10 text-on-tertiary-fixed-variant rounded text-xs font-bold uppercase tracking-wider">
+                                Transitioned from: <span class="text-on-surface">Ex-Nurse</span>
+</div>
+</div>
+</div>
+<div class="mb-lg">
+<h5 class="text-label-sm font-label-sm text-secondary uppercase mb-1">How I can help</h5>
+<p class="text-body-md text-on-surface-variant line-clamp-3">"Healthcare workers have incredible empathy—the core of UX. I'll help you leverage your patient-care background to design user-centric health tech solutions."</p>
+</div>
+<div class="mt-auto flex gap-base">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg font-label-md hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span> Schedule Call
+                        </button>
+<button class="flex-1 border border-secondary text-secondary py-2 rounded-lg font-label-md hover:bg-secondary-container/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span> Message
+                        </button>
+</div>
+</div>
+<!-- Mentor Card 4 -->
+<div class="glass-card rounded-xl p-md flex flex-col hover:shadow-lg transition-all duration-300 group border-surface-variant border">
+<div class="flex items-start gap-md mb-md">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm border border-outline-variant">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A man with a kind expression and stylish glasses, appearing like a professional mentor. He is wearing a dark polo shirt and is posed in a modern, brightly lit apartment setting. The lighting is crisp and the style is minimalist yet warm, ensuring visual consistency with a premium career-focused design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAEWzAYl-_N77-nUNPFt_HSMxxvAHSU_xOyY8hvyFWZYd6qN3YGkJ2iNmSd06WcNxJ-o6EVBvXOnLI-QzgxSpSMxANVmaQPOEZdSoQySyW00VGxldV_zdUs40-AWoeNrXJDubSdkQegIRpVFAZTkor-DV7c5-VWoAku5YjrImGEhtf5KGtrJYhYiAcF3LqkthlaDK8zVCad2xpOn7pgjqdYnwBkrpDNszl4bJLsjI5ash-LxxawgQ7kw"/>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-md text-primary group-hover:text-secondary transition-colors leading-tight">Liam O'Reilly</h4>
+<p class="text-label-md font-label-md text-on-surface-variant">Data Analyst at CapitalOne</p>
+<div class="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 bg-tertiary-container/10 text-on-tertiary-fixed-variant rounded text-xs font-bold uppercase tracking-wider">
+                                Transitioned from: <span class="text-on-surface">Ex-Sales</span>
+</div>
+</div>
+</div>
+<div class="mb-lg">
+<h5 class="text-label-sm font-label-sm text-secondary uppercase mb-1">How I can help</h5>
+<p class="text-body-md text-on-surface-variant line-clamp-3">"Data isn't just numbers; it's a story. I'll show you how to take your persuasive sales skills and apply them to data storytelling and business intelligence."</p>
+</div>
+<div class="mt-auto flex gap-base">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg font-label-md hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span> Schedule Call
+                        </button>
+<button class="flex-1 border border-secondary text-secondary py-2 rounded-lg font-label-md hover:bg-secondary-container/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span> Message
+                        </button>
+</div>
+</div>
+<!-- Mentor Card 5 -->
+<div class="glass-card rounded-xl p-md flex flex-col hover:shadow-lg transition-all duration-300 group border-surface-variant border">
+<div class="flex items-start gap-md mb-md">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm border border-outline-variant">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A professional woman with a calm and welcoming demeanor, wearing a light blue dress shirt. She is sitting at a desk with a laptop, in a well-lit office with greenery in the background. The aesthetic is clean, corporate-modern, and focused on professionalism and empathy for a high-quality career platform UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwz4i8_IZMbf5c0zfHvau3qIkGgq7KC6FtalZz1c4EuIGnKpRKOWJfYvlE0RMQF3yiR4570LM0H667jJNbgCFrRYZo4mcivkL9WwucwnkZhdeAkD2CmKO4EK_wPzSva9jdakslzOnTVO_xGhXX5nObasCdtYVWioUDcHeiJNFy6G0OSKShUUA3sxh15RCRfEKZBTrqAV46JL5GvdNUul6CwPVK5a0DxbEcefbxGqw8-2kqdvJj9mocNQ"/>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-md text-primary group-hover:text-secondary transition-colors leading-tight">Maria Garcia</h4>
+<p class="text-label-md font-label-md text-on-surface-variant">Cybersecurity Analyst</p>
+<div class="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 bg-tertiary-container/10 text-on-tertiary-fixed-variant rounded text-xs font-bold uppercase tracking-wider">
+                                Transitioned from: <span class="text-on-surface">Ex-Legal</span>
+</div>
+</div>
+</div>
+<div class="mb-lg">
+<h5 class="text-label-sm font-label-sm text-secondary uppercase mb-1">How I can help</h5>
+<p class="text-body-md text-on-surface-variant line-clamp-3">"Moving from law to cyber is about understanding risk and compliance. I can help you navigate the certification path and interview for security roles."</p>
+</div>
+<div class="mt-auto flex gap-base">
+<button class="flex-1 bg-primary text-white py-2 rounded-lg font-label-md hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span> Schedule Call
+                        </button>
+<button class="flex-1 border border-secondary text-secondary py-2 rounded-lg font-label-md hover:bg-secondary-container/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">mail</span> Message
+                        </button>
+</div>
+</div>
+<!-- Call to Action Card -->
+<div class="bg-secondary-container text-on-secondary-container rounded-xl p-md flex flex-col items-center justify-center text-center shadow-lg transform hover:-translate-y-1 transition-all">
+<div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-4xl">handshake</span>
+</div>
+<h4 class="font-headline-md mb-base">Ready to Pay It Forward?</h4>
+<p class="font-body-md mb-lg">Completed your transition? Join our mentor network and guide the next generation of career pivots.</p>
+<button class="bg-white text-secondary px-6 py-2 rounded-lg font-bold hover:bg-surface transition-colors">Apply to Mentor</button>
+</div>
+</section>
+</main>
+</div>
+<!-- BottomNavBar (Execution from JSON - Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface shadow-[0_-4px_6px_-1px_rgba(9,20,38,0.05)] rounded-t-xl md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant font-label-sm text-label-sm-mobile">
+<span class="material-symbols-outlined">home</span>
+<span>Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant font-label-sm text-label-sm-mobile">
+<span class="material-symbols-outlined">route</span>
+<span>Roadmap</span>
+</button>
+<!-- Active State: Mentors -->
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 font-label-sm text-label-sm-mobile">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span>Mentors</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant font-label-sm text-label-sm-mobile">
+<span class="material-symbols-outlined">person</span>
+<span>Profile</span>
+</button>
+</nav>
+<script>
+        // Micro-interaction for hover states and button active scales
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.classList.add('scale-95'));
+            btn.addEventListener('mouseup', () => btn.classList.remove('scale-95'));
+            btn.addEventListener('mouseleave', () => btn.classList.remove('scale-95'));
+        });
+
+        // Simple tab filtering logic simulation
+        const filterButtons = document.querySelectorAll('section button.rounded-full');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => {
+                    b.classList.remove('border-secondary', 'text-secondary', 'bg-secondary-container/10');
+                    b.classList.add('border-outline-variant');
+                });
+                btn.classList.add('border-secondary', 'text-secondary', 'bg-secondary-container/10');
+                btn.classList.remove('border-outline-variant');
+            });
+        });
+    </script>
+</body></html>
