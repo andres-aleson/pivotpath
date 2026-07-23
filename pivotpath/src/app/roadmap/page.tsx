@@ -13,11 +13,7 @@ const STATUS_ICON: Record<string, string> = {
   todo: "flag",
 };
 
-const STATUS_BADGE: Record<string, string> = {
-  done: "Completed",
-  in_progress: "Active",
-  todo: "Upcoming",
-};
+const DATE_FORMAT: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
 
 export default async function RoadmapPage() {
   const sessionId = await getSessionId();
@@ -104,56 +100,72 @@ export default async function RoadmapPage() {
           </div>
 
           <div className="max-w-3xl space-y-md">
-            {roadmap.milestones.map((milestone) => (
-              <section key={milestone.id} className="relative pl-12">
-                <div
-                  className={`absolute left-0 top-0 w-10 h-10 rounded-full flex items-center justify-center z-10 shadow-sm ${
-                    milestone.status === "done"
-                      ? "bg-tertiary-fixed text-on-tertiary-fixed"
-                      : milestone.status === "in_progress"
-                        ? "bg-secondary-container text-on-secondary-container"
-                        : "bg-surface-container-high text-on-surface-variant border border-outline-variant"
-                  }`}
+            {roadmap.milestones.map((milestone, index) => {
+              const isLast = index === roadmap.milestones.length - 1;
+              return (
+                <section
+                  key={milestone.id}
+                  className={`relative pl-12 step-line ${isLast ? "step-line-last" : ""}`}
                 >
-                  <span
-                    className={`material-symbols-outlined ${
-                      milestone.status === "in_progress" ? "animate-spin" : ""
+                  <div
+                    className={`absolute left-0 top-0 w-10 h-10 rounded-full flex items-center justify-center z-10 shadow-sm ${
+                      milestone.status === "done"
+                        ? "bg-tertiary-fixed text-on-tertiary-fixed"
+                        : milestone.status === "in_progress"
+                          ? "bg-secondary-container text-on-secondary-container animate-pulse"
+                          : "bg-surface-container-high text-on-surface-variant border border-outline-variant"
                     }`}
-                    style={milestone.status === "done" ? { fontVariationSettings: "'FILL' 1" } : undefined}
                   >
-                    {STATUS_ICON[milestone.status]}
-                  </span>
-                </div>
-                <div
-                  className={`rounded-xl p-md shadow-sm border ${
-                    milestone.status === "in_progress"
-                      ? "border-2 border-secondary bg-surface"
-                      : "border-outline-variant bg-surface-container-lowest"
-                  } ${milestone.status === "todo" ? "border-dashed opacity-90" : ""}`}
-                >
-                  <div className="flex justify-between items-start gap-md mb-2">
-                    <div>
-                      <h3 className="text-headline-md text-primary">{milestone.title}</h3>
-                      <span
-                        className={`inline-block mt-1 text-label-sm px-2 py-0.5 rounded-full ${
-                          milestone.status === "done"
-                            ? "text-on-tertiary-container bg-tertiary-fixed/30"
-                            : milestone.status === "in_progress"
-                              ? "text-on-secondary-container bg-secondary-container/60"
-                              : "text-on-surface-variant bg-surface-container"
-                        }`}
-                      >
-                        {STATUS_BADGE[milestone.status]}
+                    <span
+                      className="material-symbols-outlined"
+                      style={
+                        milestone.status === "done"
+                          ? { fontVariationSettings: "'FILL' 1" }
+                          : undefined
+                      }
+                    >
+                      {STATUS_ICON[milestone.status]}
+                    </span>
+                  </div>
+                  <div
+                    className={`relative overflow-hidden rounded-xl p-md shadow-sm border transition-all ${
+                      milestone.status === "in_progress"
+                        ? "border-2 border-secondary bg-surface shadow-md"
+                        : milestone.status === "todo"
+                          ? "border-outline-variant border-dashed bg-surface-container-lowest opacity-90 hover:opacity-100 hover:border-solid hover:border-secondary"
+                          : "border-outline-variant bg-surface-container-lowest hover:shadow-md"
+                    }`}
+                  >
+                    {milestone.status === "in_progress" && (
+                      <span className="absolute top-0 right-0 bg-secondary text-on-secondary px-base py-1 rounded-bl-xl text-label-sm font-bold">
+                        ACTIVE
                       </span>
+                    )}
+                    <h3 className="text-headline-md text-primary mb-1">{milestone.title}</h3>
+                    {milestone.status === "done" && (
+                      <span className="inline-block mb-2 text-label-md text-on-tertiary-container bg-tertiary-fixed/30 px-base py-0.5 rounded-full">
+                        Completed
+                        {milestone.completedAt
+                          ? ` ${milestone.completedAt.toLocaleDateString("en-US", DATE_FORMAT)}`
+                          : ""}
+                      </span>
+                    )}
+                    {milestone.status === "todo" && (
+                      <span className="inline-block mb-2 text-label-md text-on-surface-variant bg-surface-container px-base py-0.5 rounded-full">
+                        Upcoming
+                      </span>
+                    )}
+                    <p className="text-body-md text-on-surface-variant">{milestone.description}</p>
+                    <div className="mt-md pt-md border-t border-outline-variant/30 flex justify-end">
+                      <MilestoneStatusControl
+                        milestoneId={milestone.id}
+                        status={milestone.status as "todo" | "in_progress" | "done"}
+                      />
                     </div>
                   </div>
-                  <p className="text-body-md text-on-surface-variant">{milestone.description}</p>
-                  <div className="mt-md pt-md border-t border-outline-variant/30 flex justify-end">
-                    <MilestoneStatusControl milestoneId={milestone.id} status={milestone.status as "todo" | "in_progress" | "done"} />
-                  </div>
-                </div>
-              </section>
-            ))}
+                </section>
+              );
+            })}
           </div>
         </div>
       </main>

@@ -110,3 +110,18 @@ body {
     "GRAD" 0,
     "opsz" 24;
 }
+
+/* Roadmap timeline connector — from the your_career_roadmap mockup */
+.step-line::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 40px;
+  bottom: -20px;
+  width: 2px;
+  background: var(--color-outline-variant);
+}
+
+.step-line-last::before {
+  display: none;
+}
