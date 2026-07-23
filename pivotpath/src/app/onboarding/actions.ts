@@ -135,5 +135,5 @@ export async function submitOnboarding(): Promise<void> {
     data: { onboardingCompletedAt: new Date() },
   });
 
-  redirect("/onboarding/complete");
+  redirect("/roadmap/generating");
 }

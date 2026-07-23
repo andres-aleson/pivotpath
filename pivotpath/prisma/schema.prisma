@@ -43,3 +43,27 @@ model UserProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// One roadmap per session — generated once from the completed UserProfile.
+model Roadmap {
+  id          String   @id @default(cuid())
+  sessionId   String   @unique
+  targetRole  String
+  generatedAt DateTime @default(now())
+
+  milestones Milestone[]
+}
+
+model Milestone {
+  id        String  @id @default(cuid())
+  roadmapId String
+  roadmap   Roadmap @relation(fields: [roadmapId], references: [id])
+
+  title       String
+  description String
+  order       Int
+
+  // todo | in_progress | done
+  status      String    @default("todo")
+  completedAt DateTime?
+}

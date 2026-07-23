@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/genai": "^2.13.0",
     "@hookform/resolvers": "^5.4.0",
     "@prisma/adapter-better-sqlite3": "^7.9.0",
     "@prisma/client": "^7.9.0",
@@ -34,6 +35,8 @@
     "prisma@7.9.0": true,
     "sharp@0.34.5": true,
     "unrs-resolver@1.12.2": true,
-    "better-sqlite3@12.11.1": true
+    "better-sqlite3@12.11.1": true,
+    "@google/genai@2.13.0": true,
+    "protobufjs@7.6.5": true
   }
 }
