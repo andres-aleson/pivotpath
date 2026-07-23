@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <>
@@ -26,9 +28,12 @@ export default function Home() {
           </a>
         </nav>
         <div className="flex items-center gap-4">
-          <button className="px-6 py-2 bg-primary text-on-primary rounded-lg text-label-md hover:opacity-90 transition-opacity">
+          <Link
+            href="/onboarding"
+            className="px-6 py-2 bg-primary text-on-primary rounded-lg text-label-md hover:opacity-90 transition-opacity"
+          >
             Get Started
-          </button>
+          </Link>
         </div>
       </header>
 
@@ -50,10 +55,13 @@ export default function Home() {
                 guidance, and advice from mentors who have been in your shoes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button className="px-space-xl py-4 bg-primary text-on-primary rounded-xl text-label-md flex items-center justify-center gap-2 hover:shadow-lg transition-all transform hover:-translate-y-1">
+                <Link
+                  href="/onboarding"
+                  className="px-space-xl py-4 bg-primary text-on-primary rounded-xl text-label-md flex items-center justify-center gap-2 hover:shadow-lg transition-all transform hover:-translate-y-1"
+                >
                   Get Started
                   <span className="material-symbols-outlined">arrow_forward</span>
-                </button>
+                </Link>
                 <button className="px-space-xl py-4 border-2 border-secondary text-secondary rounded-xl text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors">
                   Watch Success Stories
                 </button>

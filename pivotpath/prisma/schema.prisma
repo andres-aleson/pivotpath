@@ -11,3 +11,35 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+// Keyed by an anonymous session cookie for now — there's no account system yet.
+// Once auth exists, this gains a userId and the session gets linked to the account.
+model UserProfile {
+  id        String @id @default(cuid())
+  sessionId String @unique
+
+  // Step 1: Your Profile
+  currentJobTitle      String?
+  topSkills            Json?
+  financialConcernType String?
+  industriesOfInterest Json?
+
+  // Step 2: Career Goal
+  targetRole           String?
+  stillDecidingRole    Boolean @default(false)
+  transitionMotivation String?
+
+  // Step 3: Background & Timeline
+  yearsExperience      String?
+  educationLevel       String?
+  weeklyTimeCommitment String?
+  timelineUrgency      String?
+
+  // Wizard progress: the highest step this session may access (1-4),
+  // and when the whole questionnaire was completed.
+  onboardingStep        Int       @default(1)
+  onboardingCompletedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
