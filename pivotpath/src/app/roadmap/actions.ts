@@ -96,10 +96,13 @@ export async function generateRoadmap(): Promise<ActionResult> {
         sessionId,
         targetRole: parsed.targetRole,
         milestones: {
+          // The first milestone starts "in progress" so a fresh roadmap has
+          // an obvious next step instead of everything looking equally distant.
           create: parsed.milestones.map((m, index) => ({
             title: m.title,
             description: m.description,
             order: index,
+            status: index === 0 ? "in_progress" : "todo",
           })),
         },
       },

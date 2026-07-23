@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSessionId } from "@/lib/onboarding/session";
 import { MilestoneStatusControl } from "@/app/roadmap/components/MilestoneStatusControl";
+import { restartQuestionnaire } from "@/app/onboarding/actions";
 
 const RADIUS = 28;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
@@ -39,18 +40,28 @@ export default async function RoadmapPage() {
         <Link href="/" className="text-headline-md font-bold text-primary">
           PivotPath
         </Link>
-        <nav className="hidden md:flex items-center gap-8">
-          <span className="text-secondary font-bold border-b-2 border-secondary pb-1">
-            Roadmap
-          </span>
-          <span className="text-on-surface-variant text-label-md">Mentors</span>
-          <span className="text-on-surface-variant text-label-md">Resources</span>
-        </nav>
+        <div className="flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8">
+            <span className="text-secondary font-bold border-b-2 border-secondary pb-1">
+              Roadmap
+            </span>
+            <span className="text-on-surface-variant text-label-md">Mentors</span>
+            <span className="text-on-surface-variant text-label-md">Resources</span>
+          </nav>
+          <form action={restartQuestionnaire}>
+            <button
+              type="submit"
+              className="px-4 py-2 border border-outline-variant text-on-surface-variant rounded-lg text-label-md hover:border-secondary hover:text-secondary transition-colors"
+            >
+              Retake Questionnaire
+            </button>
+          </form>
+        </div>
       </header>
 
       <main className="min-h-screen bg-background">
         <div className="max-w-container-max mx-auto px-gutter py-lg">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-md mb-lg">
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-md mb-lg">
             <div>
               <nav className="flex items-center gap-1 text-label-md text-on-surface-variant mb-2">
                 <span>My Roadmap</span>
@@ -62,7 +73,7 @@ export default async function RoadmapPage() {
                 Your personalized path, generated from your questionnaire answers.
               </p>
             </div>
-            <div className="flex items-center gap-md bg-surface-container rounded-xl p-md shadow-sm border border-outline-variant/30">
+            <div className="flex items-center gap-md bg-surface-container rounded-xl p-md shadow-sm border border-outline-variant/30 flex-shrink-0">
               <div className="relative w-16 h-16">
                 <svg className="w-16 h-16 -rotate-90">
                   <circle
