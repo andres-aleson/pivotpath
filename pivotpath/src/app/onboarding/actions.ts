@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getOrCreateSessionId } from "@/lib/onboarding/session";
+import { getOrCreateSessionId, clearSession } from "@/lib/onboarding/session";
 import {
   step1Schema,
   step2Schema,
@@ -16,6 +16,13 @@ type ActionResult = { ok: true } | { ok: false; error: string };
 
 function nextStepAfter(existingStep: number, justCompleted: number): number {
   return Math.max(existingStep, Math.min(justCompleted + 1, 4));
+}
+
+/** TEMPORARY: lets "Get Started" always begin a fresh questionnaire, even for a
+ * session that already has a saved roadmap. See clearSession() for the caveat. */
+export async function restartQuestionnaire() {
+  await clearSession();
+  redirect("/onboarding/step-1");
 }
 
 function redirectTargetAfterSave(existingStep: number, justCompleted: number): string {

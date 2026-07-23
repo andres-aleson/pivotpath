@@ -25,3 +25,16 @@ export async function getOrCreateSessionId(): Promise<string> {
   });
   return id;
 }
+
+/**
+ * Abandons the current session so the next visit starts a brand-new one.
+ * Only callable from a Server Action or Route Handler.
+ *
+ * TEMPORARY: this is how "retake the questionnaire" works for now — it just
+ * orphans the old session's UserProfile/Roadmap rows rather than reusing or
+ * deleting them. Revisit once there's a real save/resume feature.
+ */
+export async function clearSession(): Promise<void> {
+  const store = await cookies();
+  store.delete(COOKIE_NAME);
+}
