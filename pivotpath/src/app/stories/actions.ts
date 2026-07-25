@@ -21,7 +21,8 @@ export async function saveStory(input: ShareStoryInput): Promise<ActionResult> {
     return { ok: false, error: "Mark your transition complete before publishing a story." };
   }
 
-  const { consent: _consent, ...data } = parsed.data;
+  const { consent: _consent, photoDataUrl, ...rest } = parsed.data;
+  const data = { ...rest, photoUrl: photoDataUrl || null };
 
   const story = await prisma.transitionStory.upsert({
     where: { sessionId },

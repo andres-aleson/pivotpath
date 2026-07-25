@@ -2,15 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { AppShell } from "@/components/AppShell";
-
-function initials(name: string) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
+import { initials } from "@/lib/stories/initials";
 
 export default async function StoryDetailPage({
   params,
@@ -35,9 +27,18 @@ export default async function StoryDetailPage({
         <div className="max-w-3xl">
           <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md md:p-space-lg shadow-sm">
             <div className="flex items-start gap-space-md mb-space-lg">
-              <div className="w-20 h-20 rounded-lg shrink-0 bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-headline-lg">
-                {initials(story.displayName)}
-              </div>
+              {story.photoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={story.photoUrl}
+                  alt={story.displayName}
+                  className="w-20 h-20 rounded-lg shrink-0 object-cover border border-outline-variant"
+                />
+              ) : (
+                <div className="w-20 h-20 rounded-lg shrink-0 bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-headline-lg">
+                  {initials(story.displayName)}
+                </div>
+              )}
               <div className="flex-1">
                 <h1 className="text-headline-xl text-primary leading-tight">{story.displayName}</h1>
                 <p className="text-body-lg text-on-surface-variant mt-1">{story.toRole}</p>

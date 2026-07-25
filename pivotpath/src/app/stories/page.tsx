@@ -2,15 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { AppShell } from "@/components/AppShell";
 import { INDUSTRY_OPTIONS } from "@/lib/onboarding/schema";
-
-function initials(name: string) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("");
-}
+import { initials } from "@/lib/stories/initials";
 
 export default async function StoriesPage({
   searchParams,
@@ -108,9 +100,18 @@ export default async function StoriesPage({
                 className="rounded-xl p-space-md flex flex-col border border-outline-variant bg-surface-container-lowest hover:shadow-lg transition-all duration-300"
               >
                 <div className="flex items-start gap-space-md mb-space-md">
-                  <div className="w-16 h-16 rounded-lg shrink-0 bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-headline-md">
-                    {initials(story.displayName)}
-                  </div>
+                  {story.photoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={story.photoUrl}
+                      alt={story.displayName}
+                      className="w-16 h-16 rounded-lg shrink-0 object-cover border border-outline-variant"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-lg shrink-0 bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-headline-md">
+                      {initials(story.displayName)}
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h4 className="text-headline-md text-primary leading-tight">
                       {story.displayName}

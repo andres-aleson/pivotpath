@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { shareStorySchema, type ShareStoryInput } from "@/lib/stories/schema";
+import { shareStorySchema, MAX_PHOTO_BYTES, type ShareStoryInput } from "@/lib/stories/schema";
 import { INDUSTRY_OPTIONS } from "@/lib/onboarding/schema";
+import { initials } from "@/lib/stories/initials";
 import { saveStory } from "@/app/stories/actions";
 
 type Defaults = {
   displayName: string;
+  photoDataUrl?: string;
   fromRole: string;
   toRole: string;
   industry?: string;
@@ -19,6 +21,8 @@ type Defaults = {
 export function ShareStoryForm({ defaultValues }: { defaultValues: Defaults }) {
   const [isPending, startTransition] = useTransition();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -31,6 +35,7 @@ export function ShareStoryForm({ defaultValues }: { defaultValues: Defaults }) {
     mode: "onChange",
     defaultValues: {
       displayName: defaultValues.displayName,
+      photoDataUrl: defaultValues.photoDataUrl ?? "",
       fromRole: defaultValues.fromRole,
       toRole: defaultValues.toRole,
       industry: defaultValues.industry as ShareStoryInput["industry"] | undefined,
@@ -41,6 +46,35 @@ export function ShareStoryForm({ defaultValues }: { defaultValues: Defaults }) {
   });
 
   const industry = watch("industry");
+  const displayName = watch("displayName");
+  const photoDataUrl = watch("photoDataUrl");
+
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    setPhotoError(null);
+    if (!file.type.startsWith("image/")) {
+      setPhotoError("Please choose an image file");
+      return;
+    }
+    if (file.size > MAX_PHOTO_BYTES) {
+      setPhotoError("Photo is too large — please use one under 2MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setValue("photoDataUrl", reader.result as string, { shouldValidate: true });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removePhoto() {
+    setValue("photoDataUrl", "", { shouldValidate: true });
+    setPhotoError(null);
+  }
 
   const onSubmit = handleSubmit((data) => {
     setServerError(null);
@@ -66,6 +100,57 @@ export function ShareStoryForm({ defaultValues }: { defaultValues: Defaults }) {
         {errors.displayName && (
           <p className="text-label-sm text-error" role="alert">
             {errors.displayName.message}
+          </p>
+        )}
+      </div>
+
+      <div className="space-y-space-xs">
+        <label className="text-label-md text-primary">Profile photo (optional)</label>
+        <div className="flex items-center gap-space-md">
+          {photoDataUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={photoDataUrl}
+              alt="Preview"
+              className="w-16 h-16 rounded-lg object-cover border border-outline-variant"
+            />
+          ) : (
+            <div className="w-16 h-16 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-headline-md">
+              {displayName ? initials(displayName) : "?"}
+            </div>
+          )}
+          <div className="flex flex-col gap-1">
+            <div className="flex gap-space-sm">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="px-4 py-2 rounded-lg border border-outline-variant text-label-md text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors"
+              >
+                {photoDataUrl ? "Change Photo" : "Upload Photo"}
+              </button>
+              {photoDataUrl && (
+                <button
+                  type="button"
+                  onClick={removePhoto}
+                  className="px-4 py-2 rounded-lg text-label-md text-on-surface-variant hover:text-error transition-colors"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+            <span className="text-label-sm text-on-surface-variant">JPG or PNG, up to 2MB.</span>
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handlePhotoChange}
+          />
+        </div>
+        {(photoError || errors.photoDataUrl) && (
+          <p className="text-label-sm text-error" role="alert">
+            {photoError ?? errors.photoDataUrl?.message}
           </p>
         )}
       </div>

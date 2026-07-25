@@ -39,6 +39,7 @@ export default async function ShareStoryPage() {
           <ShareStoryForm
             defaultValues={{
               displayName: story?.displayName ?? "",
+              photoDataUrl: story?.photoUrl ?? "",
               fromRole: story?.fromRole ?? profile?.currentJobTitle ?? "",
               toRole: story?.toRole ?? roadmap.targetRole,
               industry: story?.industry ?? industries[0],
