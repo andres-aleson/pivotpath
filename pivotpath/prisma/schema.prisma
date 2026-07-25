@@ -51,6 +51,10 @@ model Roadmap {
   targetRole  String
   generatedAt DateTime @default(now())
 
+  // Set when the user declares their transition complete — the gate for
+  // publishing a TransitionStory. Nullable: most roadmaps are still in progress.
+  transitionCompletedAt DateTime?
+
   milestones Milestone[]
 }
 
@@ -66,4 +70,28 @@ model Milestone {
   // todo | in_progress | done
   status      String    @default("todo")
   completedAt DateTime?
+}
+
+// One published story per session — the "become a mentor" artifact.
+// Keyed by sessionId for now, same anonymous-session pattern as everything
+// else, since there's no account system yet. Fake/demo rows use a
+// "seed-" prefixed sessionId that no real cookie will ever match.
+model TransitionStory {
+  id        String @id @default(cuid())
+  sessionId String @unique
+
+  displayName String
+  photoUrl    String?
+  fromRole    String
+  toRole      String
+  industry    String
+  stepsTaken  String
+  tips        String
+
+  isPublished    Boolean   @default(true)
+  publishedAt    DateTime  @default(now())
+  unpublishedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

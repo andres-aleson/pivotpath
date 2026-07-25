@@ -118,6 +118,23 @@ export async function generateRoadmap(): Promise<ActionResult> {
   redirect("/roadmap");
 }
 
+export async function markTransitionComplete() {
+  const sessionId = await getSessionId();
+  if (!sessionId) redirect("/onboarding");
+
+  const roadmap = await prisma.roadmap.findUnique({ where: { sessionId } });
+  if (!roadmap) redirect("/roadmap");
+
+  if (!roadmap.transitionCompletedAt) {
+    await prisma.roadmap.update({
+      where: { sessionId },
+      data: { transitionCompletedAt: new Date() },
+    });
+  }
+
+  redirect("/transition-complete");
+}
+
 export async function updateMilestoneStatus(milestoneId: string, status: MilestoneStatus) {
   const sessionId = await getSessionId();
   if (!sessionId) return;
