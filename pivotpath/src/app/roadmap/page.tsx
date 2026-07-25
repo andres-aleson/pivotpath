@@ -156,7 +156,7 @@ export default async function RoadmapPage() {
               <form action={markTransitionComplete}>
                 <button
                   type="submit"
-                  className="px-lg py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all whitespace-nowrap"
+                  className="px-8 py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all whitespace-nowrap"
                 >
                   Completed Transition
                 </button>
@@ -173,7 +173,7 @@ export default async function RoadmapPage() {
               </div>
               <Link
                 href="/stories/share"
-                className="px-lg py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all whitespace-nowrap text-center"
+                className="px-8 py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all whitespace-nowrap text-center"
               >
                 Share My Story
               </Link>
@@ -190,13 +190,13 @@ export default async function RoadmapPage() {
               <div className="flex gap-space-sm">
                 <Link
                   href={`/stories/${story.id}`}
-                  className="px-lg py-3 border border-secondary text-secondary rounded-lg font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all whitespace-nowrap text-center"
+                  className="px-8 py-3 border border-secondary text-secondary rounded-lg font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all whitespace-nowrap text-center"
                 >
                   View Story
                 </Link>
                 <Link
                   href="/stories/share"
-                  className="px-lg py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all whitespace-nowrap text-center"
+                  className="px-8 py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all whitespace-nowrap text-center"
                 >
                   Edit Story
                 </Link>

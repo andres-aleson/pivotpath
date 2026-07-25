@@ -44,7 +44,7 @@ export function MilestoneStatusControl({
         <button
           onClick={() => setStatus("done")}
           disabled={isPending}
-          className="px-lg py-2 bg-secondary text-on-secondary rounded-lg text-label-md font-bold hover:brightness-110 transition-all disabled:opacity-40"
+          className="px-6 py-2 bg-secondary text-on-secondary rounded-lg text-label-md font-bold hover:brightness-110 transition-all disabled:opacity-40 outline-none focus-visible:ring-2 focus-visible:ring-secondary/50"
         >
           {isPending ? "Saving..." : "Mark Complete"}
         </button>
@@ -56,7 +56,7 @@ export function MilestoneStatusControl({
     <button
       onClick={() => setStatus("in_progress")}
       disabled={isPending}
-      className="px-lg py-2 border border-secondary text-secondary rounded-lg text-label-md font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all disabled:opacity-40"
+      className="px-6 py-2 border border-secondary text-secondary rounded-lg text-label-md font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all disabled:opacity-40 outline-none focus-visible:ring-2 focus-visible:ring-secondary/50"
     >
       {isPending ? "Saving..." : "Start"}
     </button>

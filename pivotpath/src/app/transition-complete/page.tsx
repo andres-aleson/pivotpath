@@ -38,13 +38,13 @@ export default async function TransitionCompletePage() {
           <div className="flex flex-col sm:flex-row gap-space-sm">
             <Link
               href={story ? `/stories/${story.id}` : "/stories/share"}
-              className="flex-1 text-center px-lg py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all"
+              className="flex-1 text-center px-8 py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all"
             >
               {story ? "View My Story" : "Share My Story"}
             </Link>
             <Link
               href="/roadmap"
-              className="flex-1 text-center px-lg py-3 border border-outline-variant text-on-surface-variant rounded-lg font-bold hover:border-secondary hover:text-secondary transition-all"
+              className="flex-1 text-center px-8 py-3 border border-outline-variant text-on-surface-variant rounded-lg font-bold hover:border-secondary hover:text-secondary transition-all"
             >
               {story ? "Back to Roadmap" : "Maybe Later"}
             </Link>

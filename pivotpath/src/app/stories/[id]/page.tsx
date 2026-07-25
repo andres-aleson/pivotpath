@@ -53,7 +53,7 @@ export default async function StoryDetailPage({
                 type="button"
                 disabled
                 title="Messaging is coming soon"
-                className="px-lg py-3 border border-secondary text-secondary rounded-lg font-bold flex items-center gap-2 opacity-50 cursor-not-allowed whitespace-nowrap"
+                className="px-8 py-3 border border-secondary text-secondary rounded-lg font-bold flex items-center gap-2 opacity-50 cursor-not-allowed whitespace-nowrap"
               >
                 <span className="material-symbols-outlined text-[18px]">mail</span> Message
               </button>

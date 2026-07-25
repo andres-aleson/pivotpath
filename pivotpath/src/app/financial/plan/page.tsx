@@ -37,7 +37,7 @@ export default async function FinancialPlanPage() {
           </div>
           <Link
             href="/financial"
-            className="px-lg py-3 border border-outline-variant text-on-surface-variant rounded-lg font-bold hover:border-secondary hover:text-secondary transition-all whitespace-nowrap text-center"
+            className="px-8 py-3 border border-outline-variant text-on-surface-variant rounded-lg font-bold hover:border-secondary hover:text-secondary transition-all whitespace-nowrap text-center"
           >
             Update My Numbers
           </Link>
