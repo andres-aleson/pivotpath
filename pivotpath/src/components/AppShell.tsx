@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { restartQuestionnaire } from "@/app/onboarding/actions";
 
-type NavKey = "roadmap" | "stories";
+type NavKey = "dashboard" | "stories";
 
 const NAV_LINK = "flex items-center gap-space-md px-space-md py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg text-label-md";
 const NAV_LINK_ACTIVE = "flex items-center gap-space-md px-space-md py-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold text-label-md";
 
-export function AppShell({ active, children }: { active: NavKey; children: React.ReactNode }) {
+export function AppShell({ active, children }: { active?: NavKey; children: React.ReactNode }) {
   return (
     <>
       {/* Top Nav Bar */}
@@ -15,16 +15,15 @@ export function AppShell({ active, children }: { active: NavKey; children: React
           PivotPath
         </Link>
         <div className="hidden md:flex items-center gap-space-lg text-body-md">
-          <span className="text-on-surface-variant/50 cursor-default">Dashboard</span>
           <Link
             href="/roadmap"
             className={
-              active === "roadmap"
+              active === "dashboard"
                 ? "text-secondary border-b-2 border-secondary pb-1"
                 : "text-on-surface-variant hover:text-secondary transition-colors"
             }
           >
-            Roadmap
+            Dashboard
           </Link>
           <Link
             href="/stories"
@@ -34,7 +33,7 @@ export function AppShell({ active, children }: { active: NavKey; children: React
                 : "text-on-surface-variant hover:text-secondary transition-colors"
             }
           >
-            Mentors
+            Success Stories
           </Link>
         </div>
         <div className="flex items-center gap-space-md">
@@ -54,13 +53,9 @@ export function AppShell({ active, children }: { active: NavKey; children: React
             <span className="material-symbols-outlined">home</span>
             <span>Home</span>
           </Link>
-          <Link href="/roadmap" className={active === "roadmap" ? NAV_LINK_ACTIVE : NAV_LINK}>
-            <span className="material-symbols-outlined">route</span>
-            <span>Roadmap</span>
-          </Link>
-          <Link href="/stories" className={active === "stories" ? NAV_LINK_ACTIVE : NAV_LINK}>
-            <span className="material-symbols-outlined">group</span>
-            <span>Mentors</span>
+          <Link href="/roadmap" className={active === "dashboard" ? NAV_LINK_ACTIVE : NAV_LINK}>
+            <span className="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
           </Link>
           <Link href="/stories" className={active === "stories" ? NAV_LINK_ACTIVE : NAV_LINK}>
             <span className="material-symbols-outlined">stars</span>
@@ -90,13 +85,13 @@ export function AppShell({ active, children }: { active: NavKey; children: React
         <Link
           href="/roadmap"
           className={
-            active === "roadmap"
+            active === "dashboard"
               ? "flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1"
               : "flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary"
           }
         >
-          <span className="material-symbols-outlined">route</span>
-          <span className="text-label-sm">Roadmap</span>
+          <span className="material-symbols-outlined">dashboard</span>
+          <span className="text-label-sm">Dashboard</span>
         </Link>
         <Link
           href="/stories"
@@ -106,8 +101,8 @@ export function AppShell({ active, children }: { active: NavKey; children: React
               : "flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary"
           }
         >
-          <span className="material-symbols-outlined">group</span>
-          <span className="text-label-sm">Mentors</span>
+          <span className="material-symbols-outlined">stars</span>
+          <span className="text-label-sm">Stories</span>
         </Link>
         <form action={restartQuestionnaire}>
           <button
