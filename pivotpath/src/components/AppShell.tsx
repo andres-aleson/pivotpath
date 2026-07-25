@@ -1,12 +1,28 @@
 import Link from "next/link";
 import { restartQuestionnaire } from "@/app/onboarding/actions";
+import { getSessionId } from "@/lib/onboarding/session";
+import { prisma } from "@/lib/prisma";
 
-type NavKey = "dashboard" | "stories";
+type NavKey = "dashboard" | "stories" | "financial";
 
 const NAV_LINK = "flex items-center gap-space-md px-space-md py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg text-label-md";
 const NAV_LINK_ACTIVE = "flex items-center gap-space-md px-space-md py-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold text-label-md";
 
-export function AppShell({ active, children }: { active?: NavKey; children: React.ReactNode }) {
+export async function AppShell({
+  active,
+  children,
+}: {
+  active?: NavKey;
+  children: React.ReactNode;
+}) {
+  const sessionId = await getSessionId();
+  const hasFinancialProfile = sessionId
+    ? Boolean(
+        await prisma.financialProfile.findUnique({ where: { sessionId }, select: { id: true } })
+      )
+    : false;
+  const financialHref = hasFinancialProfile ? "/financial/plan" : "/financial";
+
   return (
     <>
       {/* Top Nav Bar */}
@@ -35,6 +51,16 @@ export function AppShell({ active, children }: { active?: NavKey; children: Reac
           >
             Success Stories
           </Link>
+          <Link
+            href={financialHref}
+            className={
+              active === "financial"
+                ? "text-secondary border-b-2 border-secondary pb-1"
+                : "text-on-surface-variant hover:text-secondary transition-colors"
+            }
+          >
+            Financial
+          </Link>
         </div>
         <div className="flex items-center gap-space-md">
           <span className="material-symbols-outlined text-on-surface-variant/50">notifications</span>
@@ -60,6 +86,10 @@ export function AppShell({ active, children }: { active?: NavKey; children: Reac
           <Link href="/stories" className={active === "stories" ? NAV_LINK_ACTIVE : NAV_LINK}>
             <span className="material-symbols-outlined">stars</span>
             <span>Success Stories</span>
+          </Link>
+          <Link href={financialHref} className={active === "financial" ? NAV_LINK_ACTIVE : NAV_LINK}>
+            <span className="material-symbols-outlined">account_balance_wallet</span>
+            <span>Financial</span>
           </Link>
         </nav>
         <div className="mt-auto border-t border-outline-variant pt-base">
@@ -103,6 +133,17 @@ export function AppShell({ active, children }: { active?: NavKey; children: Reac
         >
           <span className="material-symbols-outlined">stars</span>
           <span className="text-label-sm">Stories</span>
+        </Link>
+        <Link
+          href={financialHref}
+          className={
+            active === "financial"
+              ? "flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1"
+              : "flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary"
+          }
+        >
+          <span className="material-symbols-outlined">account_balance_wallet</span>
+          <span className="text-label-sm">Financial</span>
         </Link>
         <form action={restartQuestionnaire}>
           <button

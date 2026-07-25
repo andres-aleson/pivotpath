@@ -25,7 +25,7 @@ export default async function FinancialPlanPage() {
   const concernTips = BUDGET_TIPS_BY_CONCERN[financialProfile.financialConcernType] ?? [];
 
   return (
-    <AppShell active="dashboard">
+    <AppShell active="financial">
       <div className="max-w-container-max mx-auto px-gutter py-space-lg">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md mb-space-lg">
           <div>

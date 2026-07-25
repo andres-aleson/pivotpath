@@ -5,7 +5,6 @@ import { getSessionId } from "@/lib/onboarding/session";
 import { MilestoneStatusControl } from "@/app/roadmap/components/MilestoneStatusControl";
 import { markTransitionComplete } from "@/app/roadmap/actions";
 import { AppShell } from "@/components/AppShell";
-import { calculateRunwayMonths } from "@/lib/financial/plan";
 
 const STATUS_ICON: Record<string, string> = {
   done: "check_circle",
@@ -31,8 +30,6 @@ export default async function RoadmapPage() {
   const story = roadmap.transitionCompletedAt
     ? await prisma.transitionStory.findUnique({ where: { sessionId } })
     : null;
-  const financialProfile = await prisma.financialProfile.findUnique({ where: { sessionId } });
-  const runwayMonths = financialProfile ? calculateRunwayMonths(financialProfile) : null;
 
   const total = roadmap.milestones.length;
   const completed = roadmap.milestones.filter((m) => m.status === "done").length;
@@ -54,9 +51,7 @@ export default async function RoadmapPage() {
           </p>
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
-          {/* Career Roadmap (8 columns) */}
-          <div className="lg:col-span-8 bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/30">
+        <div className="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/30">
             <div className="flex justify-between items-center mb-space-lg">
               <h2 className="text-headline-md text-primary">Career Roadmap</h2>
               <span className="bg-surface-container text-secondary px-3 py-1 rounded-full text-label-sm uppercase tracking-wider">
@@ -146,33 +141,6 @@ export default async function RoadmapPage() {
                 );
               })}
             </div>
-          </div>
-
-          {/* Financial Guide (4 columns) */}
-          <aside className="lg:col-span-4 bg-surface-container-high rounded-xl p-space-md shadow-sm flex flex-col">
-            <div className="flex items-center gap-2 mb-space-lg">
-              <span className="material-symbols-outlined text-secondary">account_balance_wallet</span>
-              <h2 className="text-headline-md text-primary">Financial Guide</h2>
-            </div>
-            {financialProfile ? (
-              <p className="text-body-md text-on-surface-variant flex-grow">
-                {runwayMonths === null
-                  ? "Your expected income covers your essential expenses — you're breaking even or better."
-                  : `You have about ${runwayMonths.toFixed(1)} months of runway at your current savings and spending.`}
-              </p>
-            ) : (
-              <p className="text-body-md text-on-surface-variant flex-grow">
-                Answer a few questions about your income, expenses, and savings and we&apos;ll
-                tailor budget and runway guidance to your transition.
-              </p>
-            )}
-            <Link
-              href={financialProfile ? "/financial/plan" : "/financial"}
-              className="mt-space-lg w-full text-center py-3 border-2 border-secondary text-secondary rounded-lg font-bold hover:bg-secondary hover:text-white transition-all"
-            >
-              {financialProfile ? "View My Plan" : "Financial Assistance Questionnaire"}
-            </Link>
-          </aside>
         </div>
 
         <div className="mt-space-lg bg-surface-container rounded-xl p-space-md border border-outline-variant/30 flex flex-col md:flex-row md:items-center justify-between gap-space-md">

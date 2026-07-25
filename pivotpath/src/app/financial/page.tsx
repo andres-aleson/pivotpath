@@ -14,7 +14,7 @@ export default async function FinancialCheckInPage() {
   ]);
 
   return (
-    <AppShell active="dashboard">
+    <AppShell active="financial">
       <div className="max-w-container-max mx-auto px-gutter py-space-lg">
         <div className="max-w-2xl mx-auto">
           <div className="rounded-xl p-space-md md:p-space-lg shadow-sm bg-surface-container-lowest border border-outline-variant/30">
