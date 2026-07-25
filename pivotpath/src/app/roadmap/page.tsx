@@ -5,6 +5,7 @@ import { getSessionId } from "@/lib/onboarding/session";
 import { MilestoneStatusControl } from "@/app/roadmap/components/MilestoneStatusControl";
 import { markTransitionComplete } from "@/app/roadmap/actions";
 import { AppShell } from "@/components/AppShell";
+import { calculateRunwayMonths } from "@/lib/financial/plan";
 
 const STATUS_ICON: Record<string, string> = {
   done: "check_circle",
@@ -30,6 +31,8 @@ export default async function RoadmapPage() {
   const story = roadmap.transitionCompletedAt
     ? await prisma.transitionStory.findUnique({ where: { sessionId } })
     : null;
+  const financialProfile = await prisma.financialProfile.findUnique({ where: { sessionId } });
+  const runwayMonths = financialProfile ? calculateRunwayMonths(financialProfile) : null;
 
   const total = roadmap.milestones.length;
   const completed = roadmap.milestones.filter((m) => m.status === "done").length;
@@ -151,15 +154,23 @@ export default async function RoadmapPage() {
               <span className="material-symbols-outlined text-secondary">account_balance_wallet</span>
               <h2 className="text-headline-md text-primary">Financial Guide</h2>
             </div>
-            <p className="text-body-md text-on-surface-variant flex-grow">
-              Answer a few questions about your income, expenses, and savings and we&apos;ll tailor
-              budget and runway guidance to your transition.
-            </p>
+            {financialProfile ? (
+              <p className="text-body-md text-on-surface-variant flex-grow">
+                {runwayMonths === null
+                  ? "Your expected income covers your essential expenses — you're breaking even or better."
+                  : `You have about ${runwayMonths.toFixed(1)} months of runway at your current savings and spending.`}
+              </p>
+            ) : (
+              <p className="text-body-md text-on-surface-variant flex-grow">
+                Answer a few questions about your income, expenses, and savings and we&apos;ll
+                tailor budget and runway guidance to your transition.
+              </p>
+            )}
             <Link
-              href="/financial"
+              href={financialProfile ? "/financial/plan" : "/financial"}
               className="mt-space-lg w-full text-center py-3 border-2 border-secondary text-secondary rounded-lg font-bold hover:bg-secondary hover:text-white transition-all"
             >
-              Financial Assistance Questionnaire
+              {financialProfile ? "View My Plan" : "Financial Assistance Questionnaire"}
             </Link>
           </aside>
         </div>
