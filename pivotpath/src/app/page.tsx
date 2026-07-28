@@ -3,42 +3,6 @@ import { restartQuestionnaire } from "@/app/onboarding/actions";
 export default function Home() {
   return (
     <>
-      {/* Top Navigation Bar */}
-      <header className="sticky top-0 w-full z-50 flex justify-between items-center px-gutter py-4 bg-surface/95 backdrop-blur-sm shadow-sm">
-        <div className="flex items-center gap-3">
-          <img
-            alt="PivotPath Logo"
-            className="w-10 h-10 rounded-md"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKnTvxF0kUasd7T66SnBK2w2AjLQsqW5BiQN1TwvLlEI0aH4LL6wHC-QwztQpPgP2SLyfBSQEf4yBc2EXmYGTozG2lNi1xzaxxUHKh5mQkNVZ4BPVipM-9Y9DCNxDEQEcf-3FFk8MzPH58lMeaPsqG0JZuthGS-iC2gII9aw7YV9Wd3Ubz6lq4EzIO5d-A5KfsYZoq9Xw_ik-wXvaT5P9MtAlc2nbhuYPZO4-SZeUa1mfJ0WifAkKGuA"
-          />
-          <span className="text-headline-md font-bold text-primary">PivotPath</span>
-        </div>
-        <nav className="hidden md:flex items-center gap-8">
-          <a className="text-secondary font-bold border-b-2 border-secondary pb-1 transition-colors" href="#">
-            Dashboard
-          </a>
-          <a className="text-on-surface-variant hover:text-secondary transition-colors text-label-md" href="#">
-            Roadmap
-          </a>
-          <a className="text-on-surface-variant hover:text-secondary transition-colors text-label-md" href="#">
-            Mentors
-          </a>
-          <a className="text-on-surface-variant hover:text-secondary transition-colors text-label-md" href="#">
-            Resources
-          </a>
-        </nav>
-        <div className="flex items-center gap-4">
-          <form action={restartQuestionnaire}>
-            <button
-              type="submit"
-              className="px-6 py-2 bg-primary text-on-primary rounded-lg text-label-md hover:opacity-90 transition-opacity"
-            >
-              Get Started
-            </button>
-          </form>
-        </div>
-      </header>
-
       <main>
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-24 pb-32 px-gutter">
