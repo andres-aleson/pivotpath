@@ -36,6 +36,12 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
   const topSkills = watch("topSkills");
   const industries = watch("industriesOfInterest");
 
+  const initialOther = (defaultValues.industriesOfInterest ?? []).find(
+    (i) => !(INDUSTRY_OPTIONS as readonly string[]).includes(i)
+  );
+  const [otherChecked, setOtherChecked] = useState(Boolean(initialOther));
+  const [otherText, setOtherText] = useState(initialOther ?? "");
+
   function addSkill() {
     const value = skillInput.trim();
     if (!value || topSkills.includes(value)) return;
@@ -56,6 +62,29 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
       ? industries.filter((i) => i !== industry)
       : [...industries, industry];
     setValue("industriesOfInterest", next, { shouldValidate: true, shouldDirty: true });
+  }
+
+  function toggleOther() {
+    const next = !otherChecked;
+    setOtherChecked(next);
+    if (!next) {
+      const trimmed = otherText.trim();
+      setValue(
+        "industriesOfInterest",
+        industries.filter((i) => i !== trimmed),
+        { shouldValidate: true, shouldDirty: true }
+      );
+      setOtherText("");
+    }
+  }
+
+  function updateOtherText(value: string) {
+    const previous = otherText.trim();
+    const next = value.trim();
+    setOtherText(value);
+    let updated = industries.filter((i) => i !== previous);
+    if (next) updated = [...updated, next];
+    setValue("industriesOfInterest", updated, { shouldValidate: true, shouldDirty: true });
   }
 
   const onSubmit = handleSubmit((data) => {
@@ -189,7 +218,22 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
               </label>
             );
           })}
+          <label className="cursor-pointer">
+            <input className="sr-only peer" type="checkbox" checked={otherChecked} onChange={toggleOther} />
+            <span className="px-4 py-2 rounded-full border border-outline-variant text-body-md text-on-surface-variant peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all inline-block">
+              Other
+            </span>
+          </label>
         </div>
+        {otherChecked && (
+          <input
+            className="w-full mt-2 px-4 py-3 rounded-lg border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-body-md"
+            placeholder="Enter your industry"
+            type="text"
+            value={otherText}
+            onChange={(e) => updateOtherText(e.target.value)}
+          />
+        )}
         {errors.industriesOfInterest && (
           <p className="text-label-sm text-error" role="alert">
             {errors.industriesOfInterest.message}
