@@ -1,32 +1,32 @@
 import { prisma } from "@/lib/prisma";
-import { getSessionId } from "@/lib/onboarding/session";
+import { getCurrentUserId } from "@/lib/current-user";
 
-/** The farthest step this session may access. Defaults to 1 for brand-new visitors. */
+/** The farthest step this account may access. Defaults to 1 for brand-new accounts. */
 export async function getReachedStep(): Promise<number> {
-  const sessionId = await getSessionId();
-  if (!sessionId) return 1;
+  const userId = await getCurrentUserId();
+  if (!userId) return 1;
 
   const profile = await prisma.userProfile.findUnique({
-    where: { sessionId },
+    where: { userId },
     select: { onboardingStep: true },
   });
   return profile?.onboardingStep ?? 1;
 }
 
 export async function isOnboardingComplete(): Promise<boolean> {
-  const sessionId = await getSessionId();
-  if (!sessionId) return false;
+  const userId = await getCurrentUserId();
+  if (!userId) return false;
 
   const profile = await prisma.userProfile.findUnique({
-    where: { sessionId },
+    where: { userId },
     select: { onboardingCompletedAt: true },
   });
   return profile?.onboardingCompletedAt != null;
 }
 
 export async function getCurrentProfile() {
-  const sessionId = await getSessionId();
-  if (!sessionId) return null;
+  const userId = await getCurrentUserId();
+  if (!userId) return null;
 
-  return prisma.userProfile.findUnique({ where: { sessionId } });
+  return prisma.userProfile.findUnique({ where: { userId } });
 }

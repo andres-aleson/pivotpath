@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getSessionId } from "@/lib/onboarding/session";
+import { getCurrentUserId } from "@/lib/current-user";
 
 export default async function TransitionCompletePage() {
-  const sessionId = await getSessionId();
-  if (!sessionId) redirect("/onboarding");
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
-  const roadmap = await prisma.roadmap.findUnique({ where: { sessionId } });
+  const roadmap = await prisma.roadmap.findUnique({ where: { userId } });
   if (!roadmap?.transitionCompletedAt) redirect("/roadmap");
 
-  const story = await prisma.transitionStory.findUnique({ where: { sessionId } });
+  const story = await prisma.transitionStory.findUnique({ where: { userId } });
 
   return (
     <main className="min-h-screen flex items-center justify-center px-gutter py-space-xl bg-gradient-to-b from-background to-surface-container">

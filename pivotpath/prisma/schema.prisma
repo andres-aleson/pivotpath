@@ -12,11 +12,24 @@ datasource db {
   provider = "sqlite"
 }
 
-// Keyed by an anonymous session cookie for now — there's no account system yet.
-// Once auth exists, this gains a userId and the session gets linked to the account.
+model User {
+  id           String @id @default(cuid())
+  email        String @unique
+  passwordHash String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile          UserProfile?
+  roadmap          Roadmap?
+  transitionStory  TransitionStory?
+  financialProfile FinancialProfile?
+}
+
 model UserProfile {
-  id        String @id @default(cuid())
-  sessionId String @unique
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Step 1: Your Profile
   currentJobTitle      String?
@@ -35,7 +48,7 @@ model UserProfile {
   weeklyTimeCommitment String?
   timelineUrgency      String?
 
-  // Wizard progress: the highest step this session may access (1-4),
+  // Wizard progress: the highest step this account may access (1-4),
   // and when the whole questionnaire was completed.
   onboardingStep        Int       @default(1)
   onboardingCompletedAt DateTime?
@@ -44,10 +57,11 @@ model UserProfile {
   updatedAt DateTime @updatedAt
 }
 
-// One roadmap per session — generated once from the completed UserProfile.
+// One roadmap per account — generated once from the completed UserProfile.
 model Roadmap {
   id          String   @id @default(cuid())
-  sessionId   String   @unique
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   targetRole  String
   generatedAt DateTime @default(now())
 
@@ -72,13 +86,13 @@ model Milestone {
   completedAt DateTime?
 }
 
-// One published story per session — the "become a mentor" artifact.
-// Keyed by sessionId for now, same anonymous-session pattern as everything
-// else, since there's no account system yet. Fake/demo rows use a
-// "seed-" prefixed sessionId that no real cookie will ever match.
+// One published story per account — the "become a mentor" artifact.
+// Fake/demo rows use a fake "seed-" prefixed userId that no real account
+// will ever match, so they don't collide with the User relation.
 model TransitionStory {
-  id        String @id @default(cuid())
-  sessionId String @unique
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   displayName String
   photoUrl    String?
@@ -88,20 +102,21 @@ model TransitionStory {
   stepsTaken  String
   tips        String
 
-  isPublished    Boolean   @default(true)
-  publishedAt    DateTime  @default(now())
-  unpublishedAt  DateTime?
+  isPublished   Boolean   @default(true)
+  publishedAt   DateTime  @default(now())
+  unpublishedAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// One per session — self-reported numbers only, never linked accounts or
+// One per account — self-reported numbers only, never linked accounts or
 // payment info. The Financial Plan (runway, tips) is computed live from
 // these fields rather than stored, so it's never stale.
 model FinancialProfile {
-  id        String @id @default(cuid())
-  sessionId String @unique
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   monthlyIncomeDuringTransition Float
   essentialMonthlyExpenses      Float

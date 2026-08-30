@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getSessionId } from "@/lib/onboarding/session";
+import { getCurrentUserId } from "@/lib/current-user";
 import { AppShell } from "@/components/AppShell";
 import { calculateRunwayMonths } from "@/lib/financial/plan";
 import {
@@ -12,10 +12,10 @@ import {
 import { FINANCIAL_CONCERN_OPTIONS } from "@/lib/onboarding/schema";
 
 export default async function FinancialPlanPage() {
-  const sessionId = await getSessionId();
-  if (!sessionId) redirect("/onboarding");
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
-  const financialProfile = await prisma.financialProfile.findUnique({ where: { sessionId } });
+  const financialProfile = await prisma.financialProfile.findUnique({ where: { userId } });
   if (!financialProfile) redirect("/financial");
 
   const runwayMonths = calculateRunwayMonths(financialProfile);

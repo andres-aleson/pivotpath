@@ -1,16 +1,16 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getSessionId } from "@/lib/onboarding/session";
+import { getCurrentUserId } from "@/lib/current-user";
 import { AppShell } from "@/components/AppShell";
 import { FinancialCheckInForm } from "@/app/financial/FinancialCheckInForm";
 
 export default async function FinancialCheckInPage() {
-  const sessionId = await getSessionId();
-  if (!sessionId) redirect("/onboarding");
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
   const [financialProfile, profile] = await Promise.all([
-    prisma.financialProfile.findUnique({ where: { sessionId } }),
-    prisma.userProfile.findUnique({ where: { sessionId } }),
+    prisma.financialProfile.findUnique({ where: { userId } }),
+    prisma.userProfile.findUnique({ where: { userId } }),
   ]);
 
   return (

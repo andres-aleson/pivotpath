@@ -1,4 +1,4 @@
-import { restartQuestionnaire } from "@/app/onboarding/actions";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -21,19 +21,23 @@ export default function Home() {
                 guidance, and advice from mentors who have been in your shoes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <form action={restartQuestionnaire}>
-                  <button
-                    type="submit"
-                    className="w-full px-space-xl py-4 bg-primary text-on-primary rounded-xl text-label-md flex items-center justify-center gap-2 hover:shadow-lg transition-all transform hover:-translate-y-1"
-                  >
-                    Get Started
-                    <span className="material-symbols-outlined">arrow_forward</span>
-                  </button>
-                </form>
+                <Link
+                  href="/signup"
+                  className="w-full px-space-xl py-4 bg-primary text-on-primary rounded-xl text-label-md flex items-center justify-center gap-2 hover:shadow-lg transition-all transform hover:-translate-y-1"
+                >
+                  Get Started
+                  <span className="material-symbols-outlined">arrow_forward</span>
+                </Link>
                 <button className="px-space-xl py-4 border-2 border-secondary text-secondary rounded-xl text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors">
                   Watch Success Stories
                 </button>
               </div>
+              <p className="text-body-md text-on-surface-variant">
+                Already have an account?{" "}
+                <Link href="/login" className="text-secondary font-bold hover:underline">
+                  Log In
+                </Link>
+              </p>
               <div className="flex items-center gap-6 pt-8 grayscale opacity-60">
                 <span className="text-label-sm uppercase tracking-widest text-on-surface-variant">
                   Trusted by professionals at
@@ -197,9 +201,12 @@ export default function Home() {
                     Join 5,000+ professionals who pivoted their careers with PivotPath. Your
                     personalized strategy is just a click away.
                   </p>
-                  <button className="bg-white text-secondary px-8 py-3 rounded-lg font-bold text-label-md hover:bg-surface-bright transition-colors">
+                  <Link
+                    href="/signup"
+                    className="inline-block bg-white text-secondary px-8 py-3 rounded-lg font-bold text-label-md hover:bg-surface-bright transition-colors"
+                  >
                     Create My Free Account
-                  </button>
+                  </Link>
                 </div>
                 <div className="absolute right-0 top-0 h-full w-1/2 opacity-20 pointer-events-none">
                   <span className="material-symbols-outlined text-[300px] absolute -right-20 -top-20">

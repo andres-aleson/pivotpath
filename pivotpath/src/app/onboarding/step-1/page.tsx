@@ -1,9 +1,14 @@
+import { redirect } from "next/navigation";
 import { OnboardingHeader } from "@/app/onboarding/components/OnboardingHeader";
 import { StepCard } from "@/app/onboarding/components/StepCard";
 import { Step1Form } from "@/app/onboarding/components/Step1Form";
 import { getCurrentProfile } from "@/lib/onboarding/data";
+import { getCurrentUserId } from "@/lib/current-user";
 
 export default async function Step1Page() {
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
+
   const profile = await getCurrentProfile();
 
   return (

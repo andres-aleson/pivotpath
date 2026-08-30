@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getSessionId } from "@/lib/onboarding/session";
+import { getCurrentUserId } from "@/lib/current-user";
 import { shareStorySchema, type ShareStoryInput } from "@/lib/stories/schema";
 
 type ActionResult = { ok: true } | { ok: false; error: string };
@@ -13,10 +13,10 @@ export async function saveStory(input: ShareStoryInput): Promise<ActionResult> {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
 
-  const sessionId = await getSessionId();
-  if (!sessionId) return { ok: false, error: "Your session expired — please refresh and try again." };
+  const userId = await getCurrentUserId();
+  if (!userId) return { ok: false, error: "You've been signed out — please log in and try again." };
 
-  const roadmap = await prisma.roadmap.findUnique({ where: { sessionId } });
+  const roadmap = await prisma.roadmap.findUnique({ where: { userId } });
   if (!roadmap?.transitionCompletedAt) {
     return { ok: false, error: "Mark your transition complete before publishing a story." };
   }
@@ -25,8 +25,8 @@ export async function saveStory(input: ShareStoryInput): Promise<ActionResult> {
   const data = { ...rest, photoUrl: photoDataUrl || null };
 
   const story = await prisma.transitionStory.upsert({
-    where: { sessionId },
-    create: { sessionId, ...data },
+    where: { userId },
+    create: { userId, ...data },
     update: { ...data, isPublished: true, unpublishedAt: null },
   });
 

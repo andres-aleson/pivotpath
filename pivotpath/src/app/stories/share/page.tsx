@@ -1,21 +1,21 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getSessionId } from "@/lib/onboarding/session";
+import { getCurrentUserId } from "@/lib/current-user";
 import { ShareStoryForm } from "@/app/stories/share/ShareStoryForm";
 
 export default async function ShareStoryPage() {
-  const sessionId = await getSessionId();
-  if (!sessionId) redirect("/onboarding");
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
   const roadmap = await prisma.roadmap.findUnique({
-    where: { sessionId },
+    where: { userId },
     include: { milestones: { orderBy: { order: "asc" } } },
   });
   if (!roadmap?.transitionCompletedAt) redirect("/roadmap");
 
   const [profile, story] = await Promise.all([
-    prisma.userProfile.findUnique({ where: { sessionId } }),
-    prisma.transitionStory.findUnique({ where: { sessionId } }),
+    prisma.userProfile.findUnique({ where: { userId } }),
+    prisma.transitionStory.findUnique({ where: { userId } }),
   ]);
 
   const industries = (profile?.industriesOfInterest as string[] | null) ?? [];

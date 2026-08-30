@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getOrCreateSessionId } from "@/lib/onboarding/session";
+import { getCurrentUserId } from "@/lib/current-user";
 import { financialProfileSchema, type FinancialProfileInput } from "@/lib/financial/schema";
 
 type ActionResult = { ok: true } | { ok: false; error: string };
@@ -13,11 +13,12 @@ export async function saveFinancialProfile(input: FinancialProfileInput): Promis
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
 
-  const sessionId = await getOrCreateSessionId();
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
   await prisma.financialProfile.upsert({
-    where: { sessionId },
-    create: { sessionId, ...parsed.data },
+    where: { userId },
+    create: { userId, ...parsed.data },
     update: { ...parsed.data },
   });
 

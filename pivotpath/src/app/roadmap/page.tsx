@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getSessionId } from "@/lib/onboarding/session";
+import { getCurrentUserId } from "@/lib/current-user";
 import { MilestoneStatusControl } from "@/app/roadmap/components/MilestoneStatusControl";
 import { markTransitionComplete } from "@/app/roadmap/actions";
 import { AppShell } from "@/components/AppShell";
@@ -15,20 +15,20 @@ const STATUS_ICON: Record<string, string> = {
 const DATE_FORMAT: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
 
 export default async function RoadmapPage() {
-  const sessionId = await getSessionId();
-  if (!sessionId) redirect("/onboarding");
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
-  const profile = await prisma.userProfile.findUnique({ where: { sessionId } });
+  const profile = await prisma.userProfile.findUnique({ where: { userId } });
   if (!profile?.onboardingCompletedAt) redirect("/onboarding");
 
   const roadmap = await prisma.roadmap.findUnique({
-    where: { sessionId },
+    where: { userId },
     include: { milestones: { orderBy: { order: "asc" } } },
   });
   if (!roadmap) redirect("/roadmap/generating");
 
   const story = roadmap.transitionCompletedAt
-    ? await prisma.transitionStory.findUnique({ where: { sessionId } })
+    ? await prisma.transitionStory.findUnique({ where: { userId } })
     : null;
 
   const total = roadmap.milestones.length;

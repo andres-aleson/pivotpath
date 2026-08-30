@@ -3,8 +3,12 @@ import { OnboardingHeader } from "@/app/onboarding/components/OnboardingHeader";
 import { StepCard } from "@/app/onboarding/components/StepCard";
 import { ReviewStep } from "@/app/onboarding/components/ReviewStep";
 import { getCurrentProfile, getReachedStep } from "@/lib/onboarding/data";
+import { getCurrentUserId } from "@/lib/current-user";
 
 export default async function Step4Page() {
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
+
   const reachedStep = await getReachedStep();
   if (reachedStep < 4) redirect(`/onboarding/step-${reachedStep}`);
 

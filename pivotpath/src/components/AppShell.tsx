@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { restartQuestionnaire } from "@/app/onboarding/actions";
-import { getSessionId } from "@/lib/onboarding/session";
+import { logOut } from "@/lib/auth/actions";
+import { getCurrentUserId } from "@/lib/current-user";
 import { prisma } from "@/lib/prisma";
 
 type NavKey = "dashboard" | "stories" | "financial";
@@ -15,10 +16,10 @@ export async function AppShell({
   active?: NavKey;
   children: React.ReactNode;
 }) {
-  const sessionId = await getSessionId();
-  const hasFinancialProfile = sessionId
+  const userId = await getCurrentUserId();
+  const hasFinancialProfile = userId
     ? Boolean(
-        await prisma.financialProfile.findUnique({ where: { sessionId }, select: { id: true } })
+        await prisma.financialProfile.findUnique({ where: { userId }, select: { id: true } })
       )
     : false;
   const financialHref = hasFinancialProfile ? "/financial/plan" : "/financial";
@@ -32,7 +33,15 @@ export async function AppShell({
         </Link>
         <div className="flex items-center gap-space-md">
           <span className="material-symbols-outlined text-on-surface-variant/50">notifications</span>
-          <span className="material-symbols-outlined text-on-surface-variant/50">account_circle</span>
+          <form action={logOut}>
+            <button
+              type="submit"
+              title="Log out"
+              className="material-symbols-outlined text-on-surface-variant/50 hover:text-secondary transition-colors"
+            >
+              account_circle
+            </button>
+          </form>
         </div>
       </nav>
 

@@ -10,7 +10,7 @@ import {
   type RoadmapGeneration,
   type MilestoneStatus,
 } from "@/lib/roadmap/schema";
-import { getOrCreateSessionId, getSessionId } from "@/lib/onboarding/session";
+import { getCurrentUserId } from "@/lib/current-user";
 import {
   FINANCIAL_CONCERN_OPTIONS,
   TIMELINE_URGENCY_OPTIONS,
@@ -52,12 +52,13 @@ Produce 5-7 ordered milestones that take them from where they are now to the tar
 }
 
 export async function generateRoadmap(): Promise<ActionResult> {
-  const sessionId = await getOrCreateSessionId();
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
-  const existing = await prisma.roadmap.findUnique({ where: { sessionId } });
+  const existing = await prisma.roadmap.findUnique({ where: { userId } });
   if (existing) redirect("/roadmap");
 
-  const profile = await prisma.userProfile.findUnique({ where: { sessionId } });
+  const profile = await prisma.userProfile.findUnique({ where: { userId } });
   if (!profile?.onboardingCompletedAt) redirect("/onboarding");
 
   let parsed: RoadmapGeneration;
@@ -93,7 +94,7 @@ export async function generateRoadmap(): Promise<ActionResult> {
   try {
     await prisma.roadmap.create({
       data: {
-        sessionId,
+        userId,
         targetRole: parsed.targetRole,
         milestones: {
           // The first milestone starts "in progress" so a fresh roadmap has
@@ -119,15 +120,15 @@ export async function generateRoadmap(): Promise<ActionResult> {
 }
 
 export async function markTransitionComplete() {
-  const sessionId = await getSessionId();
-  if (!sessionId) redirect("/onboarding");
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
-  const roadmap = await prisma.roadmap.findUnique({ where: { sessionId } });
+  const roadmap = await prisma.roadmap.findUnique({ where: { userId } });
   if (!roadmap) redirect("/roadmap");
 
   if (!roadmap.transitionCompletedAt) {
     await prisma.roadmap.update({
-      where: { sessionId },
+      where: { userId },
       data: { transitionCompletedAt: new Date() },
     });
   }
@@ -136,14 +137,14 @@ export async function markTransitionComplete() {
 }
 
 export async function updateMilestoneStatus(milestoneId: string, status: MilestoneStatus) {
-  const sessionId = await getSessionId();
-  if (!sessionId) return;
+  const userId = await getCurrentUserId();
+  if (!userId) return;
 
   const milestone = await prisma.milestone.findUnique({
     where: { id: milestoneId },
-    select: { roadmap: { select: { sessionId: true } } },
+    select: { roadmap: { select: { userId: true } } },
   });
-  if (milestone?.roadmap.sessionId !== sessionId) return;
+  if (milestone?.roadmap.userId !== userId) return;
 
   await prisma.milestone.update({
     where: { id: milestoneId },
