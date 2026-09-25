@@ -6,6 +6,9 @@ export default defineConfig({
   out: "./drizzle/migrations",
   dialect: "postgresql",
   schemaFilter: ["pivotpath"],
+  migrations: {
+    schema: "pivotpath",
+  },
   dbCredentials: {
     url: process.env.DATABASE_URL!,
   },

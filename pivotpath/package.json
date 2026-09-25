@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "@google/genai": "^2.13.0",
@@ -37,8 +39,6 @@
     "typescript": "^5"
   },
   "allowScripts": {
-    "@prisma/engines@7.9.0": true,
-    "prisma@7.9.0": true,
     "sharp@0.34.5": true,
     "unrs-resolver@1.12.2": true,
     "@google/genai@2.13.0": true,

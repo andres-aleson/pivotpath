@@ -1,0 +1,549 @@
+{
+  "id": "a1c223b0-15a1-41c6-be7e-a4e371546fad",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "pivotpath.FinancialProfile": {
+      "name": "FinancialProfile",
+      "schema": "pivotpath",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "monthlyIncomeDuringTransition": {
+          "name": "monthlyIncomeDuringTransition",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "essentialMonthlyExpenses": {
+          "name": "essentialMonthlyExpenses",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currentSavings": {
+          "name": "currentSavings",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "financialConcernType": {
+          "name": "financialConcernType",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "FinancialProfile_userId_User_id_fk": {
+          "name": "FinancialProfile_userId_User_id_fk",
+          "tableFrom": "FinancialProfile",
+          "tableTo": "User",
+          "schemaTo": "pivotpath",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "FinancialProfile_userId_unique": {
+          "name": "FinancialProfile_userId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "userId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "pivotpath.Milestone": {
+      "name": "Milestone",
+      "schema": "pivotpath",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "roadmapId": {
+          "name": "roadmapId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'todo'"
+        },
+        "completedAt": {
+          "name": "completedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Milestone_roadmapId_Roadmap_id_fk": {
+          "name": "Milestone_roadmapId_Roadmap_id_fk",
+          "tableFrom": "Milestone",
+          "tableTo": "Roadmap",
+          "schemaTo": "pivotpath",
+          "columnsFrom": [
+            "roadmapId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "pivotpath.Roadmap": {
+      "name": "Roadmap",
+      "schema": "pivotpath",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "targetRole": {
+          "name": "targetRole",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "generatedAt": {
+          "name": "generatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "transitionCompletedAt": {
+          "name": "transitionCompletedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Roadmap_userId_User_id_fk": {
+          "name": "Roadmap_userId_User_id_fk",
+          "tableFrom": "Roadmap",
+          "tableTo": "User",
+          "schemaTo": "pivotpath",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "Roadmap_userId_unique": {
+          "name": "Roadmap_userId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "userId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "pivotpath.TransitionStory": {
+      "name": "TransitionStory",
+      "schema": "pivotpath",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "displayName": {
+          "name": "displayName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "photoUrl": {
+          "name": "photoUrl",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fromRole": {
+          "name": "fromRole",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "toRole": {
+          "name": "toRole",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "industry": {
+          "name": "industry",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "stepsTaken": {
+          "name": "stepsTaken",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tips": {
+          "name": "tips",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "isPublished": {
+          "name": "isPublished",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "publishedAt": {
+          "name": "publishedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "unpublishedAt": {
+          "name": "unpublishedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "TransitionStory_userId_unique": {
+          "name": "TransitionStory_userId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "userId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "pivotpath.User": {
+      "name": "User",
+      "schema": "pivotpath",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "passwordHash": {
+          "name": "passwordHash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "User_email_unique": {
+          "name": "User_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "pivotpath.UserProfile": {
+      "name": "UserProfile",
+      "schema": "pivotpath",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currentJobTitle": {
+          "name": "currentJobTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "topSkills": {
+          "name": "topSkills",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "financialConcernType": {
+          "name": "financialConcernType",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "industriesOfInterest": {
+          "name": "industriesOfInterest",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "targetRole": {
+          "name": "targetRole",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "stillDecidingRole": {
+          "name": "stillDecidingRole",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "transitionMotivation": {
+          "name": "transitionMotivation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "yearsExperience": {
+          "name": "yearsExperience",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "educationLevel": {
+          "name": "educationLevel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "weeklyTimeCommitment": {
+          "name": "weeklyTimeCommitment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "timelineUrgency": {
+          "name": "timelineUrgency",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "onboardingStep": {
+          "name": "onboardingStep",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "onboardingCompletedAt": {
+          "name": "onboardingCompletedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "UserProfile_userId_User_id_fk": {
+          "name": "UserProfile_userId_User_id_fk",
+          "tableFrom": "UserProfile",
+          "tableTo": "User",
+          "schemaTo": "pivotpath",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "UserProfile_userId_unique": {
+          "name": "UserProfile_userId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "userId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {
+    "pivotpath": "pivotpath"
+  },
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
