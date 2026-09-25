@@ -1,8 +1,9 @@
 import Link from "next/link";
+import { eq } from "drizzle-orm";
 import { restartQuestionnaire } from "@/app/onboarding/actions";
 import { logOut } from "@/lib/auth/actions";
 import { getCurrentUserId } from "@/lib/current-user";
-import { prisma } from "@/lib/prisma";
+import { db, financialProfile } from "@/lib/db";
 
 type NavKey = "dashboard" | "stories" | "financial";
 
@@ -19,7 +20,10 @@ export async function AppShell({
   const userId = await getCurrentUserId();
   const hasFinancialProfile = userId
     ? Boolean(
-        await prisma.financialProfile.findUnique({ where: { userId }, select: { id: true } })
+        await db.query.financialProfile.findFirst({
+          where: eq(financialProfile.userId, userId),
+          columns: { id: true },
+        })
       )
     : false;
   const financialHref = hasFinancialProfile ? "/financial/plan" : "/financial";

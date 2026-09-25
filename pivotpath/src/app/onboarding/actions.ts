@@ -1,9 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { eq, inArray } from "drizzle-orm";
+import { db, milestone, roadmap, userProfile } from "@/lib/db";
 import { getCurrentUserId } from "@/lib/current-user";
-import { Prisma } from "@/generated/prisma/client";
 import {
   step1Schema,
   step2Schema,
@@ -28,27 +28,39 @@ export async function restartQuestionnaire() {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  await prisma.milestone.deleteMany({ where: { roadmap: { userId } } });
-  await prisma.roadmap.deleteMany({ where: { userId } });
-  await prisma.userProfile.upsert({
-    where: { userId },
-    create: { userId },
-    update: {
-      currentJobTitle: null,
-      topSkills: Prisma.JsonNull,
-      financialConcernType: null,
-      industriesOfInterest: Prisma.JsonNull,
-      targetRole: null,
-      stillDecidingRole: false,
-      transitionMotivation: null,
-      yearsExperience: null,
-      educationLevel: null,
-      weeklyTimeCommitment: null,
-      timelineUrgency: null,
-      onboardingStep: 1,
-      onboardingCompletedAt: null,
-    },
-  });
+  const existingRoadmaps = await db
+    .select({ id: roadmap.id })
+    .from(roadmap)
+    .where(eq(roadmap.userId, userId));
+  const roadmapIds = existingRoadmaps.map((r) => r.id);
+
+  if (roadmapIds.length > 0) {
+    await db.delete(milestone).where(inArray(milestone.roadmapId, roadmapIds));
+  }
+  await db.delete(roadmap).where(eq(roadmap.userId, userId));
+
+  await db
+    .insert(userProfile)
+    .values({ userId })
+    .onConflictDoUpdate({
+      target: userProfile.userId,
+      set: {
+        currentJobTitle: null,
+        topSkills: null,
+        financialConcernType: null,
+        industriesOfInterest: null,
+        targetRole: null,
+        stillDecidingRole: false,
+        transitionMotivation: null,
+        yearsExperience: null,
+        educationLevel: null,
+        weeklyTimeCommitment: null,
+        timelineUrgency: null,
+        onboardingStep: 1,
+        onboardingCompletedAt: null,
+        updatedAt: new Date(),
+      },
+    });
 
   redirect("/onboarding/step-1");
 }
@@ -68,24 +80,27 @@ export async function saveStep1(input: Step1Input): Promise<ActionResult> {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const existing = await prisma.userProfile.findUnique({
-    where: { userId },
-    select: { onboardingStep: true },
+  const existing = await db.query.userProfile.findFirst({
+    where: eq(userProfile.userId, userId),
+    columns: { onboardingStep: true },
   });
   const existingStep = existing?.onboardingStep ?? 1;
 
-  await prisma.userProfile.upsert({
-    where: { userId },
-    create: {
+  await db
+    .insert(userProfile)
+    .values({
       userId,
       ...parsed.data,
       onboardingStep: nextStepAfter(1, 1),
-    },
-    update: {
-      ...parsed.data,
-      onboardingStep: nextStepAfter(existingStep, 1),
-    },
-  });
+    })
+    .onConflictDoUpdate({
+      target: userProfile.userId,
+      set: {
+        ...parsed.data,
+        onboardingStep: nextStepAfter(existingStep, 1),
+        updatedAt: new Date(),
+      },
+    });
 
   redirect(redirectTargetAfterSave(existingStep, 1));
 }
@@ -99,21 +114,22 @@ export async function saveStep2(input: Step2Input): Promise<ActionResult> {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const existing = await prisma.userProfile.findUnique({
-    where: { userId },
-    select: { onboardingStep: true },
+  const existing = await db.query.userProfile.findFirst({
+    where: eq(userProfile.userId, userId),
+    columns: { onboardingStep: true },
   });
   const existingStep = existing?.onboardingStep ?? 1;
 
-  await prisma.userProfile.update({
-    where: { userId },
-    data: {
+  await db
+    .update(userProfile)
+    .set({
       targetRole: parsed.data.targetRole || null,
       stillDecidingRole: parsed.data.stillDecidingRole,
       transitionMotivation: parsed.data.transitionMotivation,
       onboardingStep: nextStepAfter(existingStep, 2),
-    },
-  });
+      updatedAt: new Date(),
+    })
+    .where(eq(userProfile.userId, userId));
 
   redirect(redirectTargetAfterSave(existingStep, 2));
 }
@@ -127,19 +143,20 @@ export async function saveStep3(input: Step3Input): Promise<ActionResult> {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const existing = await prisma.userProfile.findUnique({
-    where: { userId },
-    select: { onboardingStep: true },
+  const existing = await db.query.userProfile.findFirst({
+    where: eq(userProfile.userId, userId),
+    columns: { onboardingStep: true },
   });
   const existingStep = existing?.onboardingStep ?? 1;
 
-  await prisma.userProfile.update({
-    where: { userId },
-    data: {
+  await db
+    .update(userProfile)
+    .set({
       ...parsed.data,
       onboardingStep: nextStepAfter(existingStep, 3),
-    },
-  });
+      updatedAt: new Date(),
+    })
+    .where(eq(userProfile.userId, userId));
 
   redirect(redirectTargetAfterSave(existingStep, 3));
 }
@@ -148,7 +165,7 @@ export async function submitOnboarding(): Promise<void> {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const profile = await prisma.userProfile.findUnique({ where: { userId } });
+  const profile = await db.query.userProfile.findFirst({ where: eq(userProfile.userId, userId) });
 
   const step1Check = step1Schema.safeParse({
     currentJobTitle: profile?.currentJobTitle ?? "",
@@ -173,10 +190,10 @@ export async function submitOnboarding(): Promise<void> {
   });
   if (!step3Check.success) redirect("/onboarding/step-3");
 
-  await prisma.userProfile.update({
-    where: { userId },
-    data: { onboardingCompletedAt: new Date() },
-  });
+  await db
+    .update(userProfile)
+    .set({ onboardingCompletedAt: new Date(), updatedAt: new Date() })
+    .where(eq(userProfile.userId, userId));
 
   redirect("/roadmap/generating");
 }

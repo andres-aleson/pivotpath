@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { asc, eq } from "drizzle-orm";
+import { db, milestone, roadmap, transitionStory, userProfile } from "@/lib/db";
 import { getCurrentUserId } from "@/lib/current-user";
 import { MilestoneStatusControl } from "@/app/roadmap/components/MilestoneStatusControl";
 import { markTransitionComplete } from "@/app/roadmap/actions";
@@ -18,25 +19,25 @@ export default async function RoadmapPage() {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const profile = await prisma.userProfile.findUnique({ where: { userId } });
+  const profile = await db.query.userProfile.findFirst({ where: eq(userProfile.userId, userId) });
   if (!profile?.onboardingCompletedAt) redirect("/onboarding");
 
-  const roadmap = await prisma.roadmap.findUnique({
-    where: { userId },
-    include: { milestones: { orderBy: { order: "asc" } } },
+  const roadmapData = await db.query.roadmap.findFirst({
+    where: eq(roadmap.userId, userId),
+    with: { milestones: { orderBy: asc(milestone.order) } },
   });
-  if (!roadmap) redirect("/roadmap/generating");
+  if (!roadmapData) redirect("/roadmap/generating");
 
-  const story = roadmap.transitionCompletedAt
-    ? await prisma.transitionStory.findUnique({ where: { userId } })
+  const story = roadmapData.transitionCompletedAt
+    ? await db.query.transitionStory.findFirst({ where: eq(transitionStory.userId, userId) })
     : null;
 
-  const total = roadmap.milestones.length;
-  const completed = roadmap.milestones.filter((m) => m.status === "done").length;
+  const total = roadmapData.milestones.length;
+  const completed = roadmapData.milestones.filter((m) => m.status === "done").length;
   const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
   // The first not-yet-started milestone gets the "next step" treatment;
   // later ones read as further-out/locked, matching the mockup's hierarchy.
-  const nextUpId = roadmap.milestones.find((m) => m.status === "todo")?.id;
+  const nextUpId = roadmapData.milestones.find((m) => m.status === "todo")?.id;
 
   return (
     <AppShell active="dashboard">
@@ -47,7 +48,7 @@ export default async function RoadmapPage() {
           </h1>
           <p className="text-body-lg text-on-surface-variant">
             Here&apos;s your path forward. You&apos;ve completed {percent}% of your transition to{" "}
-            <span className="font-bold text-primary">{roadmap.targetRole}</span>.
+            <span className="font-bold text-primary">{roadmapData.targetRole}</span>.
           </p>
         </section>
 
@@ -60,8 +61,8 @@ export default async function RoadmapPage() {
             </div>
 
             <div className="space-y-space-md">
-              {roadmap.milestones.map((milestone, index) => {
-                const isLast = index === roadmap.milestones.length - 1;
+              {roadmapData.milestones.map((milestone, index) => {
+                const isLast = index === roadmapData.milestones.length - 1;
                 const isNextUp = milestone.id === nextUpId;
 
                 return (
@@ -144,7 +145,7 @@ export default async function RoadmapPage() {
         </div>
 
         <div className="mt-space-lg bg-surface-container rounded-xl p-space-md border border-outline-variant/30 flex flex-col md:flex-row md:items-center justify-between gap-space-md">
-          {!roadmap.transitionCompletedAt && (
+          {!roadmapData.transitionCompletedAt && (
             <>
               <div>
                 <h3 className="text-headline-md text-primary">Landed the new role?</h3>
@@ -163,7 +164,7 @@ export default async function RoadmapPage() {
               </form>
             </>
           )}
-          {roadmap.transitionCompletedAt && !story && (
+          {roadmapData.transitionCompletedAt && !story && (
             <>
               <div>
                 <h3 className="text-headline-md text-primary">You did it!</h3>
@@ -179,7 +180,7 @@ export default async function RoadmapPage() {
               </Link>
             </>
           )}
-          {roadmap.transitionCompletedAt && story && (
+          {roadmapData.transitionCompletedAt && story && (
             <>
               <div>
                 <h3 className="text-headline-md text-primary">Your story is live</h3>

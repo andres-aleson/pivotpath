@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { asc, eq } from "drizzle-orm";
+import { db, milestone, roadmap, transitionStory, userProfile } from "@/lib/db";
 import { getCurrentUserId } from "@/lib/current-user";
 import { ShareStoryForm } from "@/app/stories/share/ShareStoryForm";
 
@@ -7,21 +8,21 @@ export default async function ShareStoryPage() {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const roadmap = await prisma.roadmap.findUnique({
-    where: { userId },
-    include: { milestones: { orderBy: { order: "asc" } } },
+  const roadmapData = await db.query.roadmap.findFirst({
+    where: eq(roadmap.userId, userId),
+    with: { milestones: { orderBy: asc(milestone.order) } },
   });
-  if (!roadmap?.transitionCompletedAt) redirect("/roadmap");
+  if (!roadmapData?.transitionCompletedAt) redirect("/roadmap");
 
   const [profile, story] = await Promise.all([
-    prisma.userProfile.findUnique({ where: { userId } }),
-    prisma.transitionStory.findUnique({ where: { userId } }),
+    db.query.userProfile.findFirst({ where: eq(userProfile.userId, userId) }),
+    db.query.transitionStory.findFirst({ where: eq(transitionStory.userId, userId) }),
   ]);
 
   const industries = (profile?.industriesOfInterest as string[] | null) ?? [];
   const draftStepsTaken =
     story?.stepsTaken ??
-    roadmap.milestones.map((m) => `${m.title} — ${m.description}`).join("\n\n");
+    roadmapData.milestones.map((m) => `${m.title} — ${m.description}`).join("\n\n");
 
   return (
     <main className="min-h-screen flex items-start justify-center px-gutter py-space-xl bg-gradient-to-b from-background to-surface-container">
@@ -41,7 +42,7 @@ export default async function ShareStoryPage() {
               displayName: story?.displayName ?? "",
               photoDataUrl: story?.photoUrl ?? "",
               fromRole: story?.fromRole ?? profile?.currentJobTitle ?? "",
-              toRole: story?.toRole ?? roadmap.targetRole,
+              toRole: story?.toRole ?? roadmapData.targetRole,
               industry: story?.industry ?? industries[0],
               stepsTaken: draftStepsTaken,
               tips: story?.tips ?? "",

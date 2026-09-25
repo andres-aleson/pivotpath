@@ -1,16 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db, roadmap, transitionStory } from "@/lib/db";
 import { getCurrentUserId } from "@/lib/current-user";
 
 export default async function TransitionCompletePage() {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const roadmap = await prisma.roadmap.findUnique({ where: { userId } });
-  if (!roadmap?.transitionCompletedAt) redirect("/roadmap");
+  const roadmapData = await db.query.roadmap.findFirst({ where: eq(roadmap.userId, userId) });
+  if (!roadmapData?.transitionCompletedAt) redirect("/roadmap");
 
-  const story = await prisma.transitionStory.findUnique({ where: { userId } });
+  const story = await db.query.transitionStory.findFirst({ where: eq(transitionStory.userId, userId) });
 
   return (
     <main className="min-h-screen flex items-center justify-center px-gutter py-space-xl bg-gradient-to-b from-background to-surface-container">
@@ -22,7 +23,7 @@ export default async function TransitionCompletePage() {
         </div>
         <h1 className="text-headline-xl text-primary mb-base">Congratulations!</h1>
         <p className="text-body-lg text-on-surface-variant mb-space-lg">
-          You've completed your transition to <span className="font-bold text-primary">{roadmap.targetRole}</span>.
+          You've completed your transition to <span className="font-bold text-primary">{roadmapData.targetRole}</span>.
           That's a huge milestone — thanks for sticking with it.
         </p>
 

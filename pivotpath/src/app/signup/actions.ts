@@ -2,7 +2,8 @@
 
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db, user } from "@/lib/db";
 import { signIn } from "@/lib/auth";
 import { signUpSchema, type SignUpInput } from "@/lib/auth/schema";
 
@@ -16,13 +17,13 @@ export async function signUp(input: SignUpInput): Promise<ActionResult> {
 
   const email = parsed.data.email.trim().toLowerCase();
 
-  const existing = await prisma.user.findUnique({ where: { email } });
+  const existing = await db.query.user.findFirst({ where: eq(user.email, email) });
   if (existing) {
     return { ok: false, error: "An account with that email already exists." };
   }
 
   const passwordHash = await bcrypt.hash(parsed.data.password, 10);
-  await prisma.user.create({ data: { email, passwordHash } });
+  await db.insert(user).values({ email, passwordHash });
 
   try {
     await signIn("credentials", {

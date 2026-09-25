@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db, financialProfile as financialProfileTable } from "@/lib/db";
 import { getCurrentUserId } from "@/lib/current-user";
 import { AppShell } from "@/components/AppShell";
 import { calculateRunwayMonths } from "@/lib/financial/plan";
@@ -15,7 +16,9 @@ export default async function FinancialPlanPage() {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const financialProfile = await prisma.financialProfile.findUnique({ where: { userId } });
+  const financialProfile = await db.query.financialProfile.findFirst({
+    where: eq(financialProfileTable.userId, userId),
+  });
   if (!financialProfile) redirect("/financial");
 
   const runwayMonths = calculateRunwayMonths(financialProfile);

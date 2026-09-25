@@ -1,7 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db, financialProfile } from "@/lib/db";
 import { getCurrentUserId } from "@/lib/current-user";
 import { financialProfileSchema, type FinancialProfileInput } from "@/lib/financial/schema";
 
@@ -16,11 +17,13 @@ export async function saveFinancialProfile(input: FinancialProfileInput): Promis
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  await prisma.financialProfile.upsert({
-    where: { userId },
-    create: { userId, ...parsed.data },
-    update: { ...parsed.data },
-  });
+  await db
+    .insert(financialProfile)
+    .values({ userId, ...parsed.data })
+    .onConflictDoUpdate({
+      target: financialProfile.userId,
+      set: { ...parsed.data, updatedAt: new Date() },
+    });
 
   redirect("/financial/plan");
 }

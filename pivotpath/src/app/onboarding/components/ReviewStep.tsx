@@ -4,7 +4,7 @@ import {
   TIMELINE_URGENCY_OPTIONS,
 } from "@/lib/onboarding/schema";
 import { submitOnboarding } from "@/app/onboarding/actions";
-import type { UserProfile } from "@/generated/prisma/client";
+import type { UserProfile } from "@/lib/db";
 
 function ReviewRow({ label, value }: { label: string; value: string }) {
   return (

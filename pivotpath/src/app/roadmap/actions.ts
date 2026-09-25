@@ -2,7 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db, milestone, roadmap, userProfile, type UserProfile } from "@/lib/db";
 import { gemini, GEMINI_MODEL } from "@/lib/gemini";
 import {
   roadmapResponseJsonSchema,
@@ -15,7 +16,6 @@ import {
   FINANCIAL_CONCERN_OPTIONS,
   TIMELINE_URGENCY_OPTIONS,
 } from "@/lib/onboarding/schema";
-import { Prisma, type UserProfile } from "@/generated/prisma/client";
 
 type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -55,10 +55,10 @@ export async function generateRoadmap(): Promise<ActionResult> {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const existing = await prisma.roadmap.findUnique({ where: { userId } });
+  const existing = await db.query.roadmap.findFirst({ where: eq(roadmap.userId, userId) });
   if (existing) redirect("/roadmap");
 
-  const profile = await prisma.userProfile.findUnique({ where: { userId } });
+  const profile = await db.query.userProfile.findFirst({ where: eq(userProfile.userId, userId) });
   if (!profile?.onboardingCompletedAt) redirect("/onboarding");
 
   let parsed: RoadmapGeneration;
@@ -92,27 +92,29 @@ export async function generateRoadmap(): Promise<ActionResult> {
   }
 
   try {
-    await prisma.roadmap.create({
-      data: {
-        userId,
-        targetRole: parsed.targetRole,
-        milestones: {
-          // The first milestone starts "in progress" so a fresh roadmap has
-          // an obvious next step instead of everything looking equally distant.
-          create: parsed.milestones.map((m, index) => ({
-            title: m.title,
-            description: m.description,
-            order: index,
-            status: index === 0 ? "in_progress" : "todo",
-          })),
-        },
-      },
+    await db.transaction(async (tx) => {
+      const [created] = await tx
+        .insert(roadmap)
+        .values({ userId, targetRole: parsed.targetRole })
+        .returning({ id: roadmap.id });
+
+      // The first milestone starts "in progress" so a fresh roadmap has
+      // an obvious next step instead of everything looking equally distant.
+      await tx.insert(milestone).values(
+        parsed.milestones.map((m, index) => ({
+          roadmapId: created.id,
+          title: m.title,
+          description: m.description,
+          order: index,
+          status: index === 0 ? "in_progress" : "todo",
+        }))
+      );
     });
   } catch (err) {
     // A concurrent request already created this session's roadmap first — that's fine,
     // just show it rather than surfacing a duplicate-key error.
     const isDuplicate =
-      err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002";
+      typeof err === "object" && err !== null && "code" in err && err.code === "23505";
     if (!isDuplicate) throw err;
   }
 
@@ -123,14 +125,14 @@ export async function markTransitionComplete() {
   const userId = await getCurrentUserId();
   if (!userId) redirect("/login");
 
-  const roadmap = await prisma.roadmap.findUnique({ where: { userId } });
-  if (!roadmap) redirect("/roadmap");
+  const existing = await db.query.roadmap.findFirst({ where: eq(roadmap.userId, userId) });
+  if (!existing) redirect("/roadmap");
 
-  if (!roadmap.transitionCompletedAt) {
-    await prisma.roadmap.update({
-      where: { userId },
-      data: { transitionCompletedAt: new Date() },
-    });
+  if (!existing.transitionCompletedAt) {
+    await db
+      .update(roadmap)
+      .set({ transitionCompletedAt: new Date() })
+      .where(eq(roadmap.userId, userId));
   }
 
   redirect("/transition-complete");
@@ -140,16 +142,16 @@ export async function updateMilestoneStatus(milestoneId: string, status: Milesto
   const userId = await getCurrentUserId();
   if (!userId) return;
 
-  const milestone = await prisma.milestone.findUnique({
-    where: { id: milestoneId },
-    select: { roadmap: { select: { userId: true } } },
+  const found = await db.query.milestone.findFirst({
+    where: eq(milestone.id, milestoneId),
+    with: { roadmap: { columns: { userId: true } } },
   });
-  if (milestone?.roadmap.userId !== userId) return;
+  if (found?.roadmap.userId !== userId) return;
 
-  await prisma.milestone.update({
-    where: { id: milestoneId },
-    data: { status, completedAt: status === "done" ? new Date() : null },
-  });
+  await db
+    .update(milestone)
+    .set({ status, completedAt: status === "done" ? new Date() : null })
+    .where(eq(milestone.id, milestoneId));
 
   revalidatePath("/roadmap");
 }
