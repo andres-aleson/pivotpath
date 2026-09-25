@@ -18,7 +18,7 @@ export default async function Home() {
               </div>
               <h1 className="text-headline-xl text-primary leading-tight">
                 Your Next Chapter <br />
-                <span className="text-secondary">Starts Here.</span>
+                <span className="text-secondary">Starts Here</span>
               </h1>
               <p className="text-body-lg text-on-surface-variant max-w-xl">
                 We help you navigate your career transition with a personalized plan, financial
