@@ -1,17 +1,26 @@
-import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { getCurrentUserId } from "@/lib/current-user";
+"use client";
+
+import { useEffect, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { FinancialCheckInForm } from "@/app/financial/FinancialCheckInForm";
+import { getJourney } from "@/lib/journey/store";
+import type { FinancialProfileInput } from "@/lib/financial/schema";
 
-export default async function FinancialCheckInPage() {
-  const userId = await getCurrentUserId();
-  if (!userId) redirect("/login");
+export default function FinancialCheckInPage() {
+  const [defaultValues, setDefaultValues] = useState<Partial<FinancialProfileInput> | null>(null);
+  const [hasExisting, setHasExisting] = useState(false);
 
-  const [financialProfile, profile] = await Promise.all([
-    prisma.financialProfile.findUnique({ where: { userId } }),
-    prisma.userProfile.findUnique({ where: { userId } }),
-  ]);
+  useEffect(() => {
+    const journey = getJourney();
+    setHasExisting(Boolean(journey.financialProfile));
+    setDefaultValues({
+      ...journey.financialProfile,
+      financialConcernType:
+        journey.financialProfile?.financialConcernType ?? journey.profile?.financialConcernType,
+    });
+  }, []);
+
+  if (!defaultValues) return null;
 
   return (
     <AppShell active="financial">
@@ -20,22 +29,15 @@ export default async function FinancialCheckInPage() {
           <div className="rounded-xl p-space-md md:p-space-lg shadow-sm bg-surface-container-lowest border border-outline-variant/30">
             <div className="mb-space-lg">
               <h1 className="text-headline-lg text-primary mb-2">
-                {financialProfile ? "Update Your Numbers" : "Financial Check-In"}
+                {hasExisting ? "Update Your Numbers" : "Financial Check-In"}
               </h1>
               <p className="text-body-md text-on-surface-variant">
                 A few numbers so we can estimate your runway and point you toward relevant
-                budget tips — self-reported only, never linked accounts or payment info.
+                budget tips — nothing you enter here is saved, it only lives in this browser
+                tab for your current visit.
               </p>
             </div>
-            <FinancialCheckInForm
-              defaultValues={{
-                monthlyIncomeDuringTransition: financialProfile?.monthlyIncomeDuringTransition,
-                essentialMonthlyExpenses: financialProfile?.essentialMonthlyExpenses,
-                currentSavings: financialProfile?.currentSavings,
-                financialConcernType:
-                  financialProfile?.financialConcernType ?? profile?.financialConcernType ?? undefined,
-              }}
-            />
+            <FinancialCheckInForm defaultValues={defaultValues} />
           </div>
         </div>
       </div>

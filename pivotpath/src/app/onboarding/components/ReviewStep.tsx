@@ -1,10 +1,17 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   FINANCIAL_CONCERN_OPTIONS,
   TIMELINE_URGENCY_OPTIONS,
+  type Step1Input,
+  type Step2Input,
+  type Step3Input,
 } from "@/lib/onboarding/schema";
-import { submitOnboarding } from "@/app/onboarding/actions";
-import type { UserProfile } from "@/generated/prisma/client";
+import { setJourney } from "@/lib/journey/store";
+
+type Profile = Step1Input & Step2Input & Step3Input;
 
 function ReviewRow({ label, value }: { label: string; value: string }) {
   return (
@@ -39,15 +46,21 @@ function ReviewSection({
   );
 }
 
-export function ReviewStep({ profile }: { profile: UserProfile }) {
-  const skills = (profile.topSkills as string[] | null) ?? [];
-  const industries = (profile.industriesOfInterest as string[] | null) ?? [];
+export function ReviewStep({ profile }: { profile: Profile }) {
+  const router = useRouter();
+  const skills = profile.topSkills ?? [];
+  const industries = profile.industriesOfInterest ?? [];
   const financialConcern = FINANCIAL_CONCERN_OPTIONS.find(
     (o) => o.value === profile.financialConcernType
   )?.label;
   const timeline = TIMELINE_URGENCY_OPTIONS.find(
     (o) => o.value === profile.timelineUrgency
   )?.label;
+
+  function handleSubmit() {
+    setJourney({ onboardingCompletedAt: new Date().toISOString() });
+    router.push("/roadmap/generating");
+  }
 
   return (
     <div className="space-y-space-lg">
@@ -73,10 +86,7 @@ export function ReviewStep({ profile }: { profile: UserProfile }) {
         <ReviewRow label="Timeline" value={timeline ?? ""} />
       </ReviewSection>
 
-      <form
-        action={submitOnboarding}
-        className="flex items-center justify-between pt-space-lg border-t border-outline-variant/30"
-      >
+      <div className="flex items-center justify-between pt-space-lg border-t border-outline-variant/30">
         <Link
           href="/onboarding/step-3"
           className="flex items-center gap-2 px-6 py-3 rounded-lg text-primary text-label-md hover:bg-surface-container transition-colors"
@@ -85,13 +95,14 @@ export function ReviewStep({ profile }: { profile: UserProfile }) {
           Back
         </Link>
         <button
-          type="submit"
+          type="button"
+          onClick={handleSubmit}
           className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md"
         >
           Submit
           <span className="material-symbols-outlined text-[20px]">check</span>
         </button>
-      </form>
+      </div>
     </div>
   );
 }

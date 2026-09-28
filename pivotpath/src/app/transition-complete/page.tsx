@@ -1,16 +1,29 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { getCurrentUserId } from "@/lib/current-user";
+import { useRouter } from "next/navigation";
+import { getJourney } from "@/lib/journey/store";
+import type { JourneyRoadmap, JourneyStory } from "@/lib/journey/types";
 
-export default async function TransitionCompletePage() {
-  const userId = await getCurrentUserId();
-  if (!userId) redirect("/login");
+export default function TransitionCompletePage() {
+  const router = useRouter();
+  const [roadmap, setRoadmap] = useState<JourneyRoadmap | null>(null);
+  const [story, setStory] = useState<JourneyStory | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
-  const roadmap = await prisma.roadmap.findUnique({ where: { userId } });
-  if (!roadmap?.transitionCompletedAt) redirect("/roadmap");
+  useEffect(() => {
+    const journey = getJourney();
+    if (!journey.roadmap?.transitionCompletedAt) {
+      router.replace("/roadmap");
+      return;
+    }
+    setRoadmap(journey.roadmap);
+    setStory(journey.story ?? null);
+    setLoaded(true);
+  }, [router]);
 
-  const story = await prisma.transitionStory.findUnique({ where: { userId } });
+  if (!loaded || !roadmap) return null;
 
   return (
     <main className="min-h-screen flex items-center justify-center px-gutter py-space-xl bg-gradient-to-b from-background to-surface-container">

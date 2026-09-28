@@ -1,19 +1,21 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   step1Schema,
+  step2Schema,
+  step3Schema,
   FINANCIAL_CONCERN_OPTIONS,
   INDUSTRY_OPTIONS,
   type Step1Input,
 } from "@/lib/onboarding/schema";
-import { saveStep1 } from "@/app/onboarding/actions";
+import { getJourney, setJourney } from "@/lib/journey/store";
 
 export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input> }) {
-  const [isPending, startTransition] = useTransition();
-  const [serverError, setServerError] = useState<string | null>(null);
+  const router = useRouter();
   const [skillInput, setSkillInput] = useState("");
 
   const {
@@ -88,11 +90,14 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
   }
 
   const onSubmit = handleSubmit((data) => {
-    setServerError(null);
-    startTransition(async () => {
-      const result = await saveStep1(data);
-      if (!result.ok) setServerError(result.error);
-    });
+    const previous = getJourney().profile ?? {};
+    const hadReachedReview =
+      step1Schema.safeParse(previous).success &&
+      step2Schema.safeParse(previous).success &&
+      step3Schema.safeParse(previous).success;
+
+    setJourney({ profile: { ...previous, ...data } });
+    router.push(hadReachedReview ? "/onboarding/step-4" : "/onboarding/step-2");
   });
 
   return (
@@ -241,19 +246,13 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
         )}
       </div>
 
-      {serverError && (
-        <p className="text-label-sm text-error" role="alert">
-          {serverError}
-        </p>
-      )}
-
       <div className="flex items-center justify-end pt-space-lg border-t border-outline-variant/30">
         <button
           type="submit"
-          disabled={!isValid || isPending}
+          disabled={!isValid}
           className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          {isPending ? "Saving..." : "Continue"}
+          Continue
           <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
         </button>
       </div>

@@ -1,27 +1,22 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/prisma";
 import { gemini, GEMINI_MODEL } from "@/lib/gemini";
 import {
   roadmapResponseJsonSchema,
   roadmapSchema,
   type RoadmapGeneration,
-  type MilestoneStatus,
 } from "@/lib/roadmap/schema";
-import { getCurrentUserId } from "@/lib/current-user";
 import {
   FINANCIAL_CONCERN_OPTIONS,
   TIMELINE_URGENCY_OPTIONS,
 } from "@/lib/onboarding/schema";
-import { Prisma, type UserProfile } from "@/generated/prisma/client";
+import type { OnboardingProfile } from "@/lib/journey/types";
 
-type ActionResult = { ok: true } | { ok: false; error: string };
+type ActionResult = { ok: true; data: RoadmapGeneration } | { ok: false; error: string };
 
-function buildPrompt(profile: UserProfile): string {
-  const skills = ((profile.topSkills as string[] | null) ?? []).join(", ");
-  const industries = ((profile.industriesOfInterest as string[] | null) ?? []).join(", ");
+function buildPrompt(profile: OnboardingProfile): string {
+  const skills = profile.topSkills.join(", ");
+  const industries = profile.industriesOfInterest.join(", ");
   const financialConcern = FINANCIAL_CONCERN_OPTIONS.find(
     (o) => o.value === profile.financialConcernType
   )?.label;
@@ -51,17 +46,7 @@ Biggest financial concern about transitioning: ${financialConcern}
 Produce 5-7 ordered milestones that take them from where they are now to the target role, sequenced realistically given their weekly time availability. Each milestone should reference something specific from their background — their current skills, their timeline, or their stated concern — not boilerplate advice that could apply to anyone.`;
 }
 
-export async function generateRoadmap(): Promise<ActionResult> {
-  const userId = await getCurrentUserId();
-  if (!userId) redirect("/login");
-
-  const existing = await prisma.roadmap.findUnique({ where: { userId } });
-  if (existing) redirect("/roadmap");
-
-  const profile = await prisma.userProfile.findUnique({ where: { userId } });
-  if (!profile?.onboardingCompletedAt) redirect("/onboarding");
-
-  let parsed: RoadmapGeneration;
+export async function generateRoadmap(profile: OnboardingProfile): Promise<ActionResult> {
   try {
     const response = await gemini.interactions.create({
       model: GEMINI_MODEL,
@@ -85,71 +70,9 @@ export async function generateRoadmap(): Promise<ActionResult> {
         error: "Couldn't make sense of the generated roadmap. Please try again.",
       };
     }
-    parsed = result.data;
+    return { ok: true, data: result.data };
   } catch (err) {
     console.error("Roadmap generation failed:", err);
     return { ok: false, error: "Couldn't generate your roadmap right now. Please try again." };
   }
-
-  try {
-    await prisma.roadmap.create({
-      data: {
-        userId,
-        targetRole: parsed.targetRole,
-        milestones: {
-          // The first milestone starts "in progress" so a fresh roadmap has
-          // an obvious next step instead of everything looking equally distant.
-          create: parsed.milestones.map((m, index) => ({
-            title: m.title,
-            description: m.description,
-            order: index,
-            status: index === 0 ? "in_progress" : "todo",
-          })),
-        },
-      },
-    });
-  } catch (err) {
-    // A concurrent request already created this session's roadmap first — that's fine,
-    // just show it rather than surfacing a duplicate-key error.
-    const isDuplicate =
-      err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002";
-    if (!isDuplicate) throw err;
-  }
-
-  redirect("/roadmap");
-}
-
-export async function markTransitionComplete() {
-  const userId = await getCurrentUserId();
-  if (!userId) redirect("/login");
-
-  const roadmap = await prisma.roadmap.findUnique({ where: { userId } });
-  if (!roadmap) redirect("/roadmap");
-
-  if (!roadmap.transitionCompletedAt) {
-    await prisma.roadmap.update({
-      where: { userId },
-      data: { transitionCompletedAt: new Date() },
-    });
-  }
-
-  redirect("/transition-complete");
-}
-
-export async function updateMilestoneStatus(milestoneId: string, status: MilestoneStatus) {
-  const userId = await getCurrentUserId();
-  if (!userId) return;
-
-  const milestone = await prisma.milestone.findUnique({
-    where: { id: milestoneId },
-    select: { roadmap: { select: { userId: true } } },
-  });
-  if (milestone?.roadmap.userId !== userId) return;
-
-  await prisma.milestone.update({
-    where: { id: milestoneId },
-    data: { status, completedAt: status === "done" ? new Date() : null },
-  });
-
-  revalidatePath("/roadmap");
 }

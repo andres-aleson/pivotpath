@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { step2Schema, type Step2Input } from "@/lib/onboarding/schema";
-import { saveStep2 } from "@/app/onboarding/actions";
+import { step1Schema, step2Schema, step3Schema, type Step2Input } from "@/lib/onboarding/schema";
+import { getJourney, setJourney } from "@/lib/journey/store";
 import Link from "next/link";
 
 export function Step2Form({ defaultValues }: { defaultValues: Partial<Step2Input> }) {
-  const [isPending, startTransition] = useTransition();
-  const [serverError, setServerError] = useState<string | null>(null);
+  const router = useRouter();
 
   const {
     register,
@@ -29,11 +28,14 @@ export function Step2Form({ defaultValues }: { defaultValues: Partial<Step2Input
   const stillDeciding = watch("stillDecidingRole");
 
   const onSubmit = handleSubmit((data) => {
-    setServerError(null);
-    startTransition(async () => {
-      const result = await saveStep2(data);
-      if (!result.ok) setServerError(result.error);
-    });
+    const previous = getJourney().profile ?? {};
+    const hadReachedReview =
+      step1Schema.safeParse(previous).success &&
+      step2Schema.safeParse(previous).success &&
+      step3Schema.safeParse(previous).success;
+
+    setJourney({ profile: { ...previous, ...data, targetRole: data.targetRole || undefined } });
+    router.push(hadReachedReview ? "/onboarding/step-4" : "/onboarding/step-3");
   });
 
   return (
@@ -79,12 +81,6 @@ export function Step2Form({ defaultValues }: { defaultValues: Partial<Step2Input
         )}
       </div>
 
-      {serverError && (
-        <p className="text-label-sm text-error" role="alert">
-          {serverError}
-        </p>
-      )}
-
       <div className="flex items-center justify-between pt-space-lg border-t border-outline-variant/30">
         <Link
           href="/onboarding/step-1"
@@ -95,10 +91,10 @@ export function Step2Form({ defaultValues }: { defaultValues: Partial<Step2Input
         </Link>
         <button
           type="submit"
-          disabled={!isValid || isPending}
+          disabled={!isValid}
           className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          {isPending ? "Saving..." : "Continue"}
+          Continue
           <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
         </button>
       </div>

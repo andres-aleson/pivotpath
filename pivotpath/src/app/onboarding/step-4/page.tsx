@@ -1,19 +1,44 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { OnboardingHeader } from "@/app/onboarding/components/OnboardingHeader";
 import { StepCard } from "@/app/onboarding/components/StepCard";
 import { ReviewStep } from "@/app/onboarding/components/ReviewStep";
-import { getCurrentProfile, getReachedStep } from "@/lib/onboarding/data";
-import { getCurrentUserId } from "@/lib/current-user";
+import { getJourney } from "@/lib/journey/store";
+import {
+  step1Schema,
+  step2Schema,
+  step3Schema,
+  type Step1Input,
+  type Step2Input,
+  type Step3Input,
+} from "@/lib/onboarding/schema";
 
-export default async function Step4Page() {
-  const userId = await getCurrentUserId();
-  if (!userId) redirect("/login");
+type Profile = Step1Input & Step2Input & Step3Input;
 
-  const reachedStep = await getReachedStep();
-  if (reachedStep < 4) redirect(`/onboarding/step-${reachedStep}`);
+export default function Step4Page() {
+  const router = useRouter();
+  const [profile, setProfile] = useState<Profile | null>(null);
 
-  const profile = await getCurrentProfile();
-  if (!profile) redirect("/onboarding/step-1");
+  useEffect(() => {
+    const stored = getJourney().profile ?? {};
+    if (!step1Schema.safeParse(stored).success) {
+      router.replace("/onboarding/step-1");
+      return;
+    }
+    if (!step2Schema.safeParse(stored).success) {
+      router.replace("/onboarding/step-2");
+      return;
+    }
+    if (!step3Schema.safeParse(stored).success) {
+      router.replace("/onboarding/step-3");
+      return;
+    }
+    setProfile(stored as Profile);
+  }, [router]);
+
+  if (!profile) return null;
 
   return (
     <>

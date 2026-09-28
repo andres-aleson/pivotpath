@@ -1,7 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { getCurrentUserId } from "@/lib/current-user";
+import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { calculateRunwayMonths } from "@/lib/financial/plan";
 import {
@@ -10,13 +11,23 @@ import {
   INCOME_OPPORTUNITY_CATEGORIES,
 } from "@/lib/financial/content";
 import { FINANCIAL_CONCERN_OPTIONS } from "@/lib/onboarding/schema";
+import { getJourney } from "@/lib/journey/store";
+import type { FinancialProfileInput } from "@/lib/financial/schema";
 
-export default async function FinancialPlanPage() {
-  const userId = await getCurrentUserId();
-  if (!userId) redirect("/login");
+export default function FinancialPlanPage() {
+  const router = useRouter();
+  const [financialProfile, setFinancialProfile] = useState<FinancialProfileInput | null>(null);
 
-  const financialProfile = await prisma.financialProfile.findUnique({ where: { userId } });
-  if (!financialProfile) redirect("/financial");
+  useEffect(() => {
+    const journey = getJourney();
+    if (!journey.financialProfile) {
+      router.replace("/financial");
+      return;
+    }
+    setFinancialProfile(journey.financialProfile);
+  }, [router]);
+
+  if (!financialProfile) return null;
 
   const runwayMonths = calculateRunwayMonths(financialProfile);
   const concernLabel = FINANCIAL_CONCERN_OPTIONS.find(
