@@ -1,8 +1,8 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
+import { db, financialProfile as financialProfileTable } from "@/lib/db";
+import { getCurrentUserId } from "@/lib/current-user";
 import { AppShell } from "@/components/AppShell";
 import { calculateRunwayMonths } from "@/lib/financial/plan";
 import {
@@ -11,23 +11,15 @@ import {
   INCOME_OPPORTUNITY_CATEGORIES,
 } from "@/lib/financial/content";
 import { FINANCIAL_CONCERN_OPTIONS } from "@/lib/onboarding/schema";
-import { getJourney } from "@/lib/journey/store";
-import type { FinancialProfileInput } from "@/lib/financial/schema";
 
-export default function FinancialPlanPage() {
-  const router = useRouter();
-  const [financialProfile, setFinancialProfile] = useState<FinancialProfileInput | null>(null);
+export default async function FinancialPlanPage() {
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
-  useEffect(() => {
-    const journey = getJourney();
-    if (!journey.financialProfile) {
-      router.replace("/financial");
-      return;
-    }
-    setFinancialProfile(journey.financialProfile);
-  }, [router]);
-
-  if (!financialProfile) return null;
+  const financialProfile = await db.query.financialProfile.findFirst({
+    where: eq(financialProfileTable.userId, userId),
+  });
+  if (!financialProfile) redirect("/financial");
 
   const runwayMonths = calculateRunwayMonths(financialProfile);
   const concernLabel = FINANCIAL_CONCERN_OPTIONS.find(

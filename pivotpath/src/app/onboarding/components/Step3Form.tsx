@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -11,14 +11,15 @@ import {
   TIMELINE_URGENCY_OPTIONS,
   type Step3Input,
 } from "@/lib/onboarding/schema";
-import { getJourney, setJourney } from "@/lib/journey/store";
+import { saveStep3 } from "@/app/onboarding/actions";
 import Link from "next/link";
 
 const selectClass =
   "w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-body-md";
 
 export function Step3Form({ defaultValues }: { defaultValues: Partial<Step3Input> }) {
-  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -36,9 +37,11 @@ export function Step3Form({ defaultValues }: { defaultValues: Partial<Step3Input
   });
 
   const onSubmit = handleSubmit((data) => {
-    const previous = getJourney().profile ?? {};
-    setJourney({ profile: { ...previous, ...data } });
-    router.push("/onboarding/step-4");
+    setServerError(null);
+    startTransition(async () => {
+      const result = await saveStep3(data);
+      if (!result.ok) setServerError(result.error);
+    });
   });
 
   return (
@@ -139,6 +142,12 @@ export function Step3Form({ defaultValues }: { defaultValues: Partial<Step3Input
         )}
       </div>
 
+      {serverError && (
+        <p className="text-label-sm text-error" role="alert">
+          {serverError}
+        </p>
+      )}
+
       <div className="flex items-center justify-between pt-space-lg border-t border-outline-variant/30">
         <Link
           href="/onboarding/step-2"
@@ -149,10 +158,10 @@ export function Step3Form({ defaultValues }: { defaultValues: Partial<Step3Input
         </Link>
         <button
           type="submit"
-          disabled={!isValid}
+          disabled={!isValid || isPending}
           className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          Continue
+          {isPending ? "Saving..." : "Continue"}
           <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
         </button>
       </div>

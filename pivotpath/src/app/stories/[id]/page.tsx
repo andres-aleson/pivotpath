@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { eq } from "drizzle-orm";
+import { db, transitionStory } from "@/lib/db";
 import { AppShell } from "@/components/AppShell";
 import { initials } from "@/lib/stories/initials";
 
@@ -10,7 +11,7 @@ export default async function StoryDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const story = await prisma.transitionStory.findUnique({ where: { id } });
+  const story = await db.query.transitionStory.findFirst({ where: eq(transitionStory.id, id) });
   if (!story || !story.isPublished) notFound();
 
   return (

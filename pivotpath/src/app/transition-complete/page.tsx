@@ -1,29 +1,17 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { getJourney } from "@/lib/journey/store";
-import type { JourneyRoadmap, JourneyStory } from "@/lib/journey/types";
+import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
+import { db, roadmap, transitionStory } from "@/lib/db";
+import { getCurrentUserId } from "@/lib/current-user";
 
-export default function TransitionCompletePage() {
-  const router = useRouter();
-  const [roadmap, setRoadmap] = useState<JourneyRoadmap | null>(null);
-  const [story, setStory] = useState<JourneyStory | null>(null);
-  const [loaded, setLoaded] = useState(false);
+export default async function TransitionCompletePage() {
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
-  useEffect(() => {
-    const journey = getJourney();
-    if (!journey.roadmap?.transitionCompletedAt) {
-      router.replace("/roadmap");
-      return;
-    }
-    setRoadmap(journey.roadmap);
-    setStory(journey.story ?? null);
-    setLoaded(true);
-  }, [router]);
+  const roadmapData = await db.query.roadmap.findFirst({ where: eq(roadmap.userId, userId) });
+  if (!roadmapData?.transitionCompletedAt) redirect("/roadmap");
 
-  if (!loaded || !roadmap) return null;
+  const story = await db.query.transitionStory.findFirst({ where: eq(transitionStory.userId, userId) });
 
   return (
     <main className="min-h-screen flex items-center justify-center px-gutter py-space-xl bg-gradient-to-b from-background to-surface-container">
@@ -35,7 +23,7 @@ export default function TransitionCompletePage() {
         </div>
         <h1 className="text-headline-xl text-primary mb-base">Congratulations!</h1>
         <p className="text-body-lg text-on-surface-variant mb-space-lg">
-          You've completed your transition to <span className="font-bold text-primary">{roadmap.targetRole}</span>.
+          You've completed your transition to <span className="font-bold text-primary">{roadmapData.targetRole}</span>.
           That's a huge milestone — thanks for sticking with it.
         </p>
 

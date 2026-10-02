@@ -1,57 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { generateRoadmap } from "@/app/roadmap/actions";
-import { getJourney, setJourney } from "@/lib/journey/store";
-import { step1Schema, step2Schema, step3Schema } from "@/lib/onboarding/schema";
-import type { OnboardingProfile } from "@/lib/journey/types";
 
 export function GeneratingScreen() {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const hasStarted = useRef(false);
 
   function run() {
-    const journey = getJourney();
-    if (journey.roadmap) {
-      router.replace("/roadmap");
-      return;
-    }
-
-    const profile = journey.profile ?? {};
-    const isComplete =
-      step1Schema.safeParse(profile).success &&
-      step2Schema.safeParse(profile).success &&
-      step3Schema.safeParse(profile).success;
-    if (!isComplete || !journey.onboardingCompletedAt) {
-      router.replace("/onboarding/step-1");
-      return;
-    }
-
     setError(null);
     startTransition(async () => {
-      const result = await generateRoadmap(profile as OnboardingProfile);
-      if (!result.ok) {
-        setError(result.error);
-        return;
-      }
-
-      setJourney({
-        roadmap: {
-          targetRole: result.data.targetRole,
-          milestones: result.data.milestones.map((m, index) => ({
-            id: crypto.randomUUID(),
-            title: m.title,
-            description: m.description,
-            status: index === 0 ? "in_progress" : "todo",
-            completedAt: null,
-          })),
-          transitionCompletedAt: null,
-        },
-      });
-      router.push("/roadmap");
+      const result = await generateRoadmap();
+      if (!result.ok) setError(result.error);
     });
   }
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { and, desc, eq, like, or } from "drizzle-orm";
+import { db, transitionStory } from "@/lib/db";
 import { AppShell } from "@/components/AppShell";
 import { INDUSTRY_OPTIONS } from "@/lib/onboarding/schema";
 import { initials } from "@/lib/stories/initials";
@@ -11,21 +12,19 @@ export default async function StoriesPage({
 }) {
   const { industry, q } = await searchParams;
 
-  const stories = await prisma.transitionStory.findMany({
-    where: {
-      isPublished: true,
-      ...(industry ? { industry } : {}),
-      ...(q
-        ? {
-            OR: [
-              { displayName: { contains: q } },
-              { fromRole: { contains: q } },
-              { toRole: { contains: q } },
-            ],
-          }
-        : {}),
-    },
-    orderBy: { publishedAt: "desc" },
+  const stories = await db.query.transitionStory.findMany({
+    where: and(
+      eq(transitionStory.isPublished, true),
+      industry ? eq(transitionStory.industry, industry) : undefined,
+      q
+        ? or(
+            like(transitionStory.displayName, `%${q}%`),
+            like(transitionStory.fromRole, `%${q}%`),
+            like(transitionStory.toRole, `%${q}%`)
+          )
+        : undefined
+    ),
+    orderBy: desc(transitionStory.publishedAt),
   });
 
   return (

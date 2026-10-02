@@ -1,14 +1,12 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { shareStorySchema, MAX_PHOTO_BYTES, type ShareStoryInput } from "@/lib/stories/schema";
 import { INDUSTRY_OPTIONS } from "@/lib/onboarding/schema";
 import { initials } from "@/lib/stories/initials";
 import { saveStory } from "@/app/stories/actions";
-import { setJourney } from "@/lib/journey/store";
 
 type Defaults = {
   displayName: string;
@@ -20,14 +18,7 @@ type Defaults = {
   tips: string;
 };
 
-export function ShareStoryForm({
-  defaultValues,
-  storyId,
-}: {
-  defaultValues: Defaults;
-  storyId?: string;
-}) {
-  const router = useRouter();
+export function ShareStoryForm({ defaultValues }: { defaultValues: Defaults }) {
   const [isPending, startTransition] = useTransition();
   const [serverError, setServerError] = useState<string | null>(null);
   const [photoError, setPhotoError] = useState<string | null>(null);
@@ -88,13 +79,8 @@ export function ShareStoryForm({
   const onSubmit = handleSubmit((data) => {
     setServerError(null);
     startTransition(async () => {
-      const result = await saveStory(data, storyId);
-      if (!result.ok) {
-        setServerError(result.error);
-        return;
-      }
-      setJourney({ story: { ...data, id: result.id } });
-      router.push(`/stories/${result.id}`);
+      const result = await saveStory(data);
+      if (!result.ok) setServerError(result.error);
     });
   });
 

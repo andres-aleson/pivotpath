@@ -1,31 +1,18 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { OnboardingHeader } from "@/app/onboarding/components/OnboardingHeader";
 import { StepCard } from "@/app/onboarding/components/StepCard";
 import { Step3Form } from "@/app/onboarding/components/Step3Form";
-import { getJourney } from "@/lib/journey/store";
-import { step1Schema, step2Schema, type Step3Input } from "@/lib/onboarding/schema";
+import { getCurrentProfile, getReachedStep } from "@/lib/onboarding/data";
+import { getCurrentUserId } from "@/lib/current-user";
 
-export default function Step3Page() {
-  const router = useRouter();
-  const [defaultValues, setDefaultValues] = useState<Partial<Step3Input> | null>(null);
+export default async function Step3Page() {
+  const userId = await getCurrentUserId();
+  if (!userId) redirect("/login");
 
-  useEffect(() => {
-    const profile = getJourney().profile ?? {};
-    if (!step1Schema.safeParse(profile).success) {
-      router.replace("/onboarding/step-1");
-      return;
-    }
-    if (!step2Schema.safeParse(profile).success) {
-      router.replace("/onboarding/step-2");
-      return;
-    }
-    setDefaultValues(profile);
-  }, [router]);
+  const reachedStep = await getReachedStep();
+  if (reachedStep < 3) redirect(`/onboarding/step-${reachedStep}`);
 
-  if (!defaultValues) return null;
+  const profile = await getCurrentProfile();
 
   return (
     <>
@@ -34,7 +21,14 @@ export default function Step3Page() {
         title="Your background and timeline"
         description="A little more context helps us calibrate how aggressive — or gradual — your roadmap should be."
       >
-        <Step3Form defaultValues={defaultValues} />
+        <Step3Form
+          defaultValues={{
+            yearsExperience: profile?.yearsExperience ?? undefined,
+            educationLevel: profile?.educationLevel ?? undefined,
+            weeklyTimeCommitment: profile?.weeklyTimeCommitment ?? undefined,
+            timelineUrgency: profile?.timelineUrgency ?? undefined,
+          }}
+        />
       </StepCard>
     </>
   );
