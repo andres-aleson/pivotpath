@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { financialProfileSchema, type FinancialProfileInput } from "@/lib/financial/schema";
 import { FINANCIAL_CONCERN_OPTIONS } from "@/lib/onboarding/schema";
-import { saveFinancialProfile } from "@/app/financial/actions";
+import { setJourney } from "@/lib/journey/store";
 
 type Defaults = {
   monthlyIncomeDuringTransition?: number;
@@ -15,8 +15,7 @@ type Defaults = {
 };
 
 export function FinancialCheckInForm({ defaultValues }: { defaultValues: Defaults }) {
-  const [isPending, startTransition] = useTransition();
-  const [serverError, setServerError] = useState<string | null>(null);
+  const router = useRouter();
 
   const {
     register,
@@ -40,11 +39,8 @@ export function FinancialCheckInForm({ defaultValues }: { defaultValues: Default
   const financialConcernType = watch("financialConcernType");
 
   const onSubmit = handleSubmit((data) => {
-    setServerError(null);
-    startTransition(async () => {
-      const result = await saveFinancialProfile(data);
-      if (!result.ok) setServerError(result.error);
-    });
+    setJourney({ financialProfile: data });
+    router.push("/financial/plan");
   });
 
   return (
@@ -146,19 +142,13 @@ export function FinancialCheckInForm({ defaultValues }: { defaultValues: Default
         )}
       </div>
 
-      {serverError && (
-        <p className="text-label-sm text-error" role="alert">
-          {serverError}
-        </p>
-      )}
-
       <div className="flex items-center justify-end pt-space-lg border-t border-outline-variant/30">
         <button
           type="submit"
-          disabled={!isValid || isPending}
+          disabled={!isValid}
           className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          {isPending ? "Calculating..." : "See My Financial Plan"}
+          See My Financial Plan
           <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
         </button>
       </div>

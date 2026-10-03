@@ -1,18 +1,27 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { OnboardingHeader } from "@/app/onboarding/components/OnboardingHeader";
 import { StepCard } from "@/app/onboarding/components/StepCard";
 import { Step2Form } from "@/app/onboarding/components/Step2Form";
-import { getCurrentProfile, getReachedStep } from "@/lib/onboarding/data";
-import { getCurrentUserId } from "@/lib/current-user";
+import { getJourney } from "@/lib/journey/store";
+import { step1Schema, type Step2Input } from "@/lib/onboarding/schema";
 
-export default async function Step2Page() {
-  const userId = await getCurrentUserId();
-  if (!userId) redirect("/login");
+export default function Step2Page() {
+  const router = useRouter();
+  const [defaultValues, setDefaultValues] = useState<Partial<Step2Input> | null>(null);
 
-  const reachedStep = await getReachedStep();
-  if (reachedStep < 2) redirect(`/onboarding/step-${reachedStep}`);
+  useEffect(() => {
+    const profile = getJourney().profile ?? {};
+    if (!step1Schema.safeParse(profile).success) {
+      router.replace("/onboarding/step-1");
+      return;
+    }
+    setDefaultValues(profile);
+  }, [router]);
 
-  const profile = await getCurrentProfile();
+  if (!defaultValues) return null;
 
   return (
     <>
@@ -21,13 +30,7 @@ export default async function Step2Page() {
         title="Where are you headed?"
         description="Give us a target — or tell us you're still deciding — so we can start shaping a roadmap around it."
       >
-        <Step2Form
-          defaultValues={{
-            targetRole: profile?.targetRole ?? undefined,
-            stillDecidingRole: profile?.stillDecidingRole ?? undefined,
-            transitionMotivation: profile?.transitionMotivation ?? undefined,
-          }}
-        />
+        <Step2Form defaultValues={defaultValues} />
       </StepCard>
     </>
   );

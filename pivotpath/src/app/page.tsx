@@ -1,10 +1,6 @@
 import Link from "next/link";
-import { getCurrentUserId } from "@/lib/current-user";
 
-export default async function Home() {
-  const userId = await getCurrentUserId();
-  const isLoggedIn = Boolean(userId);
-
+export default function Home() {
   return (
     <>
       <main>
@@ -26,24 +22,16 @@ export default async function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link
-                  href={isLoggedIn ? "/roadmap" : "/signup"}
+                  href="/onboarding/step-1"
                   className="w-full px-space-xl py-4 bg-primary text-on-primary rounded-xl text-label-md flex items-center justify-center gap-2 hover:shadow-lg transition-all transform hover:-translate-y-1"
                 >
-                  {isLoggedIn ? "Go to Dashboard" : "Get Started"}
+                  Get Started
                   <span className="material-symbols-outlined">arrow_forward</span>
                 </Link>
                 <button className="px-space-xl py-4 border-2 border-secondary text-secondary rounded-xl text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors">
                   Watch Success Stories
                 </button>
               </div>
-              {!isLoggedIn && (
-                <p className="text-body-md text-on-surface-variant">
-                  Already have an account?{" "}
-                  <Link href="/login" className="text-secondary font-bold hover:underline">
-                    Log In
-                  </Link>
-                </p>
-              )}
               <div className="flex items-center gap-6 pt-8 grayscale opacity-60">
                 <span className="text-label-sm uppercase tracking-widest text-on-surface-variant">
                   Trusted by professionals at
@@ -208,10 +196,10 @@ export default async function Home() {
                     personalized strategy is just a click away.
                   </p>
                   <Link
-                    href={isLoggedIn ? "/roadmap" : "/signup"}
+                    href="/onboarding/step-1"
                     className="inline-block bg-white text-secondary px-8 py-3 rounded-lg font-bold text-label-md hover:bg-surface-bright transition-colors"
                   >
-                    {isLoggedIn ? "Go to Dashboard" : "Create My Free Account"}
+                    Start My Free Roadmap
                   </Link>
                 </div>
                 <div className="absolute right-0 top-0 h-full w-1/2 opacity-20 pointer-events-none">

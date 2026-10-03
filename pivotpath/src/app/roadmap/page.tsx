@@ -1,11 +1,13 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { asc, eq } from "drizzle-orm";
-import { db, milestone, roadmap, transitionStory, userProfile } from "@/lib/db";
-import { getCurrentUserId } from "@/lib/current-user";
+import { useRouter } from "next/navigation";
 import { MilestoneStatusControl } from "@/app/roadmap/components/MilestoneStatusControl";
-import { markTransitionComplete } from "@/app/roadmap/actions";
 import { AppShell } from "@/components/AppShell";
+import { getJourney, setJourney } from "@/lib/journey/store";
+import type { JourneyRoadmap, JourneyStory } from "@/lib/journey/types";
+import type { MilestoneStatus } from "@/lib/roadmap/schema";
 
 const STATUS_ICON: Record<string, string> = {
   done: "check_circle",
@@ -15,29 +17,58 @@ const STATUS_ICON: Record<string, string> = {
 
 const DATE_FORMAT: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
 
-export default async function RoadmapPage() {
-  const userId = await getCurrentUserId();
-  if (!userId) redirect("/login");
+export default function RoadmapPage() {
+  const router = useRouter();
+  const [roadmap, setRoadmap] = useState<JourneyRoadmap | null>(null);
+  const [story, setStory] = useState<JourneyStory | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
-  const profile = await db.query.userProfile.findFirst({ where: eq(userProfile.userId, userId) });
-  if (!profile?.onboardingCompletedAt) redirect("/onboarding");
+  useEffect(() => {
+    const journey = getJourney();
+    if (!journey.roadmap) {
+      router.replace("/roadmap/generating");
+      return;
+    }
+    setRoadmap(journey.roadmap);
+    setStory(journey.story ?? null);
+    setLoaded(true);
+  }, [router]);
 
-  const roadmapData = await db.query.roadmap.findFirst({
-    where: eq(roadmap.userId, userId),
-    with: { milestones: { orderBy: asc(milestone.order) } },
-  });
-  if (!roadmapData) redirect("/roadmap/generating");
+  if (!loaded || !roadmap) return null;
 
-  const story = roadmapData.transitionCompletedAt
-    ? await db.query.transitionStory.findFirst({ where: eq(transitionStory.userId, userId) })
-    : null;
+  function updateMilestoneStatus(milestoneId: string, status: MilestoneStatus) {
+    setRoadmap((current) => {
+      if (!current) return current;
+      const next: JourneyRoadmap = {
+        ...current,
+        milestones: current.milestones.map((m) =>
+          m.id === milestoneId
+            ? { ...m, status, completedAt: status === "done" ? new Date().toISOString() : null }
+            : m
+        ),
+      };
+      setJourney({ roadmap: next });
+      return next;
+    });
+  }
 
-  const total = roadmapData.milestones.length;
-  const completed = roadmapData.milestones.filter((m) => m.status === "done").length;
+  function markTransitionComplete() {
+    if (!roadmap) return;
+    const next: JourneyRoadmap = {
+      ...roadmap,
+      transitionCompletedAt: roadmap.transitionCompletedAt ?? new Date().toISOString(),
+    };
+    setRoadmap(next);
+    setJourney({ roadmap: next });
+    router.push("/transition-complete");
+  }
+
+  const total = roadmap.milestones.length;
+  const completed = roadmap.milestones.filter((m) => m.status === "done").length;
   const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
   // The first not-yet-started milestone gets the "next step" treatment;
   // later ones read as further-out/locked, matching the mockup's hierarchy.
-  const nextUpId = roadmapData.milestones.find((m) => m.status === "todo")?.id;
+  const nextUpId = roadmap.milestones.find((m) => m.status === "todo")?.id;
 
   return (
     <AppShell active="dashboard">
@@ -48,7 +79,7 @@ export default async function RoadmapPage() {
           </h1>
           <p className="text-body-lg text-on-surface-variant">
             Here&apos;s your path forward. You&apos;ve completed {percent}% of your transition to{" "}
-            <span className="font-bold text-primary">{roadmapData.targetRole}</span>.
+            <span className="font-bold text-primary">{roadmap.targetRole}</span>.
           </p>
         </section>
 
@@ -61,8 +92,8 @@ export default async function RoadmapPage() {
             </div>
 
             <div className="space-y-space-md">
-              {roadmapData.milestones.map((milestone, index) => {
-                const isLast = index === roadmapData.milestones.length - 1;
+              {roadmap.milestones.map((milestone, index) => {
+                const isLast = index === roadmap.milestones.length - 1;
                 const isNextUp = milestone.id === nextUpId;
 
                 return (
@@ -85,12 +116,15 @@ export default async function RoadmapPage() {
                           <span className="inline-block mt-1 mb-base text-label-md text-on-tertiary-container bg-tertiary-fixed/30 px-base py-0.5 rounded-full">
                             Completed
                             {milestone.completedAt
-                              ? ` ${milestone.completedAt.toLocaleDateString("en-US", DATE_FORMAT)}`
+                              ? ` ${new Date(milestone.completedAt).toLocaleDateString("en-US", DATE_FORMAT)}`
                               : ""}
                           </span>
                           <p className="text-body-md text-on-surface-variant">{milestone.description}</p>
                           <div className="mt-space-md pt-space-md border-t border-outline-variant/30 flex justify-end">
-                            <MilestoneStatusControl milestoneId={milestone.id} status="done" />
+                            <MilestoneStatusControl
+                              status="done"
+                              onChange={(next) => updateMilestoneStatus(milestone.id, next)}
+                            />
                           </div>
                         </div>
                       </>
@@ -110,7 +144,10 @@ export default async function RoadmapPage() {
                           </h3>
                           <p className="text-body-md text-on-surface-variant">{milestone.description}</p>
                           <div className="mt-space-md pt-space-md border-t border-outline-variant/30 flex justify-end">
-                            <MilestoneStatusControl milestoneId={milestone.id} status="in_progress" />
+                            <MilestoneStatusControl
+                              status="in_progress"
+                              onChange={(next) => updateMilestoneStatus(milestone.id, next)}
+                            />
                           </div>
                         </div>
                       </>
@@ -133,7 +170,10 @@ export default async function RoadmapPage() {
                             {milestone.description}
                           </p>
                           <div className="mt-space-md pt-space-md border-t border-outline-variant/30 flex justify-end">
-                            <MilestoneStatusControl milestoneId={milestone.id} status="todo" />
+                            <MilestoneStatusControl
+                              status="todo"
+                              onChange={(next) => updateMilestoneStatus(milestone.id, next)}
+                            />
                           </div>
                         </div>
                       </>
@@ -145,7 +185,7 @@ export default async function RoadmapPage() {
         </div>
 
         <div className="mt-space-lg bg-surface-container rounded-xl p-space-md border border-outline-variant/30 flex flex-col md:flex-row md:items-center justify-between gap-space-md">
-          {!roadmapData.transitionCompletedAt && (
+          {!roadmap.transitionCompletedAt && (
             <>
               <div>
                 <h3 className="text-headline-md text-primary">Landed the new role?</h3>
@@ -154,17 +194,16 @@ export default async function RoadmapPage() {
                   milestone checked off first.
                 </p>
               </div>
-              <form action={markTransitionComplete}>
-                <button
-                  type="submit"
-                  className="px-8 py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all whitespace-nowrap"
-                >
-                  Completed Transition
-                </button>
-              </form>
+              <button
+                type="button"
+                onClick={markTransitionComplete}
+                className="px-8 py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all whitespace-nowrap"
+              >
+                Completed Transition
+              </button>
             </>
           )}
-          {roadmapData.transitionCompletedAt && !story && (
+          {roadmap.transitionCompletedAt && !story && (
             <>
               <div>
                 <h3 className="text-headline-md text-primary">You did it!</h3>
@@ -180,7 +219,7 @@ export default async function RoadmapPage() {
               </Link>
             </>
           )}
-          {roadmapData.transitionCompletedAt && story && (
+          {roadmap.transitionCompletedAt && story && (
             <>
               <div>
                 <h3 className="text-headline-md text-primary">Your story is live</h3>

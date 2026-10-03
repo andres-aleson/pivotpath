@@ -1,32 +1,27 @@
+"use client";
+
 import Link from "next/link";
-import { eq } from "drizzle-orm";
-import { restartQuestionnaire } from "@/app/onboarding/actions";
-import { logOut } from "@/lib/auth/actions";
-import { getCurrentUserId } from "@/lib/current-user";
-import { db, financialProfile } from "@/lib/db";
+import { useRouter } from "next/navigation";
+import { resetQuestionnaire } from "@/lib/journey/store";
 
 type NavKey = "dashboard" | "stories" | "financial";
 
 const NAV_LINK = "flex items-center gap-space-md px-space-md py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg text-label-md";
 const NAV_LINK_ACTIVE = "flex items-center gap-space-md px-space-md py-3 bg-secondary-container text-on-secondary-container rounded-lg font-bold text-label-md";
 
-export async function AppShell({
+export function AppShell({
   active,
   children,
 }: {
   active?: NavKey;
   children: React.ReactNode;
 }) {
-  const userId = await getCurrentUserId();
-  const hasFinancialProfile = userId
-    ? Boolean(
-        await db.query.financialProfile.findFirst({
-          where: eq(financialProfile.userId, userId),
-          columns: { id: true },
-        })
-      )
-    : false;
-  const financialHref = hasFinancialProfile ? "/financial/plan" : "/financial";
+  const router = useRouter();
+
+  function retakeQuestionnaire() {
+    resetQuestionnaire();
+    router.push("/onboarding/step-1");
+  }
 
   return (
     <>
@@ -37,15 +32,7 @@ export async function AppShell({
         </Link>
         <div className="flex items-center gap-space-md">
           <span className="material-symbols-outlined text-on-surface-variant/50">notifications</span>
-          <form action={logOut}>
-            <button
-              type="submit"
-              title="Log out"
-              className="material-symbols-outlined text-on-surface-variant/50 hover:text-secondary transition-colors"
-            >
-              account_circle
-            </button>
-          </form>
+          <span className="material-symbols-outlined text-on-surface-variant/50">account_circle</span>
         </div>
       </nav>
 
@@ -64,20 +51,19 @@ export async function AppShell({
             <span className="material-symbols-outlined">stars</span>
             <span>Success Stories</span>
           </Link>
-          <Link href={financialHref} className={active === "financial" ? NAV_LINK_ACTIVE : NAV_LINK}>
+          <Link href="/financial" className={active === "financial" ? NAV_LINK_ACTIVE : NAV_LINK}>
             <span className="material-symbols-outlined">account_balance_wallet</span>
             <span>Financial</span>
           </Link>
         </nav>
         <div className="mt-auto border-t border-outline-variant pt-base">
-          <form action={restartQuestionnaire}>
-            <button
-              type="submit"
-              className="w-full py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all"
-            >
-              Retake Questionnaire
-            </button>
-          </form>
+          <button
+            type="button"
+            onClick={retakeQuestionnaire}
+            className="w-full py-3 bg-primary text-on-primary rounded-lg font-bold hover:opacity-90 transition-all"
+          >
+            Retake Questionnaire
+          </button>
         </div>
       </aside>
 
@@ -112,7 +98,7 @@ export async function AppShell({
           <span className="text-label-sm">Stories</span>
         </Link>
         <Link
-          href={financialHref}
+          href="/financial"
           className={
             active === "financial"
               ? "flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1"
@@ -122,15 +108,14 @@ export async function AppShell({
           <span className="material-symbols-outlined">account_balance_wallet</span>
           <span className="text-label-sm">Financial</span>
         </Link>
-        <form action={restartQuestionnaire}>
-          <button
-            type="submit"
-            className="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary"
-          >
-            <span className="material-symbols-outlined">refresh</span>
-            <span className="text-label-sm">Retake</span>
-          </button>
-        </form>
+        <button
+          type="button"
+          onClick={retakeQuestionnaire}
+          className="flex flex-col items-center justify-center text-on-surface-variant hover:text-secondary"
+        >
+          <span className="material-symbols-outlined">refresh</span>
+          <span className="text-label-sm">Retake</span>
+        </button>
       </nav>
     </>
   );

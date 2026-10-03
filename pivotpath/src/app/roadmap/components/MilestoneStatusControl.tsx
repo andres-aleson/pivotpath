@@ -1,30 +1,19 @@
 "use client";
 
-import { useTransition } from "react";
-import { updateMilestoneStatus } from "@/app/roadmap/actions";
 import type { MilestoneStatus } from "@/lib/roadmap/schema";
 
 export function MilestoneStatusControl({
-  milestoneId,
   status,
+  onChange,
 }: {
-  milestoneId: string;
   status: MilestoneStatus;
+  onChange: (next: MilestoneStatus) => void;
 }) {
-  const [isPending, startTransition] = useTransition();
-
-  function setStatus(next: MilestoneStatus) {
-    startTransition(() => {
-      updateMilestoneStatus(milestoneId, next);
-    });
-  }
-
   if (status === "done") {
     return (
       <button
-        onClick={() => setStatus("todo")}
-        disabled={isPending}
-        className="text-label-sm text-on-surface-variant hover:text-secondary hover:underline disabled:opacity-40"
+        onClick={() => onChange("todo")}
+        className="text-label-sm text-on-surface-variant hover:text-secondary hover:underline"
       >
         Reopen
       </button>
@@ -35,18 +24,16 @@ export function MilestoneStatusControl({
     return (
       <div className="flex items-center gap-4">
         <button
-          onClick={() => setStatus("todo")}
-          disabled={isPending}
-          className="text-label-sm text-on-surface-variant hover:text-secondary hover:underline disabled:opacity-40"
+          onClick={() => onChange("todo")}
+          className="text-label-sm text-on-surface-variant hover:text-secondary hover:underline"
         >
           Back to To Do
         </button>
         <button
-          onClick={() => setStatus("done")}
-          disabled={isPending}
-          className="px-6 py-2 bg-secondary text-on-secondary rounded-lg text-label-md font-bold hover:brightness-110 transition-all disabled:opacity-40 outline-none focus-visible:ring-2 focus-visible:ring-secondary/50"
+          onClick={() => onChange("done")}
+          className="px-6 py-2 bg-secondary text-on-secondary rounded-lg text-label-md font-bold hover:brightness-110 transition-all outline-none focus-visible:ring-2 focus-visible:ring-secondary/50"
         >
-          {isPending ? "Saving..." : "Mark Complete"}
+          Mark Complete
         </button>
       </div>
     );
@@ -54,11 +41,10 @@ export function MilestoneStatusControl({
 
   return (
     <button
-      onClick={() => setStatus("in_progress")}
-      disabled={isPending}
-      className="px-6 py-2 border border-secondary text-secondary rounded-lg text-label-md font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all disabled:opacity-40 outline-none focus-visible:ring-2 focus-visible:ring-secondary/50"
+      onClick={() => onChange("in_progress")}
+      className="px-6 py-2 border border-secondary text-secondary rounded-lg text-label-md font-bold hover:bg-secondary-container hover:text-on-secondary-container transition-all outline-none focus-visible:ring-2 focus-visible:ring-secondary/50"
     >
-      {isPending ? "Saving..." : "Start"}
+      Start
     </button>
   );
 }
