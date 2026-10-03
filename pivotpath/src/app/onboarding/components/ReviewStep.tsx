@@ -58,8 +58,13 @@ export function ReviewStep({ profile }: { profile: Profile }) {
   )?.label;
 
   function handleSubmit() {
-    setJourney({ onboardingCompletedAt: new Date().toISOString() });
-    router.push("/roadmap/generating");
+    // Answers may have changed since any earlier suggestions, so start those over.
+    setJourney({
+      onboardingCompletedAt: new Date().toISOString(),
+      roleSuggestions: undefined,
+      selectedTargetRole: undefined,
+    });
+    router.push(profile.stillDecidingRole ? "/roadmap/suggestions" : "/roadmap/generating");
   }
 
   return (

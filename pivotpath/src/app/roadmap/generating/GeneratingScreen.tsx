@@ -30,9 +30,17 @@ export function GeneratingScreen() {
       return;
     }
 
+    const targetRole = profile.stillDecidingRole
+      ? journey.selectedTargetRole
+      : profile.targetRole;
+    if (!targetRole) {
+      router.replace("/roadmap/suggestions");
+      return;
+    }
+
     setError(null);
     startTransition(async () => {
-      const result = await generateRoadmap(profile as OnboardingProfile);
+      const result = await generateRoadmap(profile as OnboardingProfile, targetRole);
       if (!result.ok) {
         setError(result.error);
         return;
@@ -40,7 +48,7 @@ export function GeneratingScreen() {
 
       setJourney({
         roadmap: {
-          targetRole: result.data.targetRole,
+          targetRole,
           milestones: result.data.milestones.map((m, index) => ({
             id: crypto.randomUUID(),
             title: m.title,

@@ -47,5 +47,43 @@ export const roadmapSchema = z.object({
 
 export type RoadmapGeneration = z.infer<typeof roadmapSchema>;
 
+export const roleSuggestionsResponseJsonSchema = {
+  type: "object",
+  properties: {
+    roles: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          title: {
+            type: "string",
+            description: "A specific, real job title, e.g. 'Product Manager'.",
+          },
+          whyItFits: {
+            type: "string",
+            description:
+              "1-2 sentences on why this role suits this specific person, referencing their skills, experience, interests, or motivation — not generic praise.",
+          },
+        },
+        required: ["title", "whyItFits"],
+      },
+    },
+  },
+  required: ["roles"],
+} as const;
+
+export const roleSuggestionsSchema = z.object({
+  roles: z
+    .array(
+      z.object({
+        title: z.string().trim().min(1),
+        whyItFits: z.string().trim().min(1),
+      })
+    )
+    .min(3),
+});
+
+export type RoleSuggestion = { title: string; whyItFits: string };
+
 export const MILESTONE_STATUSES = ["todo", "in_progress", "done"] as const;
 export type MilestoneStatus = (typeof MILESTONE_STATUSES)[number];
