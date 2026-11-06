@@ -123,6 +123,9 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
 
       <div className="space-y-space-xs">
         <label className="text-label-md text-primary">What are your top skills?</label>
+        <p className="text-label-sm text-on-surface-variant">
+          Add at least 3{topSkills.length > 0 ? ` (${topSkills.length} added)` : ""}.
+        </p>
         <div className="flex flex-wrap gap-2 mb-3">
           {topSkills.map((skill) => (
             <span

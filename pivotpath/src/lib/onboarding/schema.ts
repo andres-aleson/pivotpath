@@ -74,7 +74,7 @@ export const TIMELINE_URGENCY_OPTIONS = [
 
 export const step1Schema = z.object({
   currentJobTitle: z.string().trim().min(1, "Enter your current job title"),
-  topSkills: z.array(z.string().trim().min(1)).min(1, "Add at least one skill"),
+  topSkills: z.array(z.string().trim().min(1)).min(3, "Add at least 3 skills"),
   financialConcernType: z.enum(
     FINANCIAL_CONCERN_OPTIONS.map((o) => o.value) as [string, ...string[]],
     { message: "Choose your biggest financial concern" }
