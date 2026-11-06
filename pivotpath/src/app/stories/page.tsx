@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { and, desc, eq, like, or } from "drizzle-orm";
-import { db, transitionStory } from "@/lib/db";
+import { and, desc, eq, ilike, or } from "drizzle-orm";
+import { db, transitionStory, type TransitionStory } from "@/lib/db";
 import { AppShell } from "@/components/AppShell";
 import { INDUSTRY_OPTIONS } from "@/lib/onboarding/schema";
 import { initials } from "@/lib/stories/initials";
@@ -12,20 +12,27 @@ export default async function StoriesPage({
 }) {
   const { industry, q } = await searchParams;
 
-  const stories = await db.query.transitionStory.findMany({
-    where: and(
-      eq(transitionStory.isPublished, true),
-      industry ? eq(transitionStory.industry, industry) : undefined,
-      q
-        ? or(
-            like(transitionStory.displayName, `%${q}%`),
-            like(transitionStory.fromRole, `%${q}%`),
-            like(transitionStory.toRole, `%${q}%`)
-          )
-        : undefined
-    ),
-    orderBy: desc(transitionStory.publishedAt),
-  });
+  let stories: TransitionStory[] = [];
+  let loadFailed = false;
+  try {
+    stories = await db.query.transitionStory.findMany({
+      where: and(
+        eq(transitionStory.isPublished, true),
+        industry ? eq(transitionStory.industry, industry) : undefined,
+        q
+          ? or(
+              ilike(transitionStory.displayName, `%${q}%`),
+              ilike(transitionStory.fromRole, `%${q}%`),
+              ilike(transitionStory.toRole, `%${q}%`)
+            )
+          : undefined
+      ),
+      orderBy: desc(transitionStory.publishedAt),
+    });
+  } catch (err) {
+    console.error("Loading success stories failed:", err);
+    loadFailed = true;
+  }
 
   return (
     <AppShell active="stories">
@@ -86,13 +93,20 @@ export default async function StoriesPage({
           })}
         </section>
 
-        {stories.length === 0 ? (
+        {loadFailed ? (
+          <div className="text-center py-space-xl text-on-surface-variant">
+            <span className="material-symbols-outlined text-5xl mb-base block text-error">
+              error
+            </span>
+            Success stories are unavailable right now. Please try again in a moment.
+          </div>
+        ) : stories.length === 0 ? (
           <div className="text-center py-space-xl text-on-surface-variant">
             <span className="material-symbols-outlined text-5xl mb-base block">group_off</span>
             No stories match yet — try a different filter.
           </div>
         ) : (
-          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
+          <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-space-md">
             {stories.map((story) => (
               <div
                 key={story.id}
@@ -116,7 +130,7 @@ export default async function StoriesPage({
                       {story.displayName}
                     </h4>
                     <p className="text-label-md text-on-surface-variant">{story.toRole}</p>
-                    <div className="mt-2 inline-flex items-center px-2 py-0.5 bg-tertiary-container/10 text-on-tertiary-fixed-variant rounded text-xs font-bold uppercase tracking-wider">
+                    <div className="mt-2 inline-flex flex-wrap items-center max-w-full px-2 py-0.5 bg-tertiary-container/10 text-on-tertiary-fixed-variant rounded text-xs font-bold uppercase tracking-wider">
                       Transitioned from: <span className="text-on-surface ml-1">{story.fromRole}</span>
                     </div>
                   </div>

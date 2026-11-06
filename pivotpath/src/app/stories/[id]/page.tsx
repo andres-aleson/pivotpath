@@ -43,7 +43,7 @@ export default async function StoryDetailPage({
               <div className="flex-1">
                 <h1 className="text-headline-xl text-primary leading-tight">{story.displayName}</h1>
                 <p className="text-body-lg text-on-surface-variant mt-1">{story.toRole}</p>
-                <div className="mt-2 inline-flex items-center px-2 py-0.5 bg-tertiary-container/10 text-on-tertiary-fixed-variant rounded text-xs font-bold uppercase tracking-wider">
+                <div className="mt-2 inline-flex flex-wrap items-center max-w-full px-2 py-0.5 bg-tertiary-container/10 text-on-tertiary-fixed-variant rounded text-xs font-bold uppercase tracking-wider">
                   Transitioned from: <span className="text-on-surface ml-1">{story.fromRole}</span>
                 </div>
                 <span className="ml-2 inline-block px-3 py-1 bg-surface-container text-on-surface-variant rounded-full text-label-sm">
