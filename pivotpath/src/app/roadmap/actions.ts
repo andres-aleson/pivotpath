@@ -37,7 +37,15 @@ ${profile.resumeText.trim()}
 </resume>`
     : "";
 
-  return `Current job title: ${profile.currentJobTitle}
+  const previousJobs = (profile.previousJobs ?? []).filter((j) => j.title.trim());
+  const previousJobsLine =
+    previousJobs.length > 0
+      ? `\nPrevious jobs (most recent first): ${previousJobs
+          .map((j) => (j.company?.trim() ? `${j.title} at ${j.company}` : j.title))
+          .join("; ")}`
+      : "";
+
+  return `Current job title: ${profile.currentJobTitle}${previousJobsLine}
 Top skills: ${skills}
 Industries they're interested in: ${industries}
 What's motivating the change: ${profile.transitionMotivation}

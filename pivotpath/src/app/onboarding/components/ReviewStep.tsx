@@ -71,6 +71,13 @@ export function ReviewStep({ profile }: { profile: Profile }) {
     <div className="space-y-space-lg">
       <ReviewSection title="Your Profile" editHref="/onboarding/step-1">
         <ReviewRow label="Current job title" value={profile.currentJobTitle ?? ""} />
+        <ReviewRow
+          label="Previous jobs"
+          value={(profile.previousJobs ?? [])
+            .filter((j) => j.title)
+            .map((j) => (j.company ? `${j.title} at ${j.company}` : j.title))
+            .join("; ")}
+        />
         <ReviewRow label="Top skills" value={skills.join(", ")} />
         <ReviewRow label="Financial concern" value={financialConcern ?? ""} />
         <ReviewRow label="Industries of interest" value={industries.join(", ")} />

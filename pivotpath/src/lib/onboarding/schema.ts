@@ -75,7 +75,19 @@ export const TIMELINE_URGENCY_OPTIONS = [
 export const MAX_RESUME_BYTES = 2 * 1024 * 1024;
 export const MAX_RESUME_CHARS = 12000;
 
+export const MAX_PREVIOUS_JOBS = 10;
+
 export const step1Schema = z.object({
+  // Optional earlier roles. Blank rows are dropped when the form is submitted.
+  previousJobs: z
+    .array(
+      z.object({
+        title: z.string().trim().max(100),
+        company: z.string().trim().max(100).optional(),
+      })
+    )
+    .max(MAX_PREVIOUS_JOBS)
+    .optional(),
   // Optional: plain text pulled from an uploaded resume. Lives only in the
   // browser tab and is sent to the AI when suggesting roles / building the roadmap.
   resumeText: z.string().max(MAX_RESUME_CHARS).optional(),

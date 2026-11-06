@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   step1Schema,
@@ -10,6 +10,7 @@ import {
   step3Schema,
   FINANCIAL_CONCERN_OPTIONS,
   INDUSTRY_OPTIONS,
+  MAX_PREVIOUS_JOBS,
   MAX_RESUME_BYTES,
   MAX_RESUME_CHARS,
   type Step1Input,
@@ -30,12 +31,14 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
     handleSubmit,
     watch,
     setValue,
+    control,
     formState: { errors, isSubmitted },
   } = useForm<Step1Input>({
     resolver: zodResolver(step1Schema),
     mode: "onChange",
     defaultValues: {
       currentJobTitle: defaultValues.currentJobTitle ?? "",
+      previousJobs: defaultValues.previousJobs ?? [],
       topSkills: defaultValues.topSkills ?? [],
       financialConcernType: defaultValues.financialConcernType,
       industriesOfInterest: defaultValues.industriesOfInterest ?? [],
@@ -43,6 +46,12 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
       resumeFileName: defaultValues.resumeFileName,
     },
   });
+
+  const {
+    fields: jobFields,
+    append: appendJob,
+    remove: removeJob,
+  } = useFieldArray({ control, name: "previousJobs" });
 
   const topSkills = watch("topSkills");
   const industries = watch("industriesOfInterest");
@@ -153,7 +162,11 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
       step2Schema.safeParse(previous).success &&
       step3Schema.safeParse(previous).success;
 
-    setJourney({ profile: { ...previous, ...data } });
+    const previousJobs = (data.previousJobs ?? [])
+      .filter((job) => job.title)
+      .map((job) => ({ title: job.title, company: job.company || undefined }));
+
+    setJourney({ profile: { ...previous, ...data, previousJobs } });
     router.push(hadReachedReview ? "/onboarding/step-4" : "/onboarding/step-2");
   });
 
@@ -174,6 +187,51 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
           <p className="text-label-sm text-error" role="alert">
             {errors.currentJobTitle.message}
           </p>
+        )}
+      </div>
+
+      <div className="space-y-space-xs">
+        <label className="text-label-md text-primary">
+          Previous jobs <span className="text-on-surface-variant">(optional)</span>
+        </label>
+        <p className="text-label-sm text-on-surface-variant">
+          Add earlier roles, most recent first, so your roadmap can build on your full history.
+        </p>
+        {jobFields.map((field, index) => (
+          <div key={field.id} className="flex items-start gap-space-sm">
+            <input
+              aria-label={`Previous job ${index + 1} title`}
+              className="flex-1 min-w-0 px-4 py-3 rounded-lg border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-body-md"
+              placeholder="Job title"
+              type="text"
+              {...register(`previousJobs.${index}.title`)}
+            />
+            <input
+              aria-label={`Previous job ${index + 1} company`}
+              className="flex-1 min-w-0 px-4 py-3 rounded-lg border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-body-md"
+              placeholder="Company (optional)"
+              type="text"
+              {...register(`previousJobs.${index}.company`)}
+            />
+            <button
+              type="button"
+              aria-label={`Remove previous job ${index + 1}`}
+              onClick={() => removeJob(index)}
+              className="material-symbols-outlined mt-3 text-on-surface-variant hover:text-error transition-colors cursor-pointer"
+            >
+              delete
+            </button>
+          </div>
+        ))}
+        {jobFields.length < MAX_PREVIOUS_JOBS && (
+          <button
+            type="button"
+            onClick={() => appendJob({ title: "", company: "" })}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-outline-variant text-label-md text-on-surface-variant hover:border-secondary hover:text-secondary transition-colors"
+          >
+            <span className="material-symbols-outlined text-[20px]">add</span>
+            {jobFields.length === 0 ? "Add a previous job" : "Add another job"}
+          </button>
         )}
       </div>
 
