@@ -72,7 +72,14 @@ export const TIMELINE_URGENCY_OPTIONS = [
   },
 ] as const;
 
+export const MAX_RESUME_BYTES = 2 * 1024 * 1024;
+export const MAX_RESUME_CHARS = 12000;
+
 export const step1Schema = z.object({
+  // Optional: plain text pulled from an uploaded resume. Lives only in the
+  // browser tab and is sent to the AI when suggesting roles / building the roadmap.
+  resumeText: z.string().max(MAX_RESUME_CHARS).optional(),
+  resumeFileName: z.string().optional(),
   currentJobTitle: z.string().trim().min(1, "Enter your current job title"),
   topSkills: z.array(z.string().trim().min(1)).min(3, "Add at least 3 skills"),
   financialConcernType: z.enum(

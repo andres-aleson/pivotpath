@@ -74,6 +74,10 @@ export function ReviewStep({ profile }: { profile: Profile }) {
         <ReviewRow label="Top skills" value={skills.join(", ")} />
         <ReviewRow label="Financial concern" value={financialConcern ?? ""} />
         <ReviewRow label="Industries of interest" value={industries.join(", ")} />
+        <ReviewRow
+          label="Resume"
+          value={profile.resumeText ? profile.resumeFileName ?? "Uploaded" : "Not uploaded"}
+        />
       </ReviewSection>
 
       <ReviewSection title="Career Goal" editHref="/onboarding/step-2">
