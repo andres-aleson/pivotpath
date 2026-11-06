@@ -11,6 +11,7 @@ import {
   TIMELINE_URGENCY_OPTIONS,
   type Step3Input,
 } from "@/lib/onboarding/schema";
+import { IncompleteFormNotice } from "@/app/onboarding/components/IncompleteFormNotice";
 import { getJourney, setJourney } from "@/lib/journey/store";
 import Link from "next/link";
 
@@ -23,7 +24,7 @@ export function Step3Form({ defaultValues }: { defaultValues: Partial<Step3Input
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isSubmitted },
   } = useForm<Step3Input>({
     resolver: zodResolver(step3Schema),
     mode: "onChange",
@@ -139,6 +140,8 @@ export function Step3Form({ defaultValues }: { defaultValues: Partial<Step3Input
         )}
       </div>
 
+      <IncompleteFormNotice show={isSubmitted && Object.keys(errors).length > 0} />
+
       <div className="flex items-center justify-between pt-space-lg border-t border-outline-variant/30">
         <Link
           href="/onboarding/step-2"
@@ -149,8 +152,7 @@ export function Step3Form({ defaultValues }: { defaultValues: Partial<Step3Input
         </Link>
         <button
           type="submit"
-          disabled={!isValid}
-          className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md"
         >
           Continue
           <span className="material-symbols-outlined text-[20px]">arrow_forward</span>

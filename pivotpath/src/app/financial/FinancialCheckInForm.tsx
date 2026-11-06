@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { financialProfileSchema, type FinancialProfileInput } from "@/lib/financial/schema";
 import { FINANCIAL_CONCERN_OPTIONS } from "@/lib/onboarding/schema";
+import { IncompleteFormNotice } from "@/app/onboarding/components/IncompleteFormNotice";
 import { setJourney } from "@/lib/journey/store";
 
 type Defaults = {
@@ -22,7 +23,7 @@ export function FinancialCheckInForm({ defaultValues }: { defaultValues: Default
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isSubmitted },
   } = useForm<FinancialProfileInput>({
     resolver: zodResolver(financialProfileSchema),
     mode: "onChange",
@@ -142,11 +143,12 @@ export function FinancialCheckInForm({ defaultValues }: { defaultValues: Default
         )}
       </div>
 
+      <IncompleteFormNotice show={isSubmitted && Object.keys(errors).length > 0} />
+
       <div className="flex items-center justify-end pt-space-lg border-t border-outline-variant/30">
         <button
           type="submit"
-          disabled={!isValid}
-          className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md"
         >
           See My Financial Plan
           <span className="material-symbols-outlined text-[20px]">arrow_forward</span>

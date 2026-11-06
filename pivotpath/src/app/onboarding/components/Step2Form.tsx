@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { step1Schema, step2Schema, step3Schema, type Step2Input } from "@/lib/onboarding/schema";
+import { IncompleteFormNotice } from "@/app/onboarding/components/IncompleteFormNotice";
 import { getJourney, setJourney } from "@/lib/journey/store";
 import Link from "next/link";
 
@@ -14,7 +15,7 @@ export function Step2Form({ defaultValues }: { defaultValues: Partial<Step2Input
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors, isSubmitted },
   } = useForm<Step2Input>({
     resolver: zodResolver(step2Schema),
     mode: "onChange",
@@ -81,6 +82,8 @@ export function Step2Form({ defaultValues }: { defaultValues: Partial<Step2Input
         )}
       </div>
 
+      <IncompleteFormNotice show={isSubmitted && Object.keys(errors).length > 0} />
+
       <div className="flex items-center justify-between pt-space-lg border-t border-outline-variant/30">
         <Link
           href="/onboarding/step-1"
@@ -91,8 +94,7 @@ export function Step2Form({ defaultValues }: { defaultValues: Partial<Step2Input
         </Link>
         <button
           type="submit"
-          disabled={!isValid}
-          className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md"
         >
           Continue
           <span className="material-symbols-outlined text-[20px]">arrow_forward</span>

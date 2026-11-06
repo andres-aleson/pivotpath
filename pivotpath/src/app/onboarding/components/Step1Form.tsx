@@ -12,6 +12,7 @@ import {
   INDUSTRY_OPTIONS,
   type Step1Input,
 } from "@/lib/onboarding/schema";
+import { IncompleteFormNotice } from "@/app/onboarding/components/IncompleteFormNotice";
 import { getJourney, setJourney } from "@/lib/journey/store";
 
 export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input> }) {
@@ -23,7 +24,7 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isSubmitted },
   } = useForm<Step1Input>({
     resolver: zodResolver(step1Schema),
     mode: "onChange",
@@ -246,11 +247,12 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
         )}
       </div>
 
+      <IncompleteFormNotice show={isSubmitted && Object.keys(errors).length > 0} />
+
       <div className="flex items-center justify-end pt-space-lg border-t border-outline-variant/30">
         <button
           type="submit"
-          disabled={!isValid}
-          className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary text-white text-label-md hover:opacity-90 transition-opacity shadow-md"
         >
           Continue
           <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
