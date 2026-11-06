@@ -1,6 +1,6 @@
 "use server";
 
-import { gemini, GEMINI_MODEL } from "@/lib/gemini";
+import { gemini, withModelFallback, aiFailureMessage } from "@/lib/gemini";
 import { MAX_RESUME_BYTES, MAX_RESUME_CHARS } from "@/lib/onboarding/schema";
 
 type ExtractResult = { ok: true; text: string } | { ok: false; error: string };
@@ -22,8 +22,8 @@ export async function extractResumeText(formData: FormData): Promise<ExtractResu
   }
 
   try {
-    const response = await gemini.models.generateContent({
-      model: GEMINI_MODEL,
+    const response = await withModelFallback((model) => gemini.models.generateContent({
+      model,
       contents: [
         {
           role: "user",
@@ -35,7 +35,7 @@ export async function extractResumeText(formData: FormData): Promise<ExtractResu
           ],
         },
       ],
-    });
+    }));
 
     const text = response.text?.trim();
     if (!text) {
@@ -44,6 +44,9 @@ export async function extractResumeText(formData: FormData): Promise<ExtractResu
     return { ok: true, text: text.slice(0, MAX_RESUME_CHARS) };
   } catch (err) {
     console.error("Resume extraction failed:", err);
-    return { ok: false, error: "Couldn't read that resume right now. Please try again." };
+    return {
+      ok: false,
+      error: aiFailureMessage(err, "Couldn't read that resume right now. Please try again."),
+    };
   }
 }

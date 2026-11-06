@@ -1,6 +1,6 @@
 "use server";
 
-import { gemini, GEMINI_MODEL } from "@/lib/gemini";
+import { gemini, withModelFallback, aiFailureMessage } from "@/lib/gemini";
 import {
   roadmapResponseJsonSchema,
   roadmapSchema,
@@ -84,15 +84,15 @@ export async function suggestTargetRoles(
   exclude: string[]
 ): Promise<SuggestResult> {
   try {
-    const response = await gemini.interactions.create({
-      model: GEMINI_MODEL,
+    const response = await withModelFallback((model) => gemini.interactions.create({
+      model,
       input: buildSuggestionsPrompt(profile, exclude),
       response_format: {
         type: "text",
         mime_type: "application/json",
         schema: roleSuggestionsResponseJsonSchema,
       },
-    });
+    }));
 
     const raw = response.output_text;
     if (!raw) {
@@ -112,7 +112,10 @@ export async function suggestTargetRoles(
     return { ok: true, roles: fresh.slice(0, 3) };
   } catch (err) {
     console.error("Role suggestion failed:", err);
-    return { ok: false, error: "Couldn't suggest roles right now. Please try again." };
+    return {
+      ok: false,
+      error: aiFailureMessage(err, "Couldn't suggest roles right now. Please try again."),
+    };
   }
 }
 
@@ -121,15 +124,15 @@ export async function generateRoadmap(
   targetRole: string
 ): Promise<ActionResult> {
   try {
-    const response = await gemini.interactions.create({
-      model: GEMINI_MODEL,
+    const response = await withModelFallback((model) => gemini.interactions.create({
+      model,
       input: buildRoadmapPrompt(profile, targetRole),
       response_format: {
         type: "text",
         mime_type: "application/json",
         schema: roadmapResponseJsonSchema,
       },
-    });
+    }));
 
     const raw = response.output_text;
     if (!raw) {
@@ -146,6 +149,9 @@ export async function generateRoadmap(
     return { ok: true, data: result.data };
   } catch (err) {
     console.error("Roadmap generation failed:", err);
-    return { ok: false, error: "Couldn't generate your roadmap right now. Please try again." };
+    return {
+      ok: false,
+      error: aiFailureMessage(err, "Couldn't generate your roadmap right now. Please try again."),
+    };
   }
 }
