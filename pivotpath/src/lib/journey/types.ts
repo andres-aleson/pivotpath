@@ -2,6 +2,7 @@ import type { Step1Input, Step2Input, Step3Input } from "@/lib/onboarding/schema
 import type { MilestoneStatus, RoleSuggestion } from "@/lib/roadmap/schema";
 import type { FinancialProfileInput } from "@/lib/financial/schema";
 import type { ShareStoryInput } from "@/lib/stories/schema";
+import type { JobListing } from "@/lib/jobs/types";
 
 export type OnboardingProfile = Step1Input & Step2Input & Step3Input;
 
@@ -30,6 +31,8 @@ export type Journey = {
   roleSuggestions?: { roles: RoleSuggestion[]; seen: string[] };
   selectedTargetRole?: string;
   roadmap?: JourneyRoadmap;
+  // Last successful job search, keyed by role + location so revisits don't re-query.
+  jobs?: { key: string; listings: JobListing[] };
   financialProfile?: FinancialProfileInput;
   story?: JourneyStory;
 };

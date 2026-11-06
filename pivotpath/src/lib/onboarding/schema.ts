@@ -75,6 +75,24 @@ export const TIMELINE_URGENCY_OPTIONS = [
 export const MAX_RESUME_BYTES = 2 * 1024 * 1024;
 export const MAX_RESUME_CHARS = 12000;
 
+export const US_STATES = [
+  ["AL", "Alabama"], ["AK", "Alaska"], ["AZ", "Arizona"], ["AR", "Arkansas"],
+  ["CA", "California"], ["CO", "Colorado"], ["CT", "Connecticut"], ["DE", "Delaware"],
+  ["DC", "District of Columbia"], ["FL", "Florida"], ["GA", "Georgia"], ["HI", "Hawaii"],
+  ["ID", "Idaho"], ["IL", "Illinois"], ["IN", "Indiana"], ["IA", "Iowa"],
+  ["KS", "Kansas"], ["KY", "Kentucky"], ["LA", "Louisiana"], ["ME", "Maine"],
+  ["MD", "Maryland"], ["MA", "Massachusetts"], ["MI", "Michigan"], ["MN", "Minnesota"],
+  ["MS", "Mississippi"], ["MO", "Missouri"], ["MT", "Montana"], ["NE", "Nebraska"],
+  ["NV", "Nevada"], ["NH", "New Hampshire"], ["NJ", "New Jersey"], ["NM", "New Mexico"],
+  ["NY", "New York"], ["NC", "North Carolina"], ["ND", "North Dakota"], ["OH", "Ohio"],
+  ["OK", "Oklahoma"], ["OR", "Oregon"], ["PA", "Pennsylvania"], ["RI", "Rhode Island"],
+  ["SC", "South Carolina"], ["SD", "South Dakota"], ["TN", "Tennessee"], ["TX", "Texas"],
+  ["UT", "Utah"], ["VT", "Vermont"], ["VA", "Virginia"], ["WA", "Washington"],
+  ["WV", "West Virginia"], ["WI", "Wisconsin"], ["WY", "Wyoming"],
+] as const;
+
+const US_STATE_CODES = US_STATES.map(([code]) => code) as unknown as [string, ...string[]];
+
 export const MAX_PREVIOUS_JOBS = 10;
 
 export const step1Schema = z.object({
@@ -93,6 +111,8 @@ export const step1Schema = z.object({
   resumeText: z.string().max(MAX_RESUME_CHARS).optional(),
   resumeFileName: z.string().optional(),
   currentJobTitle: z.string().trim().min(1, "Enter your current job title"),
+  city: z.string().trim().min(1, "Enter your city").max(80),
+  state: z.enum(US_STATE_CODES, { message: "Select your state" }),
   topSkills: z.array(z.string().trim().min(1)).min(3, "Add at least 3 skills"),
   financialConcernType: z.enum(
     FINANCIAL_CONCERN_OPTIONS.map((o) => o.value) as [string, ...string[]],

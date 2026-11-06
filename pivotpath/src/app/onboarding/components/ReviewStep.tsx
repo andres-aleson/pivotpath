@@ -72,6 +72,10 @@ export function ReviewStep({ profile }: { profile: Profile }) {
       <ReviewSection title="Your Profile" editHref="/onboarding/step-1">
         <ReviewRow label="Current job title" value={profile.currentJobTitle ?? ""} />
         <ReviewRow
+          label="Location"
+          value={profile.city && profile.state ? `${profile.city}, ${profile.state}` : ""}
+        />
+        <ReviewRow
           label="Previous jobs"
           value={(profile.previousJobs ?? [])
             .filter((j) => j.title)

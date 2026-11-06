@@ -11,6 +11,7 @@ import {
   FINANCIAL_CONCERN_OPTIONS,
   INDUSTRY_OPTIONS,
   MAX_PREVIOUS_JOBS,
+  US_STATES,
   MAX_RESUME_BYTES,
   MAX_RESUME_CHARS,
   type Step1Input,
@@ -38,6 +39,8 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
     mode: "onChange",
     defaultValues: {
       currentJobTitle: defaultValues.currentJobTitle ?? "",
+      city: defaultValues.city ?? "",
+      state: defaultValues.state,
       previousJobs: defaultValues.previousJobs ?? [],
       topSkills: defaultValues.topSkills ?? [],
       financialConcernType: defaultValues.financialConcernType,
@@ -362,6 +365,55 @@ export function Step1Form({ defaultValues }: { defaultValues: Partial<Step1Input
             {errors.industriesOfInterest.message}
           </p>
         )}
+      </div>
+
+      <div className="space-y-space-xs">
+        <label className="text-label-md text-primary" htmlFor="city">
+          Where are you located?
+        </label>
+        <p className="text-label-sm text-on-surface-variant">
+          Used only to look up job openings near you. Like everything else here, it isn&apos;t
+          saved.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+          <div className="space-y-1">
+            <input
+              id="city"
+              className="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-body-md"
+              placeholder="City"
+              type="text"
+              autoComplete="address-level2"
+              {...register("city")}
+            />
+            {errors.city && (
+              <p className="text-label-sm text-error" role="alert">
+                {errors.city.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-1">
+            <select
+              aria-label="State"
+              defaultValue={defaultValues.state ?? ""}
+              className="w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all outline-none text-body-md"
+              {...register("state")}
+            >
+              <option value="" disabled>
+                State
+              </option>
+              {US_STATES.map(([code, name]) => (
+                <option key={code} value={code}>
+                  {name}
+                </option>
+              ))}
+            </select>
+            {errors.state && (
+              <p className="text-label-sm text-error" role="alert">
+                {errors.state.message}
+              </p>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="space-y-space-xs">
